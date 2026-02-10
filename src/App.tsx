@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import SplashScreen from './components/SplashScreen';
-import { TopNav, BottomNav } from './components/Navigation';
-import HomeView from './components/HomeView';
-import ShopView from './components/ShopView';
-import ProductDetailModal from './components/ProductDetailModal';
-import CartDrawer from './components/CartDrawer';
-import CheckoutForm from './components/CheckoutForm';
-import { CartItem, Product, ViewState } from './types';
-import { fetchProducts } from './services/productService';
-import { PRODUCTS as FALLBACK_PRODUCTS } from './constants'; // Keep as fallback/mock if DB fails
+import SplashScreen from '../components/SplashScreen';
+import { TopNav, BottomNav } from '../components/Navigation';
+import HomeView from '../components/HomeView';
+import ShopView from '../components/ShopView';
+import ProductDetailModal from '../components/ProductDetailModal';
+import CartDrawer from '../components/CartDrawer';
+import CheckoutForm from '../components/CheckoutForm';
+import { CartItem, Product, ViewState } from '../types';
+
+// --- NEW IMPORT: The "Manifest" Reader ---
+import { fetchCatalog } from './services/catalog'; 
+
+// Keep as fallback/mock if DB fails or is empty
+import { PRODUCTS as FALLBACK_PRODUCTS } from '../constants'; 
 
 function App() {
   const [showSplash, setShowSplash] = useState(true);
@@ -23,17 +27,22 @@ function App() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loadingProducts, setLoadingProducts] = useState(true);
 
-  // Fetch Data on Mount
+  // --- UPDATED: Fetch Data from Manifest ---
   useEffect(() => {
     const loadData = async () => {
-      const fetched = await fetchProducts();
-      if (fetched.length > 0) {
+      setLoadingProducts(true);
+      
+      // 1. Try to fetch the live "Manifest" (Cached or Cloud)
+      const fetched = await fetchCatalog();
+      
+      if (fetched && fetched.length > 0) {
         setProducts(fetched);
       } else {
-        // If DB is empty or fails (e.g. invalid config), use local constants for demo
-        console.warn("Using local fallback data.");
+        // 2. If Manifest is missing (not synced yet), use local fallback
+        console.warn("Manifest empty or missing. Using local fallback data.");
         setProducts(FALLBACK_PRODUCTS as Product[]);
       }
+      
       setLoadingProducts(false);
     };
 
