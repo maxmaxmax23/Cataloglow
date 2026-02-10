@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en" class="dark h-full">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>AURA Luxury Cosmetics</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#D4AF37", /* Metallic Gold */
+              "primary-light": "#F3E5AB", /* Champagne */
+              "background-light": "#F5F5F5",
+              "background-dark": "#050505", /* Deepest Black */
+              "background-card": "#121212", /* Rich Black/Grey */
+            },
+            fontFamily: {
+              sans: ["Montserrat", "sans-serif"],
+              serif: ["Playfair Display", "serif"],
+            },
+            transitionTimingFunction: {
+              'luxury': 'cubic-bezier(0.16, 1, 0.3, 1)', // EaseOutExpo-ish: Fast start, very slow smooth end
+            },
+            animation: {
+              'fade-in': 'fadeIn 1s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+              'slide-up': 'slideUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+              'scale-in': 'scaleIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+              'float': 'float 8s ease-in-out infinite',
+              'pulse-glow': 'pulseGlow 4s infinite',
+              'shimmer-slide': 'shimmerSlide 2.5s cubic-bezier(0.4, 0, 0.2, 1) infinite',
+              'slow-zoom': 'slowZoom 20s linear infinite alternate',
+              'blur-in': 'blurIn 1s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+            },
+            keyframes: {
+              fadeIn: {
+                '0%': { opacity: '0' },
+                '100%': { opacity: '1' },
+              },
+              slideUp: {
+                '0%': { transform: 'translateY(40px)', opacity: '0' },
+                '100%': { transform: 'translateY(0)', opacity: '1' },
+              },
+              scaleIn: {
+                '0%': { transform: 'scale(0.95)', opacity: '0' },
+                '100%': { transform: 'scale(1)', opacity: '1' },
+              },
+              float: {
+                '0%, 100%': { transform: 'translateY(0)' },
+                '50%': { transform: 'translateY(-15px)' },
+              },
+              pulseGlow: {
+                '0%, 100%': { opacity: '1', boxShadow: '0 0 15px rgba(212, 175, 55, 0.1)' },
+                '50%': { opacity: '0.8', boxShadow: '0 0 30px rgba(212, 175, 55, 0.4)' },
+              },
+              shimmerSlide: {
+                '0%': { transform: 'translateX(-100%)' },
+                '100%': { transform: 'translateX(100%)' },
+              },
+              slowZoom: {
+                '0%': { transform: 'scale(1)' },
+                '100%': { transform: 'scale(1.1)' },
+              },
+              blurIn: {
+                '0%': { opacity: '0', filter: 'blur(10px)', transform: 'scale(0.95)' },
+                '100%': { opacity: '1', filter: 'blur(0)', transform: 'scale(1)' },
+              }
+            }
+          },
+        },
+      };
+    </script>
+
+    <style>
+      body, html, #root {
+        height: 100%;
+        overflow: hidden; /* App Shell behavior */
+      }
+      
+      body {
+        background-color: #050505;
+        /* Subtle marble texture simulation */
+        background-image: 
+            radial-gradient(circle at 20% 30%, rgba(212, 175, 55, 0.05) 0%, transparent 40%),
+            linear-gradient(45deg, rgba(255, 255, 255, 0.03) 0%, transparent 20%),
+            url("https://lh3.googleusercontent.com/aida-public/AB6AXuDUYMJVrhBSBdVJZCGQAKVlWECyvUElZJszL1bS2ROwV5xDAFSYzFTrViGHmXLmiKnLpe0HhrhKcmOGdDNnGFuCGMAzPCBMJDubKKaT3hp05t-itNBlJCtbv5NgDQo8Zb4ns884-l4vHo94qIHuFYZbMzlVyDsRTmhtYxEb8wp-yitYWVz7HxJo33IUa3dmJraOilPxHHu4evPbNkua9yFODkwm1QAKq5D2MF-htS8fftiAU_urLsvlUfKdZPZiI7cbey3p6V_7Hk4r");
+        background-size: cover;
+        background-attachment: fixed;
+        color: #fff;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .gold-text-shimmer {
+        background: linear-gradient(
+          90deg, 
+          #D4AF37 0%, 
+          #FFF8E7 50%, 
+          #D4AF37 100%
+        );
+        background-size: 200% auto;
+        color: transparent;
+        -webkit-background-clip: text;
+        background-clip: text;
+        animation: shine 6s linear infinite;
+      }
+      
+      .btn-shimmer {
+        position: relative;
+        overflow: hidden;
+      }
+      .btn-shimmer::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        transform: translateX(-100%);
+      }
+      .group:hover .btn-shimmer::after {
+        animation: shimmerSlide 1.5s infinite;
+      }
+      
+      /* Image shimmer effect */
+      .img-shimmer {
+        position: relative;
+        overflow: hidden;
+      }
+      .img-shimmer::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(105deg, transparent 20%, rgba(255,255,255,0.15) 50%, transparent 80%);
+        transform: translateX(-100%);
+        pointer-events: none;
+        z-index: 10;
+      }
+      .group:hover .img-shimmer::after {
+        animation: shimmerSlide 2s infinite;
+      }
+
+      @keyframes shine {
+        to {
+          background-position: 200% center;
+        }
+      }
+
+      .hide-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .hide-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+      
+      .no-overscroll {
+        overscroll-behavior: contain;
+      }
+
+      .glass-panel {
+        background: rgba(15, 15, 15, 0.7);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "react": "https://esm.sh/react@^19.2.4",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/"
+  }
+}
+</script>
+</head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>

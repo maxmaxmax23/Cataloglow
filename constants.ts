@@ -1,0 +1,280 @@
+import { Product, Category } from './types';
+
+export const PRODUCTS: Product[] = [
+  // --- Skincare ---
+  {
+    id: 'p1',
+    name: 'Aurum Serum',
+    subtitle: '24k Infused Hydration',
+    price: 185.00,
+    category: 'Skincare',
+    volume: '30ml / 1.0 fl.oz',
+    isNew: true,
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDh5j0VzGA7VPoijLdslu08SmsYEIOA5d0GF5cj_F2t1aC8P-4y-Rp8xs6sLteCXdBHKLKbjxovAJcHrSKQIo5_XMkb_dEnCHclcInbHHcaxdGi7G4cr6lyMVVOZJ57Hii1j-qX_fe6y-79iOaOW_sa18S0RfkwQOlVMVVzQ_RNVm7roQQ6hsE3tGejcHL9Lz4b1Pymc2a4Y6NgcHFkEIkqfu0bkKh2MMXbeQQC3iFeDWDmaV3AdSFAwQXI3P4XGHc60ohCb0AtQkl4',
+    description: 'A transformative nocturnal treatment infused with 24k gold flakes and botanical stem cells. Designed to restore luminosity and redefine facial contours while you rest.',
+    benefits: ['Reduces fine lines and deep wrinkles', 'Enhances skin elasticity', 'Infused with rare Damascus Rose essence']
+  },
+  {
+    id: 'p4',
+    name: 'Silk Night Elixir',
+    subtitle: 'Overnight Transformation',
+    price: 210.00,
+    category: 'Skincare',
+    isLimited: true,
+    volume: '50ml / 1.7 fl.oz',
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDO-TegXPFf4kHFvi24UgBQgo2XCE9uOHJCZhk9eB3rd61OIJjjB5wrexlzG-a4I1Hu5872RUjB5Z20_9sK1k9baXYyIYUGorV13QOge67yy7Qg3X4OK5CVcMJpwOD4CYWCvul50RxFpfT_OBfY0_3io2FIjUr8L418rPVhYT_5iWGNCdygds9Sahi7vUWdkF7OcZ0ylEZeIZ1-APlwPs14ExF234cutOyoxGVbzPAKHKySyUwmhtTzZB0wpzJ4zYmpUhn9Ri6uDDGj',
+    description: 'Wake up to renewed skin with our Silk Night Elixir. Formulated with rare silk peptides to smooth and firm while you sleep.',
+    benefits: ['Repairs moisture barrier', 'Brightens complexion', 'Soothing lavender scent']
+  },
+  {
+    id: 'p5',
+    name: 'Radiance Elixir Serum Luxe',
+    subtitle: 'Private Collection',
+    price: 245.00,
+    category: 'Skincare',
+    volume: '50ml / 1.7 fl.oz',
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBvvf4OpObk-2g06TNfkyjkHRf5r_1NSC-eHVxuTol94WzJb-nVwWz9B0rCgCqm-XkMOL-sJ5lyEl71v9nA_B4uCIxK0k9foPp_swdxTyL2OaFWOjXXbECUmxWYO6chnlxUm6EoQCD51_Kw7DsqlWqrci6cFVi_FhNf5f5fWG1GN8PaFyNyx5xrsiefqBMYvd3uWLugTHdk1YAZQyXYxFYe9Vc64zL66DT02-lyqfrWN97iyqzOQQrzjk49tMbaqYqoZtVEFWuJGRr8',
+    description: 'Our flagship serum. A transformative nocturnal treatment infused with 24k gold flakes and botanical stem cells. Designed to restore luminosity and redefine facial contours while you rest.',
+    benefits: ['Reduces fine lines and deep wrinkles', 'Enhances skin elasticity and firmness', 'Infused with rare Damascus Rose essence']
+  },
+  {
+    id: 'p9',
+    name: 'Celestial Renewal Cream',
+    subtitle: 'Anti-Gravity Complex',
+    price: 320.00,
+    category: 'Skincare',
+    volume: '50ml / 1.7 fl.oz',
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDO-TegXPFf4kHFvi24UgBQgo2XCE9uOHJCZhk9eB3rd61OIJjjB5wrexlzG-a4I1Hu5872RUjB5Z20_9sK1k9baXYyIYUGorV13QOge67yy7Qg3X4OK5CVcMJpwOD4CYWCvul50RxFpfT_OBfY0_3io2FIjUr8L418rPVhYT_5iWGNCdygds9Sahi7vUWdkF7OcZ0ylEZeIZ1-APlwPs14ExF234cutOyoxGVbzPAKHKySyUwmhtTzZB0wpzJ4zYmpUhn9Ri6uDDGj',
+    description: 'Defy gravity with our most potent formula yet. Enriched with crushed meteorite dust and black diamond truffle extract.',
+    benefits: ['Immediate lifting effect', 'Deep cellular regeneration', 'Mineral-rich hydration']
+  },
+  {
+    id: 'p10',
+    name: 'Hydra-Rose Mist',
+    subtitle: 'Botanical Essence',
+    price: 85.00,
+    category: 'Skincare',
+    volume: '100ml / 3.4 fl.oz',
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDh5j0VzGA7VPoijLdslu08SmsYEIOA5d0GF5cj_F2t1aC8P-4y-Rp8xs6sLteCXdBHKLKbjxovAJcHrSKQIo5_XMkb_dEnCHclcInbHHcaxdGi7G4cr6lyMVVOZJ57Hii1j-qX_fe6y-79iOaOW_sa18S0RfkwQOlVMVVzQ_RNVm7roQQ6hsE3tGejcHL9Lz4b1Pymc2a4Y6NgcHFkEIkqfu0bkKh2MMXbeQQC3iFeDWDmaV3AdSFAwQXI3P4XGHc60ohCb0AtQkl4',
+    description: 'A refreshing mist that locks in moisture and sets makeup. Infused with petals from the Valley of Roses.',
+    benefits: ['Instant glow', 'Makeup setting power', 'pH balancing']
+  },
+
+  // --- Eyes ---
+  {
+    id: 'p2',
+    name: 'Solar Palette',
+    subtitle: 'Golden Hour Shimmer',
+    price: 95.00,
+    category: 'Eyes',
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD-tlHswNQL9kSGaAeH3uZaRI9OSnuU9VXoXWsGOrnADOln5_YwN54laVh6rVEv-RZwKSNnZ3LCcfGoRp0aX6Cpu2xTVyj4G_NSbuG4gcXT1WtqadiFlGudrskSFCvrt_HvsqLc1_mDGUaDUCznb0WzPZfb_9U4tH-Asl-IqDuvhnVd7mhpDV1og7gj0GJ6KDmM_EPL1DPE39-Qi27r1SviuAysVly0kN34ZMaNCml_N3Z0ZomtUUg_kmyuWB6hmD4DjribkyCXfuJq',
+    description: 'Capture the essence of the golden hour with our highly pigmented, shimmer-infused palette. Smooth application with all-day wear.',
+    benefits: ['Highly pigmented formula', 'Blendable texture', '12-hour wear']
+  },
+  {
+    id: 'p11',
+    name: 'Midnight Mascara',
+    subtitle: 'Volume & Length',
+    price: 45.00,
+    category: 'Eyes',
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCQMciaH6Yk2PYZuWhg65gh82YaNwaSMe8D0TjS_Mvo1E1wNDceSpDG7j9Fz8CsNnJ5CljFxc7qD8X-d1F9f4X6IxG8Kt9o55V9HMAtZyOQHILy6Zb10ANmVHVjFPup44xH2ydMwIHSVsBmHQTpOTJfijM9QGLX0_5q021dkyNUBWj_ptR9BLbb6ubihgybevLnFnJ1D0aKbo51Qlnb2Lw-gBQ6DFKY8zyaY8UPOaMWMH02U7NwIZfuSr0I73kOJxFZEaZUmGxj6Xxy',
+    description: 'Drama in a tube. Our carbon-black formula provides extreme volume without clumping.',
+    benefits: ['Water-resistant', 'Lash conditioning', 'Smudge-proof']
+  },
+  {
+    id: 'p12',
+    name: 'Stardust Liner',
+    subtitle: 'Liquid Gold',
+    price: 38.00,
+    category: 'Eyes',
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBvvf4OpObk-2g06TNfkyjkHRf5r_1NSC-eHVxuTol94WzJb-nVwWz9B0rCgCqm-XkMOL-sJ5lyEl71v9nA_B4uCIxK0k9foPp_swdxTyL2OaFWOjXXbECUmxWYO6chnlxUm6EoQCD51_Kw7DsqlWqrci6cFVi_FhNf5f5fWG1GN8PaFyNyx5xrsiefqBMYvd3uWLugTHdk1YAZQyXYxFYe9Vc64zL66DT02-lyqfrWN97iyqzOQQrzjk49tMbaqYqoZtVEFWuJGRr8',
+    description: 'A precision liner with a metallic finish. Glides on smoothly for a look that lasts all night.',
+    benefits: ['Precision tip', 'Quick drying', 'Metallic finish']
+  },
+
+  // --- Lips ---
+  {
+    id: 'p3',
+    name: 'Royal Crimson',
+    subtitle: 'Velvet Matte Finish',
+    price: 55.00,
+    category: 'Lips',
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCxKd3fMAHVgdEJGZPA28yuaUBT_w-FdH2mof-KOTJ2UIpIHq8MpEaBYnf7mbStWYNYN22brYXT0HUdkOucOm1H7QPsYYnHVWarq3oAENjIgyn2-6btamT7omUagMoSBDpfkicKM-aaQw57S6JH8QOeMObCw9KWZTYi5GOda62O0mW4XBJItfUxOoEcRmxfyCYkdOMzNhPF5pCnpXzJ5kBLhGHwPjLxKmJoLZjsryUwjxwY99JX8g_ASDS3_EH5-26GsBqeliyl13Uc',
+    description: 'A rich, velvet matte lipstick that provides intense color payoff with a hydrating, non-drying formula.',
+    benefits: ['Velvet matte finish', 'Hydrating hyaluronic acid core', 'Long-lasting color']
+  },
+  {
+    id: 'p6',
+    name: 'Velvet Midnight Red',
+    subtitle: 'Nocturnal Gold Edition',
+    price: 52.00,
+    category: 'Lips',
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCQMciaH6Yk2PYZuWhg65gh82YaNwaSMe8D0TjS_Mvo1E1wNDceSpDG7j9Fz8CsNnJ5CljFxc7qD8X-d1F9f4X6IxG8Kt9o55V9HMAtZyOQHILy6Zb10ANmVHVjFPup44xH2ydMwIHSVsBmHQTpOTJfijM9QGLX0_5q021dkyNUBWj_ptR9BLbb6ubihgybevLnFnJ1D0aKbo51Qlnb2Lw-gBQ6DFKY8zyaY8UPOaMWMH02U7NwIZfuSr0I73kOJxFZEaZUmGxj6Xxy',
+    description: 'A deep, dramatic red for the evening. Enriched with vitamin E for softness.',
+    benefits: ['Intense pigmentation', 'Creamy texture', 'Satin finish']
+  },
+  {
+    id: 'p13',
+    name: 'Nude Eclipse',
+    subtitle: 'Soft Satin',
+    price: 48.00,
+    category: 'Lips',
+    isNew: true,
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCxKd3fMAHVgdEJGZPA28yuaUBT_w-FdH2mof-KOTJ2UIpIHq8MpEaBYnf7mbStWYNYN22brYXT0HUdkOucOm1H7QPsYYnHVWarq3oAENjIgyn2-6btamT7omUagMoSBDpfkicKM-aaQw57S6JH8QOeMObCw9KWZTYi5GOda62O0mW4XBJItfUxOoEcRmxfyCYkdOMzNhPF5pCnpXzJ5kBLhGHwPjLxKmJoLZjsryUwjxwY99JX8g_ASDS3_EH5-26GsBqeliyl13Uc',
+    description: 'The perfect barely-there shade for everyday elegance. Moisturizing and light.',
+    benefits: ['Sheer buildable coverage', 'Jojoba oil infusion', 'Natural sheen']
+  },
+  {
+    id: 'p14',
+    name: 'Gilded Rose Gloss',
+    subtitle: 'High Shine',
+    price: 42.00,
+    category: 'Lips',
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCQMciaH6Yk2PYZuWhg65gh82YaNwaSMe8D0TjS_Mvo1E1wNDceSpDG7j9Fz8CsNnJ5CljFxc7qD8X-d1F9f4X6IxG8Kt9o55V9HMAtZyOQHILy6Zb10ANmVHVjFPup44xH2ydMwIHSVsBmHQTpOTJfijM9QGLX0_5q021dkyNUBWj_ptR9BLbb6ubihgybevLnFnJ1D0aKbo51Qlnb2Lw-gBQ6DFKY8zyaY8UPOaMWMH02U7NwIZfuSr0I73kOJxFZEaZUmGxj6Xxy',
+    description: 'A non-sticky gloss with suspended gold particles for a plumping, radiant effect.',
+    benefits: ['Plumping effect', 'Glass-like shine', 'Vanilla bean scent']
+  },
+
+  // --- Fragrance ---
+  {
+    id: 'p7',
+    name: 'Obsidian Nights EDP',
+    subtitle: 'Eau De Parfum',
+    price: 185.00,
+    category: 'Fragrance',
+    volume: '100ml',
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCpU5KRHvB5mWAWcWKFErokaUJQlCxZFbPI-Pq0T8eX90w0QesKT_hy0o5K9eXdBGnyfbKu04NcMN1kg0_Nncl2neBrFqml39f_g7xt25OFe5Aix73g3sJY-Ra9VYDsji45JPFrvAOg-bhciGKUq_PKsD3lgcODfQyEVE_3-XDPqnW8WpfyW-3AxeRM7IskiDpf9om3omSbkS8Nk-hyymGCgsbkl-_7V1INUcWmmnchBr6-BP1BRL1dLe08YFA-h6TUZQ-3hwsGPnvW',
+    description: 'A mysterious blend of black orchid, oud wood, and truffle. For those who own the night.',
+    benefits: ['Long lasting scent', 'Unique artisanal blend', 'Hand-polished bottle']
+  },
+  {
+    id: 'p15',
+    name: 'Amber Drift',
+    subtitle: 'Parfum Intense',
+    price: 210.00,
+    category: 'Fragrance',
+    volume: '75ml',
+    isLimited: true,
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCpU5KRHvB5mWAWcWKFErokaUJQlCxZFbPI-Pq0T8eX90w0QesKT_hy0o5K9eXdBGnyfbKu04NcMN1kg0_Nncl2neBrFqml39f_g7xt25OFe5Aix73g3sJY-Ra9VYDsji45JPFrvAOg-bhciGKUq_PKsD3lgcODfQyEVE_3-XDPqnW8WpfyW-3AxeRM7IskiDpf9om3omSbkS8Nk-hyymGCgsbkl-_7V1INUcWmmnchBr6-BP1BRL1dLe08YFA-h6TUZQ-3hwsGPnvW',
+    description: 'Warm, spicy, and inviting. Notes of tobacco leaf, vanilla, and ginger.',
+    benefits: ['Spicy & Warm profile', 'High concentration oil', 'Unisex appeal']
+  },
+  {
+    id: 'p16',
+    name: 'Jasmine Noir',
+    subtitle: 'Eau de Toilette',
+    price: 145.00,
+    category: 'Fragrance',
+    volume: '50ml',
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCpU5KRHvB5mWAWcWKFErokaUJQlCxZFbPI-Pq0T8eX90w0QesKT_hy0o5K9eXdBGnyfbKu04NcMN1kg0_Nncl2neBrFqml39f_g7xt25OFe5Aix73g3sJY-Ra9VYDsji45JPFrvAOg-bhciGKUq_PKsD3lgcODfQyEVE_3-XDPqnW8WpfyW-3AxeRM7IskiDpf9om3omSbkS8Nk-hyymGCgsbkl-_7V1INUcWmmnchBr6-BP1BRL1dLe08YFA-h6TUZQ-3hwsGPnvW',
+    description: 'A floral explosion of Jasmine sambac and almond, offset by licorice and gardenia.',
+    benefits: ['Floral & Woody', 'Day to night wear', 'Signature collection']
+  },
+
+  // --- Face ---
+  {
+    id: 'p8',
+    name: 'Gilded Sculpting Palette',
+    subtitle: 'Limited Holiday Edition',
+    price: 120.00,
+    category: 'Face',
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBg81AYRFd70aE9s5DHjIXkVCedB0AHR1GTIgQzIVxv8J6wj0GCPHljbRYwsRBSRcBgvJ0weOiQajDPmD_4NbN8QZa4YfvlwJ3ictqeFePn4aDoFMLph5fNTD_CA4kVCefaNbQzZPshKK2GTVCxNRbEvOX-oaLiQ2QbprmdoCi2CqwbiQrHdjNnILeKoELlYloby_4sMmbH8fSMpbcEVYFXv3nXtFRWIQpw0N4eFrTs7lYPjOwbQt9erN3dT-rrYr7NKNJC9N9WqvNS',
+    description: 'Sculpt and define with this trio of bronzer, blush, and highlighter. Infused with real gold powder.',
+    benefits: ['Micro-milled powder', 'Buildable coverage', 'Radiant finish']
+  },
+  {
+    id: 'p17',
+    name: 'Luminous Primer',
+    subtitle: 'Base Perfector',
+    price: 75.00,
+    category: 'Face',
+    volume: '30ml',
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBvvf4OpObk-2g06TNfkyjkHRf5r_1NSC-eHVxuTol94WzJb-nVwWz9B0rCgCqm-XkMOL-sJ5lyEl71v9nA_B4uCIxK0k9foPp_swdxTyL2OaFWOjXXbECUmxWYO6chnlxUm6EoQCD51_Kw7DsqlWqrci6cFVi_FhNf5f5fWG1GN8PaFyNyx5xrsiefqBMYvd3uWLugTHdk1YAZQyXYxFYe9Vc64zL66DT02-lyqfrWN97iyqzOQQrzjk49tMbaqYqoZtVEFWuJGRr8',
+    description: 'Create a flawless canvas. This primer blurs pores and adds a subtle backlit glow to the skin.',
+    benefits: ['Pore blurring', 'Extends makeup wear', 'Hydrating formula']
+  },
+  {
+    id: 'p18',
+    name: 'Gold Dust Setting Spray',
+    subtitle: '24hr Lock',
+    price: 65.00,
+    category: 'Face',
+    volume: '100ml',
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDh5j0VzGA7VPoijLdslu08SmsYEIOA5d0GF5cj_F2t1aC8P-4y-Rp8xs6sLteCXdBHKLKbjxovAJcHrSKQIo5_XMkb_dEnCHclcInbHHcaxdGi7G4cr6lyMVVOZJ57Hii1j-qX_fe6y-79iOaOW_sa18S0RfkwQOlVMVVzQ_RNVm7roQQ6hsE3tGejcHL9Lz4b1Pymc2a4Y6NgcHFkEIkqfu0bkKh2MMXbeQQC3iFeDWDmaV3AdSFAwQXI3P4XGHc60ohCb0AtQkl4',
+    description: 'Lock in your look with a fine mist that contains micro-particles of light-reflecting gold.',
+    benefits: ['Alcohol-free', 'Radiant finish', 'Anti-pollution barrier']
+  },
+  {
+    id: 'p19',
+    name: 'Velvet Foundation Stick',
+    subtitle: 'Full Coverage',
+    price: 88.00,
+    category: 'Face',
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCxKd3fMAHVgdEJGZPA28yuaUBT_w-FdH2mof-KOTJ2UIpIHq8MpEaBYnf7mbStWYNYN22brYXT0HUdkOucOm1H7QPsYYnHVWarq3oAENjIgyn2-6btamT7omUagMoSBDpfkicKM-aaQw57S6JH8QOeMObCw9KWZTYi5GOda62O0mW4XBJItfUxOoEcRmxfyCYkdOMzNhPF5pCnpXzJ5kBLhGHwPjLxKmJoLZjsryUwjxwY99JX8g_ASDS3_EH5-26GsBqeliyl13Uc',
+    description: 'A creamy foundation stick that melts into the skin for a seamless, velvet finish.',
+    benefits: ['Medium to full coverage', 'Travel friendly', 'Skin-like texture']
+  },
+  
+  // --- More Skincare ---
+  {
+    id: 'p20',
+    name: 'Obsidian Detox Mask',
+    subtitle: 'Purifying Clay',
+    price: 95.00,
+    category: 'Skincare',
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBg81AYRFd70aE9s5DHjIXkVCedB0AHR1GTIgQzIVxv8J6wj0GCPHljbRYwsRBSRcBgvJ0weOiQajDPmD_4NbN8QZa4YfvlwJ3ictqeFePn4aDoFMLph5fNTD_CA4kVCefaNbQzZPshKK2GTVCxNRbEvOX-oaLiQ2QbprmdoCi2CqwbiQrHdjNnILeKoELlYloby_4sMmbH8fSMpbcEVYFXv3nXtFRWIQpw0N4eFrTs7lYPjOwbQt9erN3dT-rrYr7NKNJC9N9WqvNS',
+    description: 'Draw out impurities with black volcanic clay and activated charcoal. Refines pores instantly.',
+    benefits: ['Deep cleansing', 'Minimizes pores', 'Balances oil']
+  },
+  {
+    id: 'p21',
+    name: 'Peptide Eye Complex',
+    subtitle: 'Advanced Repair',
+    price: 165.00,
+    category: 'Skincare',
+    volume: '15ml',
+    isNew: true,
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDO-TegXPFf4kHFvi24UgBQgo2XCE9uOHJCZhk9eB3rd61OIJjjB5wrexlzG-a4I1Hu5872RUjB5Z20_9sK1k9baXYyIYUGorV13QOge67yy7Qg3X4OK5CVcMJpwOD4CYWCvul50RxFpfT_OBfY0_3io2FIjUr8L418rPVhYT_5iWGNCdygds9Sahi7vUWdkF7OcZ0ylEZeIZ1-APlwPs14ExF234cutOyoxGVbzPAKHKySyUwmhtTzZB0wpzJ4zYmpUhn9Ri6uDDGj',
+    description: 'Target crow\'s feet and dark circles with this potent peptide blend.',
+    benefits: ['Reduces dark circles', 'De-puffs', 'Smoothes fine lines']
+  },
+  {
+    id: 'p22',
+    name: 'Golden Cleansing Balm',
+    subtitle: 'Melt-Away Formula',
+    price: 78.00,
+    category: 'Skincare',
+    volume: '100g',
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBg81AYRFd70aE9s5DHjIXkVCedB0AHR1GTIgQzIVxv8J6wj0GCPHljbRYwsRBSRcBgvJ0weOiQajDPmD_4NbN8QZa4YfvlwJ3ictqeFePn4aDoFMLph5fNTD_CA4kVCefaNbQzZPshKK2GTVCxNRbEvOX-oaLiQ2QbprmdoCi2CqwbiQrHdjNnILeKoELlYloby_4sMmbH8fSMpbcEVYFXv3nXtFRWIQpw0N4eFrTs7lYPjOwbQt9erN3dT-rrYr7NKNJC9N9WqvNS',
+    description: 'Dissolve waterproof makeup and impurities with this luxurious balm that transforms into a milk.',
+    benefits: ['Removes waterproof makeup', 'Nourishing oils', 'Rinses clean']
+  },
+  {
+    id: 'p23',
+    name: 'Neck & Décolleté Cream',
+    subtitle: 'Firming Specialist',
+    price: 135.00,
+    category: 'Skincare',
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDO-TegXPFf4kHFvi24UgBQgo2XCE9uOHJCZhk9eB3rd61OIJjjB5wrexlzG-a4I1Hu5872RUjB5Z20_9sK1k9baXYyIYUGorV13QOge67yy7Qg3X4OK5CVcMJpwOD4CYWCvul50RxFpfT_OBfY0_3io2FIjUr8L418rPVhYT_5iWGNCdygds9Sahi7vUWdkF7OcZ0ylEZeIZ1-APlwPs14ExF234cutOyoxGVbzPAKHKySyUwmhtTzZB0wpzJ4zYmpUhn9Ri6uDDGj',
+    description: 'Specifically designed for the delicate neck area to improve elasticity and firmness.',
+    benefits: ['Sculpting effect', 'Even skin tone', 'Intense moisture']
+  },
+  {
+    id: 'p24',
+    name: 'Lip Repair Mask',
+    subtitle: 'Overnight Treatment',
+    price: 45.00,
+    category: 'Skincare',
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCQMciaH6Yk2PYZuWhg65gh82YaNwaSMe8D0TjS_Mvo1E1wNDceSpDG7j9Fz8CsNnJ5CljFxc7qD8X-d1F9f4X6IxG8Kt9o55V9HMAtZyOQHILy6Zb10ANmVHVjFPup44xH2ydMwIHSVsBmHQTpOTJfijM9QGLX0_5q021dkyNUBWj_ptR9BLbb6ubihgybevLnFnJ1D0aKbo51Qlnb2Lw-gBQ6DFKY8zyaY8UPOaMWMH02U7NwIZfuSr0I73kOJxFZEaZUmGxj6Xxy',
+    description: 'Wake up to softer, fuller lips. A thick, nourishing mask infused with shea butter and gold.',
+    benefits: ['Heals dry lips', 'Softens texture', 'Subtle rose scent']
+  }
+];
+
+export const CATEGORIES: Category[] = [
+  { id: 'c1', name: 'Lips', image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAGNeQjCnai-xS1LvHhCJBZd0gelqGseeSsWoBlQBVDPlMe1t7g9AfcGTeyAC7AG9lBWFenE8uNXDrL7mggusu1eVMsPUQEjiLPoNue95S2f0zlyNk-hH5epLLw_CSt4FtcWWpnJQh_uyYHGstadw9KnOELP12XkHUVckTIzuwNs6dXxZNfpbRpl1n6IeAoiBLHpo3jIZAz3CPpAPN0M_QklLbtsmBVmFI0DwBqQTNTL32do7UEj0xSQjaRIL-IKCat7dEEiKPp55YG' },
+  { id: 'c2', name: 'Eyes', image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAW2hZD61iV3ZzPip9ISpBY8KILzi2IqNnfTmCDJJg7L2wo6gs_bV7LEvv4mSmxwfWtAfYMc-fAf7P9NcGGMy7mKGvXbzjgJqjIKut8E5JcfSNk4h37k8WgA1m-bcEcWkIIpdBd3Jj57GHeM-G204umyji4Pzd8gailbBn7wml3NeFLq5pRkpYuEHJJgKDoiyp5Oeeo4MyJA4FJ_0aBAS1kblBaJ9Y80HYT88QVCEH-pdXlqFoYnnVKpAk0Iq7u1RHu6GtqJfOsV8C1' },
+  { id: 'c3', name: 'Skincare', image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCHFjpj-bSG7czvXB2WmeCK8niUy_4Bu00hWbWBjgBW-Igvl7_FjytsODEDTR5ZdT0NQSWo8-jDPfCldixnbIvE2IU8hd0lxb7grm2RxOALGiY6mg_Pube3eAT3uOeS9OikxPHnzR9FIg2eOS-bXCbPWGV0iCrrPhje0wv4gZceu7_pjbccn4a8fa9Usew0Ge-DQDKSiFdVp3k1O8pfabozfdyC9rvB6eDXYIXtN33kTy7Vp1sp1OVZsniag-OQx12DSO4CLxuwe6b0' },
+  { id: 'c4', name: 'Fragrance', image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD_ClGoCPEGWaIB4aUjwp8ehndNZfamfjbcs4VCGuQGXMY5p1He7KsZQ5oAvGDoUW7fznOzeC8IYiH-2pUcY210w9nespDLACv0vTZqz28NfrLTeYC4qc9eFw83mAcVtxnvYqtN5DKl7g0fu9eAUeYy6hQ-sRFIGypaT7vai8WWNv4IvcAkrXACgczryWoEss-mHxkSctB_cvgZlluNf3hMFAXCHt655cKnXft5o2oTZf4ZGzbJQnE8XhXT7seKwOnQ7mist9dmDmf1' },
+  { id: 'c5', name: 'Face', image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAifj8q0q4PMvGSPgLJDKdHIJMSgF2Wvr5p4zLqUxYEdaMLc_UHNDv_kfhwZxjTujeeMdOaCx80bTvZjuAAzLFTlayAlWPicEAqicLrcq5MvHA72fzCGbqto6E7ubmu7OOhyzVUSTzB5kh1g2KBR4jJKXGnulPQxY81fTSMYFKHCu3aoYj-D695uwNmtuH40cZTIUs_IHWT5m2M9IFJeQ_9CEh4sVi4_gV-2pbQX1lvJ9WYqtuVUrOHY8WTPM8lGYYQJU6jrZF6cMRH' }
+];
