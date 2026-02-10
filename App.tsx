@@ -137,6 +137,7 @@ function App() {
         product={selectedProduct} 
         onClose={() => setSelectedProduct(null)} 
         onAddToCart={addToCart}
+        onProductClick={setSelectedProduct}
       />
 
       <CartDrawer 

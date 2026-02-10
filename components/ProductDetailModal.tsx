@@ -1,13 +1,15 @@
 import React from 'react';
 import { Product } from '../types';
+import { PRODUCTS } from '../constants';
 
 interface ProductDetailModalProps {
   product: Product | null;
   onClose: () => void;
   onAddToCart: (product: Product, quantity: number) => void;
+  onProductClick: (product: Product) => void;
 }
 
-const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, onClose, onAddToCart }) => {
+const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, onClose, onAddToCart, onProductClick }) => {
   const [quantity, setQuantity] = React.useState(1);
   const [isClosing, setIsClosing] = React.useState(false);
   const [dragY, setDragY] = React.useState(0);
@@ -15,6 +17,7 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, onClos
   
   const contentRef = React.useRef<HTMLDivElement>(null);
   const touchStartRef = React.useRef<number | null>(null);
+  const touchStartXRef = React.useRef<number | null>(null);
 
   React.useEffect(() => {
     if (product) {
@@ -22,10 +25,20 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, onClos
       setIsClosing(false);
       setDragY(0);
       document.body.style.overflow = 'hidden';
+      // Reset scroll position when product changes
+      if (contentRef.current) {
+          contentRef.current.scrollTop = 0;
+      }
     } else {
       document.body.style.overflow = '';
     }
     return () => { document.body.style.overflow = ''; };
+  }, [product]);
+
+  // Related products logic
+  const relatedProducts = React.useMemo(() => {
+    if (!product) return [];
+    return PRODUCTS.filter(p => p.category === product.category && p.id !== product.id).slice(0, 5);
   }, [product]);
 
   const handleClose = () => {
@@ -42,20 +55,30 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, onClos
 
   // Touch handlers for swipe-to-dismiss
   const handleTouchStart = (e: React.TouchEvent) => {
+    // Only allow drag if we are at the top of the scroll container
     if (contentRef.current && contentRef.current.scrollTop <= 0) {
         touchStartRef.current = e.touches[0].clientY;
+        touchStartXRef.current = e.touches[0].clientX;
         setIsDragging(true);
     }
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
-    if (touchStartRef.current === null) return;
+    if (touchStartRef.current === null || touchStartXRef.current === null) return;
     
     const currentY = e.touches[0].clientY;
-    const diff = currentY - touchStartRef.current;
+    const currentX = e.touches[0].clientX;
+    const diffY = currentY - touchStartRef.current;
+    const diffX = currentX - touchStartXRef.current;
 
-    if (diff > 0) {
-        setDragY(diff);
+    // If scrolling horizontally (e.g. in the carousel), ignore vertical drag to prevent accidental close
+    if (Math.abs(diffX) > Math.abs(diffY)) {
+        setDragY(0);
+        return;
+    }
+
+    if (diffY > 0) {
+        setDragY(diffY);
     }
   };
 
@@ -64,6 +87,7 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, onClos
     
     setIsDragging(false);
     touchStartRef.current = null;
+    touchStartXRef.current = null;
 
     if (dragY > 150) { 
         handleClose();
@@ -122,13 +146,14 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, onClos
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
         >
-            <div className="grid grid-cols-1 md:grid-cols-2 h-full">
+            <div className="grid grid-cols-1 md:grid-cols-2 min-h-full">
                 {/* Image Section */}
-                <div className="relative h-[45vh] md:h-full bg-black shrink-0 overflow-hidden group">
+                <div className="relative h-[45vh] md:h-auto bg-black shrink-0 overflow-hidden group">
                     <img 
+                        key={product.id + '-img'} 
                         src={product.image} 
                         alt={product.name} 
-                        className="w-full h-full object-cover opacity-90 select-none scale-105 group-hover:scale-110 transition-transform duration-[3s] ease-out" 
+                        className="w-full h-full object-cover opacity-90 select-none scale-105 group-hover:scale-110 transition-transform duration-[3s] ease-out animate-fade-in" 
                         draggable={false}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-background-card to-transparent md:hidden"></div>
@@ -142,7 +167,7 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, onClos
                          backgroundSize: 'cover'
                      }}></div>
 
-                    <div className="relative z-10 animate-slide-up opacity-0" style={{ animationDelay: '0.1s' }}>
+                    <div key={product.id} className="relative z-10 animate-slide-up opacity-0" style={{ animationDelay: '0.1s' }}>
                         <div className="mb-2">
                             <span className="text-primary text-[10px] tracking-[0.3em] uppercase font-bold">{product.subtitle}</span>
                         </div>
@@ -182,6 +207,31 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, onClos
                                 <span className="material-icons text-primary text-sm transform group-hover:rotate-45 transition-transform duration-300">add</span>
                             </button>
                         </div>
+
+                        {/* Related Products Carousel */}
+                        {relatedProducts.length > 0 && (
+                            <div className="mt-12 border-t border-white/10 pt-8 mb-4">
+                                <h3 className="text-lg font-serif mb-6 text-white/90">Complete the <span className="text-primary italic">Ritual</span></h3>
+                                <div className="flex gap-4 overflow-x-auto hide-scrollbar pb-4 -mx-8 px-8 md:mx-0 md:px-0">
+                                    {relatedProducts.map(rp => (
+                                        <div 
+                                            key={rp.id} 
+                                            className="w-32 shrink-0 cursor-pointer group flex flex-col"
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                onProductClick(rp);
+                                            }}
+                                        >
+                                            <div className="aspect-[4/5] rounded bg-white/5 overflow-hidden mb-3 relative border border-white/5 group-hover:border-primary/30 transition-colors">
+                                                <img src={rp.image} alt={rp.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 opacity-80 group-hover:opacity-100" />
+                                            </div>
+                                            <h4 className="text-xs font-bold text-white/80 truncate group-hover:text-primary transition-colors">{rp.name}</h4>
+                                            <p className="text-[10px] text-white/40 mt-1">${rp.price.toFixed(2)}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

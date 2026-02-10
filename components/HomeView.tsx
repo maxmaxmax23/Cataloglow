@@ -9,6 +9,8 @@ interface HomeViewProps {
 }
 
 const HomeView: React.FC<HomeViewProps> = ({ onProductClick, onChangeView }) => {
+  const newArrivals = PRODUCTS.filter(p => p.isNew).slice(0, 4);
+
   return (
     <div className="pb-32">
       {/* Hero Section */}
@@ -110,6 +112,48 @@ const HomeView: React.FC<HomeViewProps> = ({ onProductClick, onChangeView }) => 
                             <h3 className="text-lg font-serif mb-1 group-hover:text-primary transition-colors duration-300">{product.name}</h3>
                             <p className="text-white/40 text-xs uppercase tracking-wider mb-2">{product.category}</p>
                             <p className="text-primary font-bold transition-transform duration-300 group-hover:translate-x-1">${product.price.toFixed(2)}</p>
+                        </div>
+                    </div>
+                </RevealOnScroll>
+            ))}
+        </div>
+      </section>
+
+      {/* New Arrivals Section */}
+      <section className="px-6 py-12 border-t border-white/5 relative">
+        <div className="absolute inset-0 bg-gradient-to-b from-white/2 to-transparent pointer-events-none"></div>
+        
+        <RevealOnScroll>
+            <div className="flex justify-between items-end mb-8 relative z-10">
+                <h2 className="text-2xl font-serif">Just <span className="italic text-primary">Arrived</span></h2>
+                <button onClick={() => onChangeView('SHOP')} className="text-[10px] font-bold uppercase tracking-widest text-primary border-b border-primary/30 pb-1 hover:border-primary transition-colors">View All</button>
+            </div>
+        </RevealOnScroll>
+        
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-5 gap-y-10 relative z-10">
+            {newArrivals.map((product, idx) => (
+                <RevealOnScroll key={product.id} delay={idx * 0.1}>
+                    <div 
+                        className="group cursor-pointer" 
+                        onClick={() => onProductClick(product)}
+                    >
+                        <div className="relative aspect-[4/5] rounded-xl overflow-hidden mb-4 bg-background-card border border-white/5 group-hover:border-primary/30 transition-all duration-500">
+                             {/* Badge */}
+                            <div className="absolute top-2 left-2 bg-primary text-black text-[8px] font-bold px-2 py-1 rounded uppercase tracking-wider z-10 shadow-md">New Arrival</div>
+                            
+                            <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 ease-out opacity-90 group-hover:opacity-100" />
+                            
+                            {/* Hover Overlay */}
+                            <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-3">
+                                <button className="w-full bg-white/10 backdrop-blur-md text-white py-2 rounded border border-white/20 font-bold uppercase text-[8px] tracking-[0.2em] hover:bg-primary hover:text-black hover:border-primary transition-all duration-300 transform translate-y-4 group-hover:translate-y-0">
+                                    Discover
+                                </button>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 className="text-sm font-serif font-bold text-white/90 mb-1 leading-tight group-hover:text-primary transition-colors">{product.name}</h3>
+                            <p className="text-[9px] uppercase tracking-widest text-white/40 mb-1">{product.category}</p>
+                            <p className="text-primary font-bold text-sm">${product.price.toFixed(2)}</p>
                         </div>
                     </div>
                 </RevealOnScroll>
