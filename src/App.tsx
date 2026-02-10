@@ -94,7 +94,7 @@ function App() {
   // Basic luxury loader if still fetching data after splash
   if (loadingProducts) {
       return (
-        <div className="fixed inset-0 bg-background-dark flex items-center justify-center">
+        <div className="fixed inset-0 bg-black flex items-center justify-center">
             <div className="flex flex-col items-center gap-4">
                 <div className="w-12 h-12 border border-primary/20 border-t-primary rounded-full animate-spin"></div>
                 <span className="text-[10px] tracking-[0.3em] uppercase text-primary animate-pulse">Syncing Inventory</span>
