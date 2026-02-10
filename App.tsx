@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SplashScreen from './components/SplashScreen';
 import { TopNav, BottomNav } from './components/Navigation';
 import HomeView from './components/HomeView';
@@ -7,6 +7,8 @@ import ProductDetailModal from './components/ProductDetailModal';
 import CartDrawer from './components/CartDrawer';
 import CheckoutForm from './components/CheckoutForm';
 import { CartItem, Product, ViewState } from './types';
+import { fetchProducts } from './services/productService';
+import { PRODUCTS as FALLBACK_PRODUCTS } from './constants'; // Keep as fallback/mock if DB fails
 
 function App() {
   const [showSplash, setShowSplash] = useState(true);
@@ -16,6 +18,27 @@ function App() {
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [animateCart, setAnimateCart] = useState(false);
+  
+  // Data State
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loadingProducts, setLoadingProducts] = useState(true);
+
+  // Fetch Data on Mount
+  useEffect(() => {
+    const loadData = async () => {
+      const fetched = await fetchProducts();
+      if (fetched.length > 0) {
+        setProducts(fetched);
+      } else {
+        // If DB is empty or fails (e.g. invalid config), use local constants for demo
+        console.warn("Using local fallback data.");
+        setProducts(FALLBACK_PRODUCTS as Product[]);
+      }
+      setLoadingProducts(false);
+    };
+
+    loadData();
+  }, []);
 
   const triggerCartAnimation = () => {
     setAnimateCart(true);
@@ -59,6 +82,18 @@ function App() {
     return <SplashScreen onComplete={() => setShowSplash(false)} />;
   }
 
+  // Basic luxury loader if still fetching data after splash
+  if (loadingProducts) {
+      return (
+        <div className="fixed inset-0 bg-background-dark flex items-center justify-center">
+            <div className="flex flex-col items-center gap-4">
+                <div className="w-12 h-12 border border-primary/20 border-t-primary rounded-full animate-spin"></div>
+                <span className="text-[10px] tracking-[0.3em] uppercase text-primary animate-pulse">Syncing Inventory</span>
+            </div>
+        </div>
+      );
+  }
+
   return (
     <div className="relative h-full w-full overflow-hidden">
       {/* Top Nav is shared and fixed */}
@@ -77,6 +112,7 @@ function App() {
             }`}
         >
             <HomeView 
+                products={products}
                 onProductClick={setSelectedProduct} 
                 onChangeView={setView}
             />
@@ -91,6 +127,7 @@ function App() {
             }`}
         >
             <ShopView 
+                products={products}
                 onProductClick={setSelectedProduct} 
                 onAddToCart={addToCart}
             />
@@ -135,6 +172,7 @@ function App() {
       {/* Modals & Drawers - Outside of main scroll area */}
       <ProductDetailModal 
         product={selectedProduct} 
+        products={products}
         onClose={() => setSelectedProduct(null)} 
         onAddToCart={addToCart}
         onProductClick={setSelectedProduct}

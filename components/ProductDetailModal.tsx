@@ -1,15 +1,15 @@
 import React from 'react';
 import { Product } from '../types';
-import { PRODUCTS } from '../constants';
 
 interface ProductDetailModalProps {
   product: Product | null;
+  products: Product[];
   onClose: () => void;
   onAddToCart: (product: Product, quantity: number) => void;
   onProductClick: (product: Product) => void;
 }
 
-const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, onClose, onAddToCart, onProductClick }) => {
+const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, products, onClose, onAddToCart, onProductClick }) => {
   const [quantity, setQuantity] = React.useState(1);
   const [isClosing, setIsClosing] = React.useState(false);
   const [dragY, setDragY] = React.useState(0);
@@ -38,8 +38,9 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, onClos
   // Related products logic
   const relatedProducts = React.useMemo(() => {
     if (!product) return [];
-    return PRODUCTS.filter(p => p.category === product.category && p.id !== product.id).slice(0, 5);
-  }, [product]);
+    // Use passed products prop instead of constant
+    return products.filter(p => p.category === product.category && p.id !== product.id).slice(0, 5);
+  }, [product, products]);
 
   const handleClose = () => {
     setIsClosing(true);
@@ -186,7 +187,7 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, onClos
                                 {product.description}
                             </p>
                             <ul className="space-y-3">
-                                {product.benefits.map((benefit, idx) => (
+                                {product.benefits && product.benefits.map((benefit, idx) => (
                                     <li key={idx} className="flex items-center gap-3 text-sm text-white/60 animate-slide-up opacity-0" style={{ animationDelay: `${0.3 + (idx * 0.1)}s` }}>
                                         <span className="material-icons text-primary text-xs">auto_awesome</span>
                                         {benefit}

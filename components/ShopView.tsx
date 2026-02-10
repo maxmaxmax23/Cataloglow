@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { PRODUCTS } from '../constants';
 import { Product } from '../types';
 import RevealOnScroll from './RevealOnScroll';
 
 interface ShopViewProps {
+  products: Product[];
   onProductClick: (product: Product) => void;
   onAddToCart: (product: Product, quantity: number) => void;
 }
 
-const ShopView: React.FC<ShopViewProps> = ({ onProductClick, onAddToCart }) => {
+const ShopView: React.FC<ShopViewProps> = ({ products, onProductClick, onAddToCart }) => {
   const [filter, setFilter] = useState('All');
   const [visibleCount, setVisibleCount] = useState(8);
   const [isLoading, setIsLoading] = useState(false);
@@ -17,8 +17,8 @@ const ShopView: React.FC<ShopViewProps> = ({ onProductClick, onAddToCart }) => {
   const filters = ['All', 'Skincare', 'Lips', 'Eyes', 'Fragrance', 'Face'];
 
   const filteredProducts = filter === 'All' 
-    ? PRODUCTS 
-    : PRODUCTS.filter(p => p.category === filter);
+    ? products 
+    : products.filter(p => p.category === filter);
 
   // Slice the products based on visibleCount
   const visibleProducts = filteredProducts.slice(0, visibleCount);
@@ -27,12 +27,12 @@ const ShopView: React.FC<ShopViewProps> = ({ onProductClick, onAddToCart }) => {
   // Recommendations Logic: Show 4 items not in current category (cross-sell) or featured if All
   const recommendations = useMemo(() => {
     const pool = filter === 'All' 
-        ? PRODUCTS.filter(p => p.isLimited || p.isNew)
-        : PRODUCTS.filter(p => p.category !== filter);
+        ? products.filter(p => p.isLimited || p.isNew)
+        : products.filter(p => p.category !== filter);
     
     // Get 4 unique items, shuffle slightly or just take first 4 for stability
     return pool.slice(0, 4);
-  }, [filter]);
+  }, [filter, products]);
 
   // Reset pagination when filter changes
   useEffect(() => {

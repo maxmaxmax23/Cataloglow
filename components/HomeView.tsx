@@ -1,15 +1,18 @@
 import React from 'react';
-import { CATEGORIES, PRODUCTS } from '../constants';
+import { CATEGORIES } from '../constants';
 import { Product, ViewState } from '../types';
 import RevealOnScroll from './RevealOnScroll';
 
 interface HomeViewProps {
+  products: Product[];
   onProductClick: (product: Product) => void;
   onChangeView: (view: ViewState) => void;
 }
 
-const HomeView: React.FC<HomeViewProps> = ({ onProductClick, onChangeView }) => {
-  const newArrivals = PRODUCTS.filter(p => p.isNew).slice(0, 4);
+const HomeView: React.FC<HomeViewProps> = ({ products, onProductClick, onChangeView }) => {
+  // Use products passed from parent (App.tsx) which comes from Firebase
+  const newArrivals = products.filter(p => p.isNew).slice(0, 4);
+  const featured = products.slice(0, 4); // Just take first 4 for featured if no specific flag
 
   return (
     <div className="pb-32">
@@ -86,7 +89,7 @@ const HomeView: React.FC<HomeViewProps> = ({ onProductClick, onChangeView }) => 
             <h2 className="text-2xl font-serif mb-8">Best of the <span className="font-bold">Season</span></h2>
         </RevealOnScroll>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-10">
-            {PRODUCTS.slice(0, 4).map((product, idx) => (
+            {featured.map((product, idx) => (
                 <RevealOnScroll key={product.id} delay={idx * 0.1}>
                     <div 
                         className="group cursor-pointer" 
