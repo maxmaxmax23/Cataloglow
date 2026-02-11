@@ -1,14 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Product } from "../types";
 import { generateDescription, listModels } from "../services/ai";
-// ... imports
-
-// ... inside Admin component ...
-
-
-// ... inside the handleSaveKey function or near it ...
 import { doc, getDoc, setDoc } from "firebase/firestore";
-import { db } from "../firebase";
+import { db, auth } from "../firebase";
+import { signInWithEmailAndPassword, signOut, onAuthStateChanged, User } from "firebase/auth";
 
 interface AdminProps {
     products: Product[]; // Passed from App.tsx (source of truth)
@@ -16,6 +11,14 @@ interface AdminProps {
 }
 
 const Admin: React.FC<AdminProps> = ({ products, onUpdateCatalog }) => {
+    const [user, setUser] = useState<User | null>(null);
+    const [isAuthChecking, setIsAuthChecking] = useState(true);
+
+    // Login State
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
+
     const [apiKey, setApiKey] = useState(
         localStorage.getItem("gemini_api_key") || ""
     );
@@ -24,6 +27,15 @@ const Admin: React.FC<AdminProps> = ({ products, onUpdateCatalog }) => {
     const [logs, setLogs] = useState<string[]>([]);
     const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
 
+    // Auth Listener
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+            setUser(currentUser);
+            setIsAuthChecking(false);
+        });
+        return () => unsubscribe();
+    }, []);
+
     // Initialize local state from props
     useEffect(() => {
         setLocalProducts(products);
@@ -31,6 +43,22 @@ const Admin: React.FC<AdminProps> = ({ products, onUpdateCatalog }) => {
 
     const addLog = (msg: string) => {
         setLogs((prev) => [msg, ...prev]);
+    };
+
+    const handleLogin = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setError("");
+        try {
+            await signInWithEmailAndPassword(auth, email, password);
+        } catch (error: any) {
+            setError("Login Failed: " + error.message);
+        }
+    };
+
+    const handleLogout = async () => {
+        await signOut(auth);
+        setEmail("");
+        setPassword("");
     };
 
     const handleSaveKey = () => {
@@ -178,11 +206,73 @@ const Admin: React.FC<AdminProps> = ({ products, onUpdateCatalog }) => {
         }
     };
 
+    if (isAuthChecking) {
+        return <div className="min-h-screen bg-black text-white flex items-center justify-center">Checking Auth...</div>;
+    }
+
+    if (!user) {
+        return (
+            <div className="min-h-screen bg-neutral-900 text-white flex flex-col items-center justify-center p-4">
+                <h1 className="text-3xl font-light mb-8 tracking-widest uppercase">Catalog Admin</h1>
+                <div className="bg-white/5 p-8 rounded-lg border border-white/10 text-center max-w-sm w-full">
+                    <p className="text-white/60 mb-8 text-sm leading-relaxed">
+                        Access is restricted to authorized administrators.
+                        <br />
+                        Please sign in with your email and password.
+                    </p>
+
+                    <form onSubmit={handleLogin} className="space-y-4">
+                        <input
+                            type="email"
+                            placeholder="Email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            className="w-full bg-black/50 border border-white/20 p-3 rounded text-sm focus:border-primary outline-none transition-colors text-white"
+                            required
+                        />
+                        <input
+                            type="password"
+                            placeholder="Password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            className="w-full bg-black/50 border border-white/20 p-3 rounded text-sm focus:border-primary outline-none transition-colors text-white"
+                            required
+                        />
+
+                        {error && <p className="text-red-400 text-xs">{error}</p>}
+
+                        <button
+                            type="submit"
+                            className="w-full py-3 bg-white text-black hover:bg-gray-200 rounded font-medium transition-colors"
+                        >
+                            Log In
+                        </button>
+                    </form>
+
+                    <p className="mt-6 text-[10px] text-white/20">
+                        Secure Authentication by Firebase
+                    </p>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className="p-8 pb-32 min-h-screen bg-neutral-900 text-white font-sans">
-            <h1 className="text-3xl font-light mb-8 tracking-widest uppercase border-b border-white/10 pb-4">
-                Catalog Admin
-            </h1>
+            <div className="flex justify-between items-center mb-8 border-b border-white/10 pb-4">
+                <h1 className="text-3xl font-light tracking-widest uppercase">
+                    Catalog Admin
+                </h1>
+                <div className="flex items-center gap-4">
+                    <span className="text-xs text-white/40 hidden md:inline">Logged in as {user.email}</span>
+                    <button
+                        onClick={handleLogout}
+                        className="text-xs text-red-400 hover:text-red-300 underline"
+                    >
+                        Logout
+                    </button>
+                </div>
+            </div>
 
             {/* API Key Section */}
             <div className="mb-8 bg-white/5 p-6 rounded-lg border border-white/10">
