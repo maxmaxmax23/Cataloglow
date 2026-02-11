@@ -13,6 +13,7 @@ import { fetchCatalog } from './services/catalog';
 
 // Keep as fallback/mock if DB fails or is empty
 import { PRODUCTS as FALLBACK_PRODUCTS } from '../constants';
+import Admin from './pages/Admin';
 
 function App() {
   const [showSplash, setShowSplash] = useState(true);
@@ -168,6 +169,15 @@ function App() {
             <span className="material-icons text-6xl mb-4 text-primary/20 animate-float">person_outline</span>
             <p className="uppercase tracking-[0.2em] text-sm">Sign In to AURA</p>
           </div>
+        </div>
+
+        {/* Admin View */}
+        <div
+          className={`absolute inset-0 overflow-y-auto hide-scrollbar transition-opacity duration-500 ease-in-out ${view === 'ADMIN' ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'}`}
+        >
+          <Admin products={products} onUpdateCatalog={setProducts} />
+          {/* Spacer for bottom nav */}
+          <div className="h-24"></div>
         </div>
 
       </main>

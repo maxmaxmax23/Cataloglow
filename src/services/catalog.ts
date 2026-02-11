@@ -38,7 +38,8 @@ export const fetchCatalog = async (): Promise<Product[]> => {
         productId: item.productId || item.id, // Fallback to ID if SKU missing
 
         // Core Info
-        name: item.name || "Untitled Product",
+        // Core Info
+        name: item.description || item.name || "Untitled Product", // Mapped description to Title per user request
         description: item.description || "No description available.",
         provider: item.provider || "AURA",
         category: item.category || "General",

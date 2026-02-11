@@ -59,7 +59,7 @@ export interface Category {
 }
 
 // 4. App State Types
-export type ViewState = 'SPLASH' | 'HOME' | 'SHOP' | 'SAVED' | 'PROFILE';
+export type ViewState = 'SPLASH' | 'HOME' | 'SHOP' | 'SAVED' | 'PROFILE' | 'ADMIN' | 'LOGIN' | 'REGISTER';
 
 // 5. Manifest Protocol (The data shape coming from GLOWAPP)
 export interface CatalogManifest {
