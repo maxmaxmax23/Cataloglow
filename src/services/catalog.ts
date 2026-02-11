@@ -1,6 +1,6 @@
 // src/services/catalog.ts
 import { doc, getDoc } from "firebase/firestore";
-import { db } from "../firebase"; // Ensure this matches your firebase config path
+import { db } from "../firebase"; // Verify this path matches your project
 import { Product, CatalogManifest } from "../types";
 
 const CACHE_KEY = "catalog_cache";
@@ -29,20 +29,56 @@ export const fetchCatalog = async (): Promise<Product[]> => {
 
     if (snapshot.exists()) {
       const data = snapshot.data() as CatalogManifest;
-      const items = data.items || [];
+      const rawItems = data.items || [];
 
-      // 3. Save to Cache
-      localStorage.setItem(CACHE_KEY, JSON.stringify(items));
+      // 3. THE ADAPTER: Map GLOWAPP format -> Site UI format
+      const mappedProducts: Product[] = rawItems.map((item: any) => ({
+        // Identity
+        id: item.id,
+        productId: item.productId || item.id, // Fallback to ID if SKU missing
+
+        // Core Info
+        name: item.name || "Untitled Product",
+        description: item.description || "No description available.",
+        provider: item.provider || "AURA",
+        category: item.category || "General",
+
+        // UI Helpers
+        subtitle: item.category || "Luxury Collection", // UI needs a subtitle
+
+        // Financials
+        price: Number(item.price) || 0,
+        cost: 0, // Hidden from public
+        taxRate: 0.21,
+
+        // Stock
+        currentInventory: item.inStock ? 100 : 0, // Boolean to number
+        minStockLevel: 5,
+
+        // *** CRITICAL MAPPING ***
+        // GLOWAPP sends 'photoURL', Site expects 'image'
+        image: item.photoURL || item.image || "https://via.placeholder.com/400x400?text=No+Image",
+
+        // Defaults for UI safety
+        volume: item.volume || "Standard",
+        benefits: item.benefits || ["Authentic Product", "Premium Quality"],
+        barcodes: item.barcodes || [],
+        variants: null,
+        isNew: true
+      }));
+
+      // 4. Save mapped data to Cache
+      localStorage.setItem(CACHE_KEY, JSON.stringify(mappedProducts));
       localStorage.setItem(TIMESTAMP_KEY, now.toString());
 
-      return items;
+      return mappedProducts;
     } else {
       console.warn("No catalog manifest found. Did you sync from GLOWAPP?");
       return [];
     }
   } catch (error) {
     console.error("Error fetching catalog:", error);
-    // Fallback: Return cached data even if expired, better than crashing
+    // Fallback: Return cached data even if expired
     if (cachedData) return JSON.parse(cachedData);
     return [];
   }
