@@ -1,5 +1,5 @@
 import React from 'react';
-import { ViewState } from '../types';
+import { ViewState } from '../src/types';
 
 interface TopNavProps {
   onCartClick: () => void;
@@ -26,7 +26,7 @@ export const TopNav: React.FC<TopNavProps> = ({ onCartClick, cartCount, animateC
           <button className="p-2 hover:bg-white/5 rounded-full transition-colors hover:text-primary">
             <span className="material-icons text-xl">search</span>
           </button>
-          <button 
+          <button
             className={`p-2 hover:bg-white/5 rounded-full transition-all duration-300 relative ${animateCart ? 'scale-125 text-primary' : 'hover:text-primary'}`}
             onClick={onCartClick}
           >
@@ -36,7 +36,7 @@ export const TopNav: React.FC<TopNavProps> = ({ onCartClick, cartCount, animateC
             </span>
           </button>
           <button className="hidden md:flex p-2 hover:bg-white/5 rounded-full transition-colors hover:text-primary">
-             <span className="material-icons text-xl">person_outline</span>
+            <span className="material-icons text-xl">person_outline</span>
           </button>
         </div>
       </div>
@@ -61,30 +61,30 @@ export const BottomNav: React.FC<BottomNavProps> = ({ currentView, onChangeView 
     <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 w-[90%] max-w-md">
       <div className="glass-panel rounded-full px-2 py-2 flex justify-between items-center shadow-2xl shadow-black/50 relative">
         {navItems.map((item) => {
-            const isActive = currentView === item.id;
-            return (
-                <button 
-                    key={item.id}
-                    onClick={() => onChangeView(item.id as ViewState)}
-                    className={`flex-1 flex flex-col items-center justify-center gap-1 transition-all duration-500 rounded-full h-16 relative z-10 ${isActive ? 'text-black' : 'text-white/40 hover:text-white/70'}`}
-                >
-                    <span className="material-icons-outlined text-2xl relative">
-                        {item.icon}
-                        {isActive && <span className="absolute inset-0 animate-ping opacity-20 bg-white rounded-full"></span>}
-                    </span>
-                    <span className={`text-[9px] font-bold tracking-widest uppercase transition-all duration-300 ${isActive ? 'scale-100 opacity-100' : 'scale-0 opacity-0 h-0'}`}>{item.label}</span>
-                </button>
-            )
+          const isActive = currentView === item.id;
+          return (
+            <button
+              key={item.id}
+              onClick={() => onChangeView(item.id as ViewState)}
+              className={`flex-1 flex flex-col items-center justify-center gap-1 transition-all duration-500 rounded-full h-16 relative z-10 ${isActive ? 'text-black' : 'text-white/40 hover:text-white/70'}`}
+            >
+              <span className="material-icons-outlined text-2xl relative">
+                {item.icon}
+                {isActive && <span className="absolute inset-0 animate-ping opacity-20 bg-white rounded-full"></span>}
+              </span>
+              <span className={`text-[9px] font-bold tracking-widest uppercase transition-all duration-300 ${isActive ? 'scale-100 opacity-100' : 'scale-0 opacity-0 h-0'}`}>{item.label}</span>
+            </button>
+          )
         })}
-        
+
         {/* Animated Background Pill */}
-        <div 
-            className="absolute top-2 bottom-2 bg-primary rounded-full -z-0 transition-all duration-500 ease-in-out shadow-[0_0_15px_rgba(242,185,13,0.4)]"
-            style={{
-                width: 'calc(25% - 4px)', // 4 items, minus padding
-                left: `${navItems.findIndex(i => i.id === currentView) * 25}%`,
-                transform: 'translateX(2px)' // adjust for padding
-            }}
+        <div
+          className="absolute top-2 bottom-2 bg-primary rounded-full -z-0 transition-all duration-500 ease-in-out shadow-[0_0_15px_rgba(242,185,13,0.4)]"
+          style={{
+            width: 'calc(25% - 4px)', // 4 items, minus padding
+            left: `${navItems.findIndex(i => i.id === currentView) * 25}%`,
+            transform: 'translateX(2px)' // adjust for padding
+          }}
         ></div>
       </div>
     </div>

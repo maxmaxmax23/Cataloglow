@@ -1,4 +1,4 @@
-import { Product } from '../types';
+import { Product } from '../src/types';
 import { PRODUCTS as SEED_DATA } from '../constants';
 
 const STORAGE_KEY = 'aura_local_inventory_v1';
@@ -14,24 +14,24 @@ export const fetchProducts = async (): Promise<Product[]> => {
 
     // 1. Check LocalStorage (Acting as our local database)
     const storedData = localStorage.getItem(STORAGE_KEY);
-    
+
     if (storedData) {
-        try {
-            const parsedData = JSON.parse(storedData);
-            console.log("AURA: Inventory loaded from local storage.");
-            return parsedData as Product[];
-        } catch (e) {
-            console.warn("AURA: Corrupt local storage data, resetting.");
-        }
+      try {
+        const parsedData = JSON.parse(storedData);
+        console.log("AURA: Inventory loaded from local storage.");
+        return parsedData as Product[];
+      } catch (e) {
+        console.warn("AURA: Corrupt local storage data, resetting.");
+      }
     }
 
     // 2. If no data exists, simulate reading from a "JSON file" (our constants)
     // and seed the local storage.
     console.log("AURA: Initializing local database from seed...");
     const initialData = SEED_DATA;
-    
+
     localStorage.setItem(STORAGE_KEY, JSON.stringify(initialData));
-    
+
     return initialData;
   } catch (error) {
     console.error("AURA: Storage Service Error:", error);

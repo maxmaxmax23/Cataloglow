@@ -6,13 +6,13 @@ import ShopView from '../components/ShopView';
 import ProductDetailModal from '../components/ProductDetailModal';
 import CartDrawer from '../components/CartDrawer';
 import CheckoutForm from '../components/CheckoutForm';
-import { CartItem, Product, ViewState } from '../types';
+import { CartItem, Product, ViewState } from './types';
 
 // --- NEW IMPORT: The "Manifest" Reader ---
-import { fetchCatalog } from './services/catalog'; 
+import { fetchCatalog } from './services/catalog';
 
 // Keep as fallback/mock if DB fails or is empty
-import { PRODUCTS as FALLBACK_PRODUCTS } from '../constants'; 
+import { PRODUCTS as FALLBACK_PRODUCTS } from '../constants';
 
 function App() {
   const [showSplash, setShowSplash] = useState(true);
@@ -22,7 +22,7 @@ function App() {
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [animateCart, setAnimateCart] = useState(false);
-  
+
   // Data State
   const [products, setProducts] = useState<Product[]>([]);
   const [loadingProducts, setLoadingProducts] = useState(true);
@@ -31,10 +31,10 @@ function App() {
   useEffect(() => {
     const loadData = async () => {
       setLoadingProducts(true);
-      
+
       // 1. Try to fetch the live "Manifest" (Cached or Cloud)
       const fetched = await fetchCatalog();
-      
+
       if (fetched && fetched.length > 0) {
         setProducts(fetched);
       } else {
@@ -42,7 +42,7 @@ function App() {
         console.warn("Manifest empty or missing. Using local fallback data.");
         setProducts(FALLBACK_PRODUCTS as Product[]);
       }
-      
+
       setLoadingProducts(false);
     };
 
@@ -64,7 +64,7 @@ function App() {
       }
       return [...prev, { ...product, quantity }];
     });
-    
+
     // Trigger visual feedback
     triggerCartAnimation();
   };
@@ -93,21 +93,21 @@ function App() {
 
   // Basic luxury loader if still fetching data after splash
   if (loadingProducts) {
-      return (
-        <div className="fixed inset-0 bg-black flex items-center justify-center">
-            <div className="flex flex-col items-center gap-4">
-                <div className="w-12 h-12 border border-primary/20 border-t-primary rounded-full animate-spin"></div>
-                <span className="text-[10px] tracking-[0.3em] uppercase text-primary animate-pulse">Syncing Inventory</span>
-            </div>
+    return (
+      <div className="fixed inset-0 bg-black flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-12 h-12 border border-primary/20 border-t-primary rounded-full animate-spin"></div>
+          <span className="text-[10px] tracking-[0.3em] uppercase text-primary animate-pulse">Syncing Inventory</span>
         </div>
-      );
+      </div>
+    );
   }
 
   return (
     <div className="relative h-full w-full overflow-hidden">
       {/* Top Nav is shared and fixed */}
-      <TopNav 
-        cartCount={cart.reduce((a, b) => a + b.quantity, 0)} 
+      <TopNav
+        cartCount={cart.reduce((a, b) => a + b.quantity, 0)}
         onCartClick={() => setIsCartOpen(true)}
         animateCart={animateCart}
       />
@@ -115,63 +115,59 @@ function App() {
       {/* Main Content Area - Each view is a cached scrollable container */}
       <main className="absolute inset-0 top-0 w-full h-full">
         {/* Home View Container */}
-        <div 
-            className={`absolute inset-0 overflow-y-auto hide-scrollbar transition-opacity duration-500 ease-in-out ${
-                view === 'HOME' ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
+        <div
+          className={`absolute inset-0 overflow-y-auto hide-scrollbar transition-opacity duration-500 ease-in-out ${view === 'HOME' ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
             }`}
         >
-            <HomeView 
-                products={products}
-                onProductClick={setSelectedProduct} 
-                onChangeView={setView}
-            />
-            {/* Spacer for bottom nav */}
-            <div className="h-24"></div>
+          <HomeView
+            products={products}
+            onProductClick={setSelectedProduct}
+            onChangeView={setView}
+          />
+          {/* Spacer for bottom nav */}
+          <div className="h-24"></div>
         </div>
 
         {/* Shop View Container */}
-        <div 
-            className={`absolute inset-0 overflow-y-auto hide-scrollbar transition-opacity duration-500 ease-in-out ${
-                view === 'SHOP' ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
+        <div
+          className={`absolute inset-0 overflow-y-auto hide-scrollbar transition-opacity duration-500 ease-in-out ${view === 'SHOP' ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
             }`}
         >
-            <ShopView 
-                products={products}
-                onProductClick={setSelectedProduct} 
-                onAddToCart={addToCart}
-            />
-            {/* Spacer for bottom nav */}
-            <div className="h-24"></div>
+          <ShopView
+            products={products}
+            onProductClick={setSelectedProduct}
+            onAddToCart={addToCart}
+          />
+          {/* Spacer for bottom nav */}
+          <div className="h-24"></div>
         </div>
 
         {/* Saved View Placeholder */}
-        <div 
-            className={`absolute inset-0 overflow-y-auto hide-scrollbar flex items-center justify-center transition-opacity duration-500 ease-in-out ${
-                view === 'SAVED' ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
+        <div
+          className={`absolute inset-0 overflow-y-auto hide-scrollbar flex items-center justify-center transition-opacity duration-500 ease-in-out ${view === 'SAVED' ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
             }`}
         >
-             <div className="text-white/40 flex flex-col items-center">
-                <span className="material-icons text-6xl mb-4 text-primary/20 animate-float">favorite_border</span>
-                <p className="uppercase tracking-[0.2em] text-sm">Wishlist Empty</p>
-                <button 
-                  onClick={() => setView('SHOP')} 
-                  className="mt-8 text-primary border-b border-primary text-xs uppercase tracking-widest pb-1 hover:text-white hover:border-white transition-colors"
-                >
-                  Discover Products
-                </button>
-            </div>
+          <div className="text-white/40 flex flex-col items-center">
+            <span className="material-icons text-6xl mb-4 text-primary/20 animate-float">favorite_border</span>
+            <p className="uppercase tracking-[0.2em] text-sm">Wishlist Empty</p>
+            <button
+              onClick={() => setView('SHOP')}
+              className="mt-8 text-primary border-b border-primary text-xs uppercase tracking-widest pb-1 hover:text-white hover:border-white transition-colors"
+            >
+              Discover Products
+            </button>
+          </div>
         </div>
 
-         {/* Profile View Placeholder */}
-         <div 
-            className={`absolute inset-0 overflow-y-auto hide-scrollbar flex items-center justify-center transition-opacity duration-500 ease-in-out ${
-                view === 'PROFILE' ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
+        {/* Profile View Placeholder */}
+        <div
+          className={`absolute inset-0 overflow-y-auto hide-scrollbar flex items-center justify-center transition-opacity duration-500 ease-in-out ${view === 'PROFILE' ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
             }`}
         >
-             <div className="text-white/40 flex flex-col items-center">
-                <span className="material-icons text-6xl mb-4 text-primary/20 animate-float">person_outline</span>
-                <p className="uppercase tracking-[0.2em] text-sm">Sign In to AURA</p>
-            </div>
+          <div className="text-white/40 flex flex-col items-center">
+            <span className="material-icons text-6xl mb-4 text-primary/20 animate-float">person_outline</span>
+            <p className="uppercase tracking-[0.2em] text-sm">Sign In to AURA</p>
+          </div>
         </div>
 
       </main>
@@ -179,31 +175,31 @@ function App() {
       <BottomNav currentView={view} onChangeView={setView} />
 
       {/* Modals & Drawers - Outside of main scroll area */}
-      <ProductDetailModal 
-        product={selectedProduct} 
+      <ProductDetailModal
+        product={selectedProduct}
         products={products}
-        onClose={() => setSelectedProduct(null)} 
+        onClose={() => setSelectedProduct(null)}
         onAddToCart={addToCart}
         onProductClick={setSelectedProduct}
       />
 
-      <CartDrawer 
-        isOpen={isCartOpen} 
+      <CartDrawer
+        isOpen={isCartOpen}
         onClose={() => setIsCartOpen(false)}
         items={cart}
         onRemoveItem={removeFromCart}
         onUpdateQuantity={updateQuantity}
         onCheckout={() => {
-            setIsCartOpen(false);
-            setIsCheckoutOpen(true);
+          setIsCartOpen(false);
+          setIsCheckoutOpen(true);
         }}
       />
 
       {isCheckoutOpen && (
-        <CheckoutForm 
-            items={cart} 
-            total={cartTotal} 
-            onClose={() => setIsCheckoutOpen(false)}
+        <CheckoutForm
+          items={cart}
+          total={cartTotal}
+          onClose={() => setIsCheckoutOpen(false)}
         />
       )}
     </div>

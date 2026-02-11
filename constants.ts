@@ -1,4 +1,4 @@
-import { Product, Category } from './types';
+import { Product, Category } from './src/types';
 
 export const PRODUCTS: Product[] = [
   // --- Skincare ---
@@ -366,7 +366,7 @@ export const PRODUCTS: Product[] = [
     description: 'A creamy foundation stick that melts into the skin for a seamless, velvet finish.',
     benefits: ['Medium to full coverage', 'Travel friendly', 'Skin-like texture']
   },
-  
+
   // --- More Skincare ---
   {
     id: 'p20',
