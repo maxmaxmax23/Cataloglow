@@ -1,6 +1,6 @@
 import { Product } from "../types";
 
-const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent";
+const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent";
 
 export const generateDescription = async (
     product: Product,
@@ -49,6 +49,23 @@ export const generateDescription = async (
         return text ? text.trim() : "Description generation failed.";
     } catch (error) {
         console.error("AI Generation Error:", error);
+        throw error;
+    }
+};
+
+export const listModels = async (apiKey: string): Promise<string[]> => {
+    if (!apiKey) throw new Error("API Key is required");
+
+    try {
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error?.message || "Failed to list models");
+        }
+        const data = await response.json();
+        return data.models?.map((m: any) => m.name) || [];
+    } catch (error) {
+        console.error("List Models Error:", error);
         throw error;
     }
 };

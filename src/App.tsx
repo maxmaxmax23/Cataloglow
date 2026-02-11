@@ -17,7 +17,15 @@ import Admin from './pages/Admin';
 
 function App() {
   const [showSplash, setShowSplash] = useState(true);
-  const [view, setView] = useState<ViewState>('HOME');
+
+  // Basic URL Routing
+  const getInitialView = (): ViewState => {
+    const path = window.location.pathname;
+    if (path === '/admin') return 'ADMIN';
+    return 'HOME';
+  };
+
+  const [view, setView] = useState<ViewState>(getInitialView());
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);

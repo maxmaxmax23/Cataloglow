@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Product } from "../types";
-import { generateDescription } from "../services/ai";
+import { generateDescription, listModels } from "../services/ai";
+// ... imports
+
+// ... inside Admin component ...
+
+
+// ... inside the handleSaveKey function or near it ...
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "../firebase";
 
@@ -30,6 +36,23 @@ const Admin: React.FC<AdminProps> = ({ products, onUpdateCatalog }) => {
     const handleSaveKey = () => {
         localStorage.setItem("gemini_api_key", apiKey);
         addLog("API Key saved to local storage.");
+    };
+
+    const handleCheckModels = async () => {
+        if (!apiKey) {
+            alert("Enter API Key first.");
+            return;
+        }
+        addLog("Checking available models for this key...");
+        try {
+            const models = await listModels(apiKey);
+            addLog("--- AVAILABLE MODELS ---");
+            models.forEach(m => addLog(m));
+            addLog("------------------------");
+            addLog("If you see 'models/gemini-1.5-flash', it should work.");
+        } catch (err: any) {
+            addLog(`Error listing models: ${err.message}`);
+        }
     };
 
     // 1. GENERATE DESCRIPTIONS
@@ -62,22 +85,54 @@ const Admin: React.FC<AdminProps> = ({ products, onUpdateCatalog }) => {
         let successCount = 0;
 
         // Process sequentially to be nice to the API rate limit
-        for (const item of candidates) {
-            try {
-                addLog(`Generating for: ${item.name}...`);
-                const newDesc = await generateDescription(item, apiKey);
+        // Process sequentially
+        for (let i = 0; i < candidates.length; i++) {
+            const item = candidates[i];
+            let retries = 0;
+            let success = false;
 
-                // Update local list
-                const index = updatedList.findIndex((p) => p.id === item.id);
-                if (index !== -1) {
-                    updatedList[index] = { ...updatedList[index], description: newDesc };
+            while (!success && retries < 3) {
+                try {
+                    addLog(`Generating for: ${item.name}... (Attempt ${retries + 1})`);
+                    const newDesc = await generateDescription(item, apiKey);
+
+                    // Update local list
+                    const index = updatedList.findIndex((p) => p.id === item.id);
+                    if (index !== -1) {
+                        updatedList[index] = { ...updatedList[index], description: newDesc };
+                    }
+
+                    successCount++;
+                    success = true;
+
+                    // Standard friendly delay between successful requests
+                    await new Promise((r) => setTimeout(r, 2000));
+
+                } catch (err: any) {
+                    const message = err.message || "";
+                    addLog(`Error on ${item.name}: ${message}`);
+
+                    // Regex to find "retry in X.XXs" or similar
+                    // Example: "Please retry in 10.327166026s."
+                    const match = message.match(/retry in (\d+(\.\d+)?)s/i);
+
+                    if (match) {
+                        const waitSeconds = parseFloat(match[1]);
+                        const waitMs = (waitSeconds + 1) * 1000; // Found time + 1 second buffer
+                        addLog(`⚠️ Rate Limit Hit. Waiting ${Math.ceil(waitMs / 1000)}s before retrying...`);
+                        await new Promise((r) => setTimeout(r, waitMs));
+                        retries++; // Count as a retry
+                    } else if (message.includes("429") || message.includes("Quota")) {
+                        // Fallback for generic 429 without specific time
+                        addLog(`⚠️ Generic Rate Limit. Waiting 60s...`);
+                        await new Promise((r) => setTimeout(r, 60000));
+                        retries++;
+                    } else {
+                        // Fatal error (bad request, etc), skip this item
+                        addLog("Skipping item due to non-retriable error.");
+                        break;
+                    }
                 }
-
-                successCount++;
-                // Tiny delay to avoid hitting rate limits instantly
-                await new Promise((r) => setTimeout(r, 1000));
-            } catch (err: any) {
-                addLog(`Error on ${item.name}: ${err.message}`);
             }
         }
 
@@ -148,6 +203,12 @@ const Admin: React.FC<AdminProps> = ({ products, onUpdateCatalog }) => {
                     >
                         Save Key
                     </button>
+                    <button
+                        onClick={handleCheckModels}
+                        className="px-6 py-3 bg-blue-500/20 hover:bg-blue-500/40 text-blue-300 rounded text-xs uppercase tracking-wider transition-colors"
+                    >
+                        Check Connection
+                    </button>
                 </div>
                 <p className="mt-2 text-[10px] text-white/40">
                     Key is stored locally in your browser. Get one at aistudio.google.com (Free).
@@ -160,8 +221,8 @@ const Admin: React.FC<AdminProps> = ({ products, onUpdateCatalog }) => {
                     onClick={handleGenerateDescriptions}
                     disabled={isProcessing}
                     className={`flex-1 py-4 rounded text-sm uppercase tracking-widest transition-all ${isProcessing
-                            ? "bg-white/5 text-white/20 cursor-not-allowed"
-                            : "bg-primary text-black hover:bg-white hover:shadow-[0_0_20px_rgba(255,255,255,0.3)]"
+                        ? "bg-white/5 text-white/20 cursor-not-allowed"
+                        : "bg-primary text-black hover:bg-white hover:shadow-[0_0_20px_rgba(255,255,255,0.3)]"
                         }`}
                 >
                     {isProcessing ? "Processing..." : "✨ Magic Auto-Fill Descriptions"}
@@ -171,8 +232,8 @@ const Admin: React.FC<AdminProps> = ({ products, onUpdateCatalog }) => {
                     onClick={handleSaveToCloud}
                     disabled={!hasUnsavedChanges || isProcessing}
                     className={`flex-1 py-4 rounded text-sm uppercase tracking-widest transition-all border ${hasUnsavedChanges
-                            ? "border-green-500 text-green-400 hover:bg-green-500/10 cursor-pointer shadow-[0_0_15px_rgba(34,197,94,0.2)]"
-                            : "border-white/10 text-white/20 cursor-not-allowed"
+                        ? "border-green-500 text-green-400 hover:bg-green-500/10 cursor-pointer shadow-[0_0_15px_rgba(34,197,94,0.2)]"
+                        : "border-white/10 text-white/20 cursor-not-allowed"
                         }`}
                 >
                     Save to Cloud
