@@ -19,10 +19,6 @@ This document tracks all implemented features, pending tasks, and future ideas f
 -   **SPA Routing**: Added `vercel.json` to handle client-side routing (fixes 404s).
 -   **Environment Variables**: Configured via Vercel Project Settings for production.
 
----
-
-## 🚧 In Progress / Next Steps
-
 ### 4. High-End UI/UX Polish & AURUM Expansion (Completed)
 *Goal: Transform the UI to match a "Scientific Opulence" luxury aesthetic (Manrope, Gold/Black) and localize for the Spanish market.*
 -   [x] **Global Theme Update**:
@@ -31,7 +27,6 @@ This document tracks all implemented features, pending tasks, and future ideas f
     -   Spacing & Layout: Sharp corners, glassmorphism, responsive grids.
 -   [x] **Component Polish**: Navigation, Cart, Checkout, and Product Cards redesigned.
 -   [x] **Splash Screen**: "Lujo Redefinido" with parallax and gold branding.
--   [x] **Spanish Localization**: Full UI translation (Home, Shop, Checkout, Admin).
 -   [x] **Spanish Localization**: Full UI translation (Home, Shop, Checkout, Admin).
 -   [x] **Product Detail Enhancements**: Trust badges added, accordions removed.
 
@@ -42,11 +37,20 @@ This document tracks all implemented features, pending tasks, and future ideas f
 -   [x] **Smart Sharing**: Implemented `navigator.share` (Mobile) and Download+Web fallback (Desktop).
     -   Includes Product SKUs and Full Address.
 
-### 6. Future Optimizations (Backlog)
-
 ---
 
-## 🔮 Future Ideas / Backlog
+## 🚧 In Progress / Next Steps
 
--   **Verify AI Quota**: Test if `gemini-2.0-flash-lite-001` consistently handles larger batches after daily reset.
--   **Cloud Function Migration**: If client-side rate limits become too restrictive, move AI generation to a Firebase Cloud Function.
+### 6. Admin Dashboard Overhaul & Management (Next Phase)
+*Goal: Build a powerful, AURUM-styled "Command Center" for full catalog control.*
+-   [ ] **Admin UI Redesign**: Apply the "Scientific Opulence" dark theme to the Admin panel.
+-   [ ] **Product Management**:
+    -   [ ] **Editor Form**: Edit Name, Price, SKU, Stock, Category, and Images.
+    -   [ ] **Create/Delete**: Ability to add new items or remove obsolete ones.
+-   [ ] **Category Management**: Interface to manage product categories and filters.
+-   [ ] **Firebase Sync**:
+    -   [ ] **Push**: Save local changes to the Cloud Manifest.
+    -   [ ] **Pull**: Force refresh data from the Cloud.
+    -   [ ] **Real-time**: Listen for updates (Optional).
+
+
