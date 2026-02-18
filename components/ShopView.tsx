@@ -14,7 +14,7 @@ const ShopView: React.FC<ShopViewProps> = ({ products, onProductClick, onAddToCa
   const [isLoading, setIsLoading] = useState(false);
   const loadMoreRef = useRef<HTMLDivElement>(null);
 
-  const filters = ['All', 'Skincare', 'Lips', 'Eyes', 'Fragrance', 'Face'];
+  const filters = ['All', 'Cuidado de la Piel', 'Labios', 'Ojos', 'Fragancias', 'Rostro'];
 
   const filteredProducts = filter === 'All'
     ? products
@@ -80,9 +80,9 @@ const ShopView: React.FC<ShopViewProps> = ({ products, onProductClick, onAddToCa
       {/* Header */}
       <div className="text-center mb-8 px-4 animate-fade-in">
         <h1 className="text-3xl md:text-5xl font-serif font-light mb-2">
-          The <span className="text-primary font-bold">Midnight</span> Collection
+          La Colección <span className="text-primary font-bold">Midnight</span>
         </h1>
-        <p className="text-white/40 text-[10px] uppercase tracking-[0.3em]">Pure Elegance in Every Application</p>
+        <p className="text-white/40 text-[10px] uppercase tracking-[0.3em]">Pura Elegancia en Cada Aplicación</p>
       </div>
 
       {/* Filter Bar */}
@@ -95,17 +95,17 @@ const ShopView: React.FC<ShopViewProps> = ({ products, onProductClick, onAddToCa
                 onClick={() => setFilter(f)}
                 className={`text-[10px] font-bold uppercase tracking-widest whitespace-nowrap transition-all duration-300 relative ${filter === f ? 'text-primary scale-110' : 'text-white/60 hover:text-white'}`}
               >
-                {f}
+                {f === 'All' ? 'Todo' : f}
                 {filter === f && <span className="absolute -bottom-2 left-0 right-0 h-[1px] bg-primary animate-scale-in"></span>}
               </button>
             ))}
           </div>
           <div className="flex items-center gap-4 border-l border-white/10 pl-6 shrink-0">
             <button className="flex items-center text-[10px] font-bold uppercase tracking-widest text-white/80 hover:text-primary transition-colors">
-              Sort <span className="material-icons text-sm ml-1">expand_more</span>
+              Ordenar <span className="material-icons text-sm ml-1">expand_more</span>
             </button>
             <button className="flex items-center text-[10px] font-bold uppercase tracking-widest text-white/80 hover:text-primary transition-colors">
-              Filter <span className="material-icons text-sm ml-1">tune</span>
+              Filtrar <span className="material-icons text-sm ml-1">tune</span>
             </button>
           </div>
         </div>
@@ -135,7 +135,7 @@ const ShopView: React.FC<ShopViewProps> = ({ products, onProductClick, onAddToCa
                     onClick={(e) => handleQuickAdd(e, product)}
                     className="hidden md:block w-full bg-primary/90 text-black font-bold py-3 rounded uppercase tracking-[0.2em] text-[10px] hover:bg-white transition-all duration-300 transform translate-y-4 group-hover:translate-y-0 shadow-lg backdrop-blur-sm btn-shimmer"
                   >
-                    Quick Add
+                    Agregar
                   </button>
                 </div>
 
@@ -148,10 +148,10 @@ const ShopView: React.FC<ShopViewProps> = ({ products, onProductClick, onAddToCa
                 </button>
 
                 {product.isNew && (
-                  <div className="absolute top-2 left-2 bg-primary/90 text-black text-[8px] font-bold px-2 py-1 rounded uppercase tracking-wider shadow-md z-20">New</div>
+                  <div className="absolute top-2 left-2 bg-primary/90 text-black text-[8px] font-bold px-2 py-1 rounded uppercase tracking-wider shadow-md z-20">Nuevo</div>
                 )}
                 {product.isLimited && (
-                  <div className="absolute top-2 left-2 bg-white/10 backdrop-blur-md text-white border border-white/20 text-[8px] font-bold px-2 py-1 rounded uppercase tracking-wider z-20">Limited</div>
+                  <div className="absolute top-2 left-2 bg-white/10 backdrop-blur-md text-white border border-white/20 text-[8px] font-bold px-2 py-1 rounded uppercase tracking-wider z-20">Limitado</div>
                 )}
               </div>
               <div className="text-center group-hover:transform group-hover:-translate-y-1 transition-transform duration-300">
@@ -173,19 +173,19 @@ const ShopView: React.FC<ShopViewProps> = ({ products, onProductClick, onAddToCa
         {isLoading && (
           <div className="flex flex-col items-center gap-3">
             <div className="w-6 h-6 border-[1px] border-primary/20 border-t-primary rounded-full animate-spin"></div>
-            <span className="text-[9px] uppercase tracking-[0.3em] text-primary animate-pulse">Loading Collection</span>
+            <span className="text-[9px] uppercase tracking-[0.3em] text-primary animate-pulse">Cargando Colección</span>
           </div>
         )}
 
         {!isLoading && !hasMore && filteredProducts.length > 0 && (
           <div className="flex flex-col items-center gap-2">
             <div className="w-1 h-8 bg-gradient-to-b from-transparent via-white/20 to-transparent"></div>
-            <span className="text-[9px] uppercase tracking-[0.3em] text-white/20">End of Collection</span>
+            <span className="text-[9px] uppercase tracking-[0.3em] text-white/20">Fin de la Colección</span>
           </div>
         )}
 
         {!isLoading && !hasMore && filteredProducts.length === 0 && (
-          <span className="text-[10px] uppercase tracking-[0.3em] text-white/40">No products found</span>
+          <span className="text-[10px] uppercase tracking-[0.3em] text-white/40">No se encontraron productos</span>
         )}
       </div>
 
@@ -193,8 +193,8 @@ const ShopView: React.FC<ShopViewProps> = ({ products, onProductClick, onAddToCa
       {!isLoading && (
         <section className="mt-8 pt-12 border-t border-white/5 px-6 max-w-7xl mx-auto animate-fade-in">
           <div className="text-center mb-10">
-            <span className="text-primary text-[10px] uppercase tracking-[0.3em] font-bold block mb-3">Curated Selection</span>
-            <h2 className="text-2xl md:text-3xl font-serif text-white">You Might Also Like</h2>
+            <span className="text-primary text-[10px] uppercase tracking-[0.3em] font-bold block mb-3">Selección Curada</span>
+            <h2 className="text-2xl md:text-3xl font-serif text-white">También te podría gustar</h2>
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-x-5 gap-y-10">
@@ -215,7 +215,7 @@ const ShopView: React.FC<ShopViewProps> = ({ products, onProductClick, onAddToCa
                         onClick={(e) => handleQuickAdd(e, product)}
                         className="w-full bg-primary/90 text-black font-bold py-2 rounded uppercase tracking-[0.2em] text-[8px] hover:bg-white transition-all duration-300 transform translate-y-4 group-hover:translate-y-0 shadow-lg backdrop-blur-sm btn-shimmer"
                       >
-                        Add
+                        Agregar
                       </button>
                     </div>
                   </div>

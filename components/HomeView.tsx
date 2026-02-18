@@ -33,20 +33,20 @@ const HomeView: React.FC<HomeViewProps> = ({ products, onProductClick, onChangeV
                         AURUM: <span className="font-light italic text-stone-300">The Alchemist's</span> Secret
                     </h1>
                     <p className="text-stone-300 text-sm md:text-lg font-light leading-relaxed mb-10 max-w-xl animate-slide-up opacity-0" style={{ animationDelay: '0.5s' }}>
-                        Experience the intersection of advanced dermatology and pure luxury with our 24K gold-infused restorative treatments.
+                        Experimenta la intersección de la dermatología avanzada y el lujo puro con nuestros tratamientos restauradores infundidos con oro de 24K.
                     </p>
                     <div className="flex gap-6 animate-slide-up opacity-0" style={{ animationDelay: '0.7s' }}>
                         <button
                             onClick={() => onChangeView('SHOP')}
                             className="bg-primary text-background-dark px-10 py-4 font-bold uppercase tracking-[0.2em] text-xs hover:bg-white transition-colors duration-300"
                         >
-                            Enter the Golden Era
+                            Entra en la Era Dorada
                         </button>
                         <button
                             onClick={() => onChangeView('SHOP')}
                             className="border border-white/20 bg-white/5 backdrop-blur-sm text-white px-10 py-4 font-bold uppercase tracking-[0.2em] text-xs hover:bg-white/10 hover:border-white transition-all duration-300"
                         >
-                            Shop the Edit
+                            Comprar la Edición
                         </button>
                     </div>
                 </div>
@@ -56,10 +56,10 @@ const HomeView: React.FC<HomeViewProps> = ({ products, onProductClick, onChangeV
             <section className="py-20 px-6 lg:px-12 bg-background-dark border-b border-white/5">
                 <RevealOnScroll className="flex justify-between items-end mb-12">
                     <div>
-                        <span className="text-primary text-xs font-bold tracking-[0.3em] uppercase mb-2 block">Innovations</span>
-                        <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-white">Curated Categories</h2>
+                        <span className="text-primary text-xs font-bold tracking-[0.3em] uppercase mb-2 block">Innovaciones</span>
+                        <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-white">Categorías Seleccionadas</h2>
                     </div>
-                    <button onClick={() => onChangeView('SHOP')} className="text-xs font-bold uppercase tracking-[0.2em] text-white hover:text-primary transition-colors border-b border-transparent hover:border-primary pb-1">View All</button>
+                    <button onClick={() => onChangeView('SHOP')} className="text-xs font-bold uppercase tracking-[0.2em] text-white hover:text-primary transition-colors border-b border-transparent hover:border-primary pb-1">Ver Todo</button>
                 </RevealOnScroll>
 
                 <div className="flex gap-8 overflow-x-auto hide-scrollbar pb-8">
@@ -79,7 +79,7 @@ const HomeView: React.FC<HomeViewProps> = ({ products, onProductClick, onChangeV
 
                                     <div className="absolute bottom-6 left-6">
                                         <p className="text-xl font-bold text-white group-hover:text-primary transition-colors duration-300">{cat.name}</p>
-                                        <p className="text-[10px] uppercase tracking-widest text-stone-400 mt-1 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-500">Explore Collection</p>
+                                        <p className="text-[10px] uppercase tracking-widest text-stone-400 mt-1 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-500">Explorar Colección</p>
                                     </div>
                                 </div>
                             </div>
@@ -91,8 +91,8 @@ const HomeView: React.FC<HomeViewProps> = ({ products, onProductClick, onChangeV
             {/* Featured Products Grid */}
             <section className="px-6 lg:px-12 py-24">
                 <RevealOnScroll className="mb-16 text-center">
-                    <span className="text-primary text-xs font-bold tracking-[0.3em] uppercase mb-4 block">Curation</span>
-                    <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight">Best of the Season</h2>
+                    <span className="text-primary text-xs font-bold tracking-[0.3em] uppercase mb-4 block">Curación</span>
+                    <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight">Lo Mejor de la Temporada</h2>
                 </RevealOnScroll>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-16">
@@ -104,7 +104,7 @@ const HomeView: React.FC<HomeViewProps> = ({ products, onProductClick, onChangeV
                             >
                                 <div className="relative aspect-[3/4] bg-neutral-dark mb-6 overflow-hidden">
                                     {product.isNew && (
-                                        <div className="absolute top-4 left-4 bg-primary text-background-dark text-[10px] font-bold px-3 py-1 uppercase tracking-widest z-10">New</div>
+                                        <div className="absolute top-4 left-4 bg-primary text-background-dark text-[10px] font-bold px-3 py-1 uppercase tracking-widest z-10">Nuevo</div>
                                     )}
                                     <img src={product.image} alt={product.name} className="w-full h-full object-cover transition-transform duration-[1.5s] group-hover:scale-110 ease-out" />
 
@@ -113,7 +113,7 @@ const HomeView: React.FC<HomeViewProps> = ({ products, onProductClick, onChangeV
 
                                     <div className="absolute bottom-0 left-0 w-full p-6 translate-y-full group-hover:translate-y-0 transition-transform duration-500 bg-gradient-to-t from-black/90 to-transparent">
                                         <button className="w-full border border-white/20 text-white py-3 text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-white hover:text-black transition-all duration-300">
-                                            Quick View
+                                            Vista Rápida
                                         </button>
                                     </div>
                                 </div>

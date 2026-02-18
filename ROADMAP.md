@@ -33,18 +33,20 @@ This document tracks all implemented features, pending tasks, and future ideas f
 -   [ ] **Component Polish**: Redesign buttons, cards, and navigation.
 -   [ ] **Cohesion Check**: Ensure animations match the new look.
 
-### 5. WhatsApp Integration (Level 2: Visual Ticket)
+### 4. AURUM Expansion & Localization (Current Focus)
+- [x] **Splash Screen**: Update to match Scientific Opulence (Manrope, Gold, Sharp).
+- [x] **Spanish Localization**: Translate all static UI text to Spanish.
+- [x] **Product Detail Enhancements**:
+    - [x] Remove "Key Benefits" & "How to Use" text accordions.
+    - [x] Add "Trust Badges": Cruelty Free, Lab Tested, ANMAT Approved.
+
+### 5. WhatsApp Integration (Next)
 *Goal: Replace text-based messages with a premium "digital invoice" image.*
--   **Level 1 (Text)**: ✅ Implemented (Basic message generation).
--   **Level 2 (Visual Image)**: 🚧 Pending Implementation.
+- **Level 1 (Text)**: ✅ Implemented.
+- **Level 2 (Visual Image)**: 🚧 Pending Implementation.
     -   [ ] **Configure Environment**: Add `VITE_WHATSAPP_NUMBER` to `.env.local`.
-    -   [ ] **Image Generation**:
-        -   Install `html2canvas`.
-        -   Create `ReceiptComponent` (Hidden, print-styled visual invoice with branding).
-        -   Implement `generateTicketImage()` function to capture the component.
-    -   **Sharing Logic**:
-        -   [ ] Use `navigator.share` API for native mobile sharing (iOS/Android).
-        -   [ ] Fallback to "Download Image" for desktop users.
+    -   [ ] **Image Generation**: Install `html2canvas`, create `ReceiptComponent`.
+    -   [ ] **Sharing Logic**: Use `navigator.share` or download fallback.
 
 ---
 

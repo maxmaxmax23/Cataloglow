@@ -16,10 +16,10 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ items, total, onClose }) =>
         if (!name || !address) return;
 
         const itemList = items.map(i => `• ${i.name} (x${i.quantity})`).join('\n');
-        const message = `Hello, I would like to place an order for the following items:\n\n${itemList}\n\nTotal Investment: $${total.toFixed(2)}\n\nMy Details:\nName: ${name}\nArea: ${address}`;
+        const message = `Hola, me gustaría realizar un pedido de los siguientes productos:\n\n${itemList}\n\nInversión Total: $${total.toFixed(2)}\n\nMis Datos:\nNombre: ${name}\nZona: ${address}`;
 
         const encodedMessage = encodeURIComponent(message);
-        const whatsappUrl = `https://wa.me/?text=${encodedMessage}`; // Replace with actual phone number if available e.g., wa.me/1234567890
+        const whatsappUrl = `https://wa.me/?text=${encodedMessage}`;
 
         window.open(whatsappUrl, '_blank');
     };
@@ -45,21 +45,21 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ items, total, onClose }) =>
                         <div className="inline-block mb-4">
                             <span className="material-icons text-primary text-4xl">auto_fix_high</span>
                         </div>
-                        <h2 className="text-2xl text-white font-light tracking-[0.15em] uppercase mb-2">Checkout</h2>
+                        <h2 className="text-2xl text-white font-light tracking-[0.15em] uppercase mb-2">Finalizar Compra</h2>
                         <div className="h-px w-12 bg-primary mx-auto mb-6"></div>
-                        <p className="text-white/40 text-xs font-light">Enter your details to finalize your luxury selection and proceed to WhatsApp.</p>
+                        <p className="text-white/40 text-xs font-light">Ingresa tus datos para confirmar tu selección de lujo y proceder a WhatsApp.</p>
                     </header>
 
                     <form onSubmit={handleWhatsAppRedirect} className="flex-grow space-y-6">
                         <div className="group">
-                            <label htmlFor="name" className="block text-primary text-[10px] uppercase tracking-[0.15em] mb-2 font-bold">Full Name</label>
+                            <label htmlFor="name" className="block text-primary text-[10px] uppercase tracking-[0.15em] mb-2 font-bold">Nombre Completo</label>
                             <div className="border border-primary/30 rounded overflow-hidden focus-within:border-primary focus-within:shadow-[0_0_10px_rgba(242,185,13,0.2)] transition-all">
                                 <input
                                     id="name"
                                     type="text"
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
-                                    placeholder="e.g. Arabella Sterling"
+                                    placeholder="ej. Arabella Sterling"
                                     className="w-full bg-black/40 border-none text-white px-4 py-3 focus:ring-0 placeholder:text-white/20 font-light text-sm"
                                     required
                                 />
@@ -67,14 +67,14 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ items, total, onClose }) =>
                         </div>
 
                         <div className="group">
-                            <label htmlFor="area" className="block text-primary text-[10px] uppercase tracking-[0.15em] mb-2 font-bold">Delivery Area</label>
+                            <label htmlFor="area" className="block text-primary text-[10px] uppercase tracking-[0.15em] mb-2 font-bold">Zona de Entrega</label>
                             <div className="border border-primary/30 rounded overflow-hidden focus-within:border-primary focus-within:shadow-[0_0_10px_rgba(242,185,13,0.2)] transition-all">
                                 <input
                                     id="area"
                                     type="text"
                                     value={address}
                                     onChange={(e) => setAddress(e.target.value)}
-                                    placeholder="e.g. Beverly Hills, CA"
+                                    placeholder="ej. Palermo, Buenos Aires"
                                     className="w-full bg-black/40 border-none text-white px-4 py-3 focus:ring-0 placeholder:text-white/20 font-light text-sm"
                                     required
                                 />
@@ -83,11 +83,11 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ items, total, onClose }) =>
 
                         <div className="p-4 rounded bg-primary/5 border border-primary/10 mt-6">
                             <div className="flex justify-between items-center mb-2">
-                                <span className="text-white/40 text-[10px] uppercase tracking-wider">Selected Items</span>
-                                <span className="text-white text-xs">{items.length} Products</span>
+                                <span className="text-white/40 text-[10px] uppercase tracking-wider">Items Seleccionados</span>
+                                <span className="text-white text-xs">{items.length} Productos</span>
                             </div>
                             <div className="flex justify-between items-center">
-                                <span className="text-white/40 text-[10px] uppercase tracking-wider">Estimated Total</span>
+                                <span className="text-white/40 text-[10px] uppercase tracking-wider">Total Estimado</span>
                                 <span className="text-primary font-bold text-sm">${total.toFixed(2)}</span>
                             </div>
                         </div>
@@ -97,12 +97,12 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ items, total, onClose }) =>
                             className="w-full bg-primary hover:bg-white hover:text-black text-black font-bold py-4 rounded mt-4 uppercase tracking-[0.15em] text-sm flex items-center justify-center gap-3 transition-colors"
                         >
                             <span className="material-icons text-sm">message</span>
-                            Proceed to WhatsApp
+                            Continuar a WhatsApp
                         </button>
                     </form>
 
                     <p className="text-center text-[9px] text-white/30 uppercase tracking-widest mt-6">
-                        Secure checkout via WhatsApp Business
+                        Compra segura vía WhatsApp Business
                     </p>
                 </div>
             </div>

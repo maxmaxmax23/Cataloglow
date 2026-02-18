@@ -315,7 +315,7 @@ const Admin: React.FC<AdminProps> = ({ products, onUpdateCatalog }) => {
                         : "bg-primary text-black hover:bg-white hover:shadow-[0_0_20px_rgba(255,255,255,0.3)]"
                         }`}
                 >
-                    {isProcessing ? "Processing..." : "✨ Magic Auto-Fill Descriptions"}
+                    {isProcessing ? "Procesando..." : "✨ Auto-Completar Descripciones"}
                 </button>
 
                 <button
@@ -326,13 +326,13 @@ const Admin: React.FC<AdminProps> = ({ products, onUpdateCatalog }) => {
                         : "border-white/10 text-white/20 cursor-not-allowed"
                         }`}
                 >
-                    Save to Cloud
+                    Guardar en la Nube
                 </button>
             </div>
 
             {/* Console Logs */}
             <div className="mb-8 bg-black p-4 rounded-lg font-mono text-xs text-green-400 h-48 overflow-y-auto border border-white/10 shadow-inner">
-                {logs.length === 0 && <span className="text-white/20">// System ready...</span>}
+                {logs.length === 0 && <span className="text-white/20">// Sistema listo...</span>}
                 {logs.map((log, i) => (
                     <div key={i} className="mb-1">
                         {">"} {log}
@@ -357,7 +357,7 @@ const Admin: React.FC<AdminProps> = ({ products, onUpdateCatalog }) => {
                                 </span>
                             </div>
                             <p className="text-xs text-white/60 leading-relaxed min-h-[40px]">
-                                {p.description || "No description available."}
+                                {p.description || "Sin descripción disponible."}
                             </p>
                         </div>
                     );

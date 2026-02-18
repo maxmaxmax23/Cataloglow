@@ -16,7 +16,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
           // Trigger exit animation
           setIsExiting(true);
           // Wait for exit animation to complete before unmounting
-          setTimeout(onComplete, 800); 
+          setTimeout(onComplete, 800);
           return 100;
         }
         // Non-linear progress for realism
@@ -29,55 +29,49 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
   }, [onComplete]);
 
   return (
-    <div 
-        className={`fixed inset-0 z-[100] flex flex-col items-center justify-center bg-background-dark text-white overflow-hidden transition-all duration-800 ease-in-out ${isExiting ? 'opacity-0 scale-105 pointer-events-none' : 'opacity-100'}`}
+    <div
+      className={`fixed inset-0 z-[100] flex flex-col items-center justify-center bg-background-dark text-white overflow-hidden transition-all duration-800 ease-in-out ${isExiting ? 'opacity-0 scale-105 pointer-events-none' : 'opacity-100'}`}
     >
-        {/* Background Overlay with Image - Parallax effect */}
-      <div className="absolute inset-0 z-0 opacity-40 mix-blend-overlay">
-        <img 
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_XYo3GjYbLXs1hvNI0MBF31gbB909CI-1YMIuMNFAMBxUca1S55tSIfr3h2LumH7zGKmT3CqeOw9LSGvUBRkjbkQJGR5UlhCtJp0QnmoNyWU5fY31ixa_F-MuoC1R6BlN9DeTO1cfhKsIHTYBL4C-8A3KN4NQTsmLY_Svx8okoscLmExBQlK-2MKK8tlZr42tUhoWVz4FO1WLmIt6meOsJPk9ddMGihyVYnbJIBtCehiIbd5v9WJHdMOM_vniiRC3geCeEL8-4-z-" 
-            className="w-full h-full object-cover animate-slow-zoom" 
-            alt="Marble Texture"
+      {/* Background Overlay with Image - Parallax effect */}
+      <div className="absolute inset-0 z-0 opacity-30 mix-blend-overlay">
+        <img
+          src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_XYo3GjYbLXs1hvNI0MBF31gbB909CI-1YMIuMNFAMBxUca1S55tSIfr3h2LumH7zGKmT3CqeOw9LSGvUBRkjbkQJGR5UlhCtJp0QnmoNyWU5fY31ixa_F-MuoC1R6BlN9DeTO1cfhKsIHTYBL4C-8A3KN4NQTsmLY_Svx8okoscLmExBQlK-2MKK8tlZr42tUhoWVz4FO1WLmIt6meOsJPk9ddMGihyVYnbJIBtCehiIbd5v9WJHdMOM_vniiRC3geCeEL8-4-z-"
+          className="w-full h-full object-cover animate-slow-zoom grayscale"
+          alt="Marble Texture"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-black/90"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/80 to-black"></div>
       </div>
 
       <div className={`relative z-10 flex flex-col items-center transition-all duration-700 transform ${isExiting ? 'translate-y-10 opacity-0' : 'translate-y-0'}`}>
-        <div className="relative w-24 h-24 mb-6 flex items-center justify-center animate-blur-in">
-            <div className="absolute inset-0 border border-primary/30 rounded-full scale-110 animate-pulse-glow"></div>
-            <span className="material-icons text-6xl text-primary drop-shadow-[0_0_10px_rgba(242,185,13,0.5)]">diamond</span>
+        <div className="relative mb-8 flex items-center justify-center animate-blur-in">
+          <span className="material-symbols-outlined text-7xl text-primary animate-pulse-slow">flare</span>
         </div>
-        
-        <h1 className="text-5xl md:text-7xl font-light tracking-[0.3em] uppercase gold-text-shimmer mb-4 animate-slide-up" style={{ animationDelay: '0.2s' }}>
-          AURA
+
+        <h1 className="text-6xl md:text-8xl font-extrabold tracking-[0.2em] uppercase text-transparent bg-clip-text bg-gradient-to-r from-primary-dark via-primary to-primary-dark animate-shimmer mb-6" style={{ backgroundSize: '200% auto' }}>
+          AURUM
         </h1>
-        <p className="text-primary text-xs tracking-[0.6em] uppercase font-light opacity-80 animate-slide-up" style={{ animationDelay: '0.4s' }}>
-          Cosmetics & Luxury
+        <p className="text-stone-300 text-xs tracking-[0.8em] uppercase font-bold animate-slide-up" style={{ animationDelay: '0.4s' }}>
+          Opulencia Científica
         </p>
 
-        <div className="mt-20 flex flex-col items-center w-64 animate-fade-in" style={{ animationDelay: '0.6s' }}>
-             <div className="text-[10px] tracking-[0.3em] uppercase text-white/50 mb-4">
-                Initialising Experience
-            </div>
-            <div className="w-full h-[1px] bg-white/10 relative overflow-hidden rounded-full">
-                <div 
-                    className="absolute left-0 top-0 h-full bg-primary transition-all duration-100 ease-out shadow-[0_0_15px_rgba(242,185,13,0.8)]"
-                    style={{ width: `${progress}%` }}
-                ></div>
-            </div>
+        <div className="mt-24 flex flex-col items-center w-64 animate-fade-in" style={{ animationDelay: '0.6s' }}>
+          <div className="w-full h-[2px] bg-white/10 relative overflow-hidden">
+            <div
+              className="absolute left-0 top-0 h-full bg-primary transition-all duration-100 ease-out shadow-[0_0_15px_rgba(212,175,53,0.8)]"
+              style={{ width: `${progress}%` }}
+            ></div>
+          </div>
+          <div className="text-[9px] tracking-[0.3em] uppercase text-primary/60 mt-4 font-bold">
+            Sintetizando
+          </div>
         </div>
       </div>
 
-      <div className="absolute bottom-10 flex items-center space-x-8 z-10 opacity-50 animate-fade-in" style={{ animationDelay: '0.8s' }}>
-          <div className="text-center">
-             <div className="text-[8px] tracking-widest text-white/40 uppercase mb-1">Collection</div>
-             <div className="text-[10px] tracking-[0.2em] text-primary">FALL 2024</div>
-          </div>
-          <div className="h-6 w-[1px] bg-white/20"></div>
-          <div className="text-center">
-             <div className="text-[8px] tracking-widest text-white/40 uppercase mb-1">Origin</div>
-             <div className="text-[10px] tracking-[0.2em] text-primary">PARIS • MILAN</div>
-          </div>
+      <div className="absolute bottom-12 flex items-center space-x-12 z-10 opacity-40 animate-fade-in" style={{ animationDelay: '0.8s' }}>
+        <div className="text-center">
+          <div className="text-[10px] tracking-[0.2em] text-stone-500 uppercase mb-1">Establecido</div>
+          <div className="text-[12px] tracking-[0.2em] text-primary font-bold">MMXXIV</div>
+        </div>
       </div>
     </div>
   );

@@ -21,10 +21,10 @@ export const TopNav: React.FC<TopNavProps> = ({ onCartClick, cartCount, animateC
 
         {/* Desktop Navigation Links */}
         <div className="hidden md:flex items-center gap-8">
-          <a href="#" className="text-[11px] uppercase tracking-[0.2em] font-bold text-stone-400 hover:text-primary transition-colors">New Arrivals</a>
-          <a href="#" className="text-[11px] uppercase tracking-[0.2em] font-bold text-stone-400 hover:text-primary transition-colors">The Collection</a>
-          <a href="#" className="text-[11px] uppercase tracking-[0.2em] font-bold text-stone-400 hover:text-primary transition-colors">Scientific Opulence</a>
-          <a href="#" className="text-[11px] uppercase tracking-[0.2em] font-bold text-stone-400 hover:text-primary transition-colors">Journal</a>
+          <a href="#" className="text-[11px] uppercase tracking-[0.2em] font-bold text-stone-400 hover:text-primary transition-colors">Novedades</a>
+          <a href="#" className="text-[11px] uppercase tracking-[0.2em] font-bold text-stone-400 hover:text-primary transition-colors">La Colección</a>
+          <a href="#" className="text-[11px] uppercase tracking-[0.2em] font-bold text-stone-400 hover:text-primary transition-colors">Opulencia Científica</a>
+          <a href="#" className="text-[11px] uppercase tracking-[0.2em] font-bold text-stone-400 hover:text-primary transition-colors">Diario</a>
         </div>
 
         {/* Icons / Actions */}
@@ -59,10 +59,10 @@ interface BottomNavProps {
 
 export const BottomNav: React.FC<BottomNavProps> = ({ currentView, onChangeView }) => {
   const navItems = [
-    { id: 'HOME', icon: 'home', label: 'Home' },
-    { id: 'SHOP', icon: 'category', label: 'Shop' },
-    { id: 'SAVED', icon: 'favorite', label: 'Saved' },
-    { id: 'PROFILE', icon: 'person', label: 'Profile' },
+    { id: 'HOME', icon: 'home', label: 'Inicio' },
+    { id: 'SHOP', icon: 'category', label: 'Tienda' },
+    { id: 'SAVED', icon: 'favorite', label: 'Guardados' },
+    { id: 'PROFILE', icon: 'person', label: 'Perfil' },
   ];
 
   return (

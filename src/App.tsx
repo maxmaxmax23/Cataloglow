@@ -106,7 +106,7 @@ function App() {
       <div className="fixed inset-0 bg-black flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
           <div className="w-12 h-12 border border-primary/20 border-t-primary rounded-full animate-spin"></div>
-          <span className="text-[10px] tracking-[0.3em] uppercase text-primary animate-pulse">Syncing Inventory</span>
+          <span className="text-[10px] tracking-[0.3em] uppercase text-primary animate-pulse">Sincronizando Inventario</span>
         </div>
       </div>
     );
@@ -158,12 +158,12 @@ function App() {
         >
           <div className="text-white/40 flex flex-col items-center">
             <span className="material-icons text-6xl mb-4 text-primary/20 animate-float">favorite_border</span>
-            <p className="uppercase tracking-[0.2em] text-sm">Wishlist Empty</p>
+            <p className="uppercase tracking-[0.2em] text-sm">Lista de Deseos Vacía</p>
             <button
               onClick={() => setView('SHOP')}
               className="mt-8 text-primary border-b border-primary text-xs uppercase tracking-widest pb-1 hover:text-white hover:border-white transition-colors"
             >
-              Discover Products
+              Descubrir Productos
             </button>
           </div>
         </div>
@@ -175,7 +175,7 @@ function App() {
         >
           <div className="text-white/40 flex flex-col items-center">
             <span className="material-icons text-6xl mb-4 text-primary/20 animate-float">person_outline</span>
-            <p className="uppercase tracking-[0.2em] text-sm">Sign In to AURA</p>
+            <p className="uppercase tracking-[0.2em] text-sm">Iniciar Sesión en AURUM</p>
           </div>
         </div>
 
