@@ -30,39 +30,37 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
 
   return (
     <div
-      className={`fixed inset-0 z-[100] flex flex-col items-center justify-center bg-background-dark text-white overflow-hidden transition-all duration-800 ease-in-out ${isExiting ? 'opacity-0 scale-105 pointer-events-none' : 'opacity-100'}`}
+      className={`fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black text-white overflow-hidden transition-all duration-800 ease-in-out ${isExiting ? 'opacity-0 scale-105 pointer-events-none' : 'opacity-100'}`}
     >
-      {/* Background Overlay with Image - Parallax effect */}
-      <div className="absolute inset-0 z-0 opacity-30 mix-blend-overlay">
-        <img
-          src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_XYo3GjYbLXs1hvNI0MBF31gbB909CI-1YMIuMNFAMBxUca1S55tSIfr3h2LumH7zGKmT3CqeOw9LSGvUBRkjbkQJGR5UlhCtJp0QnmoNyWU5fY31ixa_F-MuoC1R6BlN9DeTO1cfhKsIHTYBL4C-8A3KN4NQTsmLY_Svx8okoscLmExBQlK-2MKK8tlZr42tUhoWVz4FO1WLmIt6meOsJPk9ddMGihyVYnbJIBtCehiIbd5v9WJHdMOM_vniiRC3geCeEL8-4-z-"
-          className="w-full h-full object-cover animate-slow-zoom grayscale"
-          alt="Marble Texture"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/80 to-black"></div>
+      {/* Background Overlay - Subtle Texture */}
+      <div className="absolute inset-0 z-0 opacity-40">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-neutral-900/50 via-black to-black"></div>
       </div>
 
       <div className={`relative z-10 flex flex-col items-center transition-all duration-700 transform ${isExiting ? 'translate-y-10 opacity-0' : 'translate-y-0'}`}>
-        <div className="relative mb-8 flex items-center justify-center animate-blur-in">
-          <span className="material-symbols-outlined text-7xl text-primary animate-pulse-slow">flare</span>
+        <div className="relative mb-6 flex items-center justify-center animate-blur-in">
+          <span className="material-symbols-outlined text-6xl text-primary animate-pulse-slow">flare</span>
         </div>
 
-        <h1 className="text-6xl md:text-8xl font-extrabold tracking-[0.2em] uppercase text-transparent bg-clip-text bg-gradient-to-r from-primary-dark via-primary to-primary-dark animate-shimmer mb-6" style={{ backgroundSize: '200% auto' }}>
+        {/* Logo Text - Solid Color for Visibility */}
+        <h1 className="text-5xl md:text-7xl font-extrabold tracking-[0.3em] uppercase text-primary mb-6 animate-scale-up border-y border-primary/20 py-4 px-8">
           AURUM
         </h1>
-        <p className="text-stone-300 text-xs tracking-[0.8em] uppercase font-bold animate-slide-up" style={{ animationDelay: '0.4s' }}>
-          Opulencia Científica
+
+        {/* New Tagline Options */}
+        <p className="text-stone-400 text-[10px] md:text-xs tracking-[0.6em] uppercase font-bold animate-fade-in" style={{ animationDelay: '0.4s' }}>
+          Lujo Redefinido
         </p>
 
-        <div className="mt-24 flex flex-col items-center w-64 animate-fade-in" style={{ animationDelay: '0.6s' }}>
-          <div className="w-full h-[2px] bg-white/10 relative overflow-hidden">
+        <div className="mt-20 flex flex-col items-center w-64 animate-fade-in" style={{ animationDelay: '0.6s' }}>
+          <div className="w-full h-[1px] bg-white/10 relative overflow-hidden">
             <div
-              className="absolute left-0 top-0 h-full bg-primary transition-all duration-100 ease-out shadow-[0_0_15px_rgba(212,175,53,0.8)]"
+              className="absolute left-0 top-0 h-full bg-primary transition-all duration-100 ease-out shadow-[0_0_10px_rgba(212,175,53,0.8)]"
               style={{ width: `${progress}%` }}
             ></div>
           </div>
           <div className="text-[9px] tracking-[0.3em] uppercase text-primary/60 mt-4 font-bold">
-            Sintetizando
+            Cargando
           </div>
         </div>
       </div>

@@ -28,7 +28,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ items, total, onClose }) =>
         <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
             <div className="absolute inset-0 bg-black/90 backdrop-blur-md" onClick={onClose}></div>
 
-            <div className="relative w-full max-w-md bg-[#0a0a08] border border-primary/30 rounded-xl p-1 overflow-hidden shadow-[0_0_50px_rgba(242,185,13,0.1)] animate-fade-in">
+            <div className="relative w-full max-w-md bg-background-dark border border-primary/30 rounded-xl p-1 overflow-hidden shadow-[0_0_50px_rgba(242,185,13,0.1)] animate-fade-in">
                 <div className="relative z-10 p-8 md:p-10 flex flex-col min-h-[500px]"
                     style={{
                         backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuD0kTKo9_sOFSSO9SYdhK4g-mGmAF2FiSxC_RLg-bGHuwYHDQMZGR9j4GP8o5wYWILMGjNZVnLdjX6-zQHkAw0BTWoxE9TQroTpvEAhcePjJTmR0WiUOrFmZudTs6mn4mbmDpDmUGg9pQeMiVUzYWqgk0bnU-7N_-xv_gQWwzyDHCqfeWHZRgONrQebxa2bXxbang70PHKJfn_xr2TflEdgW2K_Ji8GyUpbBKd-JTaCdBAbO3Qg30IHrUiIMjy6M_EdjKfFgGok8QSP")',

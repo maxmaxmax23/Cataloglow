@@ -6,15 +6,13 @@ export default {
   ],
   theme: {
     extend: {
-      colors: {
-        primary: "#d4af35", // AURUM Gold
-        "primary-dark": "#bf953f",
-        "primary-light": "#fcf6ba",
-        "background-dark": "#0a0a0a", // AURUM Deep Black
-        "background-light": "#f8f7f6",
-        "neutral-dark": "#1a1a1a",
-        "gold-muted": "#433d28",
-      },
+      primary: "#d4af35", // AURUM Gold
+      "primary-dark": "#aa8c2c", // Darker, less green
+      "primary-light": "#faeeb6",
+      "background-dark": "#020202", // Pure Deep Black (Rich)
+      "background-light": "#fcfcfc",
+      "neutral-dark": "#121212", // True Neutral
+      "gold-muted": "#594d2e", // Reduced green, more brown/gold
       fontFamily: {
         sans: ['Manrope', 'sans-serif'], // AURUM Typography
         display: ['Manrope', 'sans-serif'],

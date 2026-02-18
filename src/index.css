@@ -5,7 +5,7 @@
 @layer base {
     body {
         @apply bg-background-dark text-white font-sans antialiased;
-        background-color: #0a0a0a;
+        background-color: #020202;
         /* Fallback */
     }
 }
