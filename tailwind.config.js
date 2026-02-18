@@ -7,15 +7,24 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: '#D4AF37', // Gold
-        background: {
-          dark: '#0a0a0a',
-          card: '#1a1a1a',
-        }
+        primary: "#d4af35", // AURUM Gold
+        "primary-dark": "#bf953f",
+        "primary-light": "#fcf6ba",
+        "background-dark": "#0a0a0a", // AURUM Deep Black
+        "background-light": "#f8f7f6",
+        "neutral-dark": "#1a1a1a",
+        "gold-muted": "#433d28",
       },
       fontFamily: {
-        serif: ['Playfair Display', 'serif'],
-        sans: ['Inter', 'sans-serif'],
+        sans: ['Manrope', 'sans-serif'], // AURUM Typography
+        display: ['Manrope', 'sans-serif'],
+      },
+      borderRadius: {
+        DEFAULT: '2px', // Anti-rounded / Sharp
+        lg: '4px',
+        xl: '8px',
+        '2xl': '12px',
+        full: '9999px',
       },
       animation: {
         'fade-in': 'fadeIn 0.5s ease-in-out',
