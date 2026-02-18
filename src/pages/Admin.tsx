@@ -393,6 +393,18 @@ const Admin: React.FC<AdminProps> = ({ products, onUpdateCatalog }) => {
                     </div>
                 </div>
             </div>
+            {/* PRODUCT EDITOR MODAL */}
+            <ProductEditor
+                isOpen={isEditorOpen}
+                product={editingProduct}
+                onClose={() => {
+                    setIsEditorOpen(false);
+                    setEditingProduct(null);
+                }}
+                onSave={handleSaveProduct}
+                onDelete={handleDeleteProduct}
+                categories={Array.from(new Set(localProducts.map(p => p.category)))}
+            />
         </div>
     );
 };
