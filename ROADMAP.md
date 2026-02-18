@@ -41,16 +41,21 @@ This document tracks all implemented features, pending tasks, and future ideas f
 
 ## 🚧 In Progress / Next Steps
 
-### 6. Admin Dashboard Overhaul & Management (Next Phase)
+### 6. Admin Dashboard Overhaul (Completed)
 *Goal: Build a powerful, AURUM-styled "Command Center" for full catalog control.*
--   [ ] **Admin UI Redesign**: Apply the "Scientific Opulence" dark theme to the Admin panel.
--   [ ] **Product Management**:
-    -   [ ] **Editor Form**: Edit Name, Price, SKU, Stock, Category, and Images.
-    -   [ ] **Create/Delete**: Ability to add new items or remove obsolete ones.
--   [ ] **Category Management**: Interface to manage product categories and filters.
--   [ ] **Firebase Sync**:
-    -   [ ] **Push**: Save local changes to the Cloud Manifest.
-    -   [ ] **Pull**: Force refresh data from the Cloud.
-    -   [ ] **Real-time**: Listen for updates (Optional).
+-   [x] **Admin UI Redesign**: Applied the "Scientific Opulence" dark theme to the Admin panel.
+-   [x] **Product Management**:
+    -   [x] **Editor Form**: Edit Name, Price, SKU, Stock, Category, and Images.
+    -   [x] **Create/Delete**: Ability to add new items or remove obsolete ones.
+-   [x] **Category Management**: Integrated category creation into the Product Editor.
+-   [x] **Firebase Sync**:
+    -   [x] **Push**: Save local changes to the Cloud Manifest.
+    -   [x] **Pull**: Force refresh data from the Cloud.
+
+---
+
+## 🚧 In Progress / Next Steps
+
+*(Awaiting new objectives)*
 
 

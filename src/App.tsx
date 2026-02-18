@@ -120,6 +120,10 @@ function App() {
         onCartClick={() => setIsCartOpen(true)}
         animateCart={animateCart}
         isAdmin={view === 'ADMIN'}
+        onLogoClick={() => {
+          setView('HOME');
+          if (view === 'ADMIN') window.history.pushState({}, '', '/'); // Update URL if leaving Admin
+        }}
       />
 
       {/* Main Content Area - Each view is a cached scrollable container */}

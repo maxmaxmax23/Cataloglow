@@ -168,6 +168,30 @@ const Admin: React.FC<AdminProps> = ({ products, onUpdateCatalog }) => {
         }
     };
 
+    const handlePullFromCloud = async () => {
+        if (hasUnsavedChanges && !confirm("You have unsaved changes. Discard them and pull from cloud?")) return;
+
+        setIsProcessing(true);
+        addLog("Pulling from Firestore...");
+        try {
+            // We can re-use the App's fetch logic or generic fetch here.
+            // For simplicity, we trigger a page reload which is the cleanest way to "reset" everything
+            // OR we fetch manually. Let's fetch manually to stay SPA.
+
+            // Dynamic import to avoid circular dependency issues if any, or just fetch directly
+            // Since we are inside Admin, let's just use the prop if possible? 
+            // Actually, App.tsx handles the initial fetch.
+            // We'll require the user to refresh or we implement a fetch here.
+
+            // Simplest:
+            window.location.reload();
+
+        } catch (err: any) {
+            addLog(`Error: ${err.message}`);
+            setIsProcessing(false);
+        }
+    };
+
     // Filter Logic
     const filteredProducts = localProducts.filter(p =>
         p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -276,14 +300,30 @@ const Admin: React.FC<AdminProps> = ({ products, onUpdateCatalog }) => {
                     </div>
 
                     {/* Cloud Actions */}
-                    <div className={`flex gap-2 transition-opacity ${hasUnsavedChanges ? 'opacity-100' : 'opacity-50'}`}>
+                    <div className="flex gap-2">
+                        <button
+                            onClick={() => setIsEditorOpen(true)}
+                            className="flex-1 flex flex-col items-center justify-center gap-1 text-[10px] uppercase tracking-widest py-3 border border-white/10 hover:border-primary hover:text-primary transition-colors text-white/60"
+                        >
+                            <span className="material-symbols-outlined text-lg">add</span>
+                            New
+                        </button>
+
+                        <button
+                            onClick={handlePullFromCloud}
+                            className="flex-1 flex flex-col items-center justify-center gap-1 text-[10px] uppercase tracking-widest py-3 border border-white/10 hover:border-blue-400 hover:text-blue-400 transition-colors text-white/60"
+                        >
+                            <span className="material-symbols-outlined text-lg">cloud_download</span>
+                            Pull
+                        </button>
+
                         <button
                             onClick={handleSaveToCloud}
                             disabled={!hasUnsavedChanges || isProcessing}
                             className={`flex-1 flex flex-col items-center justify-center gap-1 text-[10px] uppercase tracking-widest py-3 border transition-colors ${hasUnsavedChanges ? 'bg-primary text-black border-primary hover:bg-white' : 'border-white/10 text-white/20 cursor-not-allowed'}`}
                         >
                             <span className="material-symbols-outlined text-lg">cloud_upload</span>
-                            Push to Cloud
+                            Push
                         </button>
                     </div>
                 </div>

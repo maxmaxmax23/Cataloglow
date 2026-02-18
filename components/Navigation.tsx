@@ -6,14 +6,18 @@ interface TopNavProps {
   cartCount: number;
   animateCart?: boolean;
   isAdmin?: boolean;
+  onLogoClick?: () => void;
 }
 
-export const TopNav: React.FC<TopNavProps> = ({ onCartClick, cartCount, animateCart, isAdmin }) => {
+export const TopNav: React.FC<TopNavProps> = ({ onCartClick, cartCount, animateCart, isAdmin, onLogoClick }) => {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background-dark/80 backdrop-blur-md border-b border-white/5 px-6 lg:px-12 py-4 transition-all duration-300">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         {/* Logo Section */}
-        <div className="flex items-center gap-2 group cursor-pointer">
+        <div
+          className="flex items-center gap-2 group cursor-pointer"
+          onClick={onLogoClick}
+        >
           <span className="material-symbols-outlined text-primary text-3xl group-hover:rotate-180 transition-transform duration-700">flare</span>
           <h1 className="text-2xl font-extrabold tracking-[0.2em] text-white uppercase group-hover:text-primary transition-colors duration-300">
             AURUM
