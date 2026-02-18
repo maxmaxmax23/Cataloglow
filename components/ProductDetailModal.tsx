@@ -107,7 +107,8 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, produc
 
             {/* Modal Container */}
             <div
-                className={`relative w-full h-full md:w-[90%] md:h-[90%] md:max-w-6xl bg-background-dark shadow-2xl flex flex-col md:flex-row overflow-hidden transition-all duration-500 ease-out transform ${product && !isClosing ? 'translate-y-0 opacity-100 scale-100' : 'translate-y-12 opacity-0 scale-95'}`}
+                className={`relative w-full max-w-6xl h-full md:h-[85vh] bg-background-dark md:rounded-lg overflow-hidden flex flex-col md:flex-row shadow-2xl animate-fade-in transition-all duration-500 ease-out transform ${product && !isClosing ? 'translate-y-0 opacity-100 scale-100' : 'translate-y-12 opacity-0 scale-95'}`}
+                onClick={e => e.stopPropagation()}
                 style={{
                     transform: isClosing ? 'translateY(100%)' : ((isDragging && window.innerWidth < 768) ? `translateY(${Math.max(0, dragY)}px)` : undefined),
                     transition: isDragging ? 'none' : undefined

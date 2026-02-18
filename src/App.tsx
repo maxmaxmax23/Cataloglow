@@ -125,7 +125,7 @@ function App() {
       <main className="absolute inset-0 top-0 w-full h-full">
         {/* Home View Container */}
         <div
-          className={`absolute inset-0 overflow-y-auto hide-scrollbar transition-opacity duration-500 ease-in-out ${view === 'HOME' ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
+          className={`absolute inset-0 overflow-y-auto hide-scrollbar bg-background-dark transition-opacity duration-500 ease-in-out ${view === 'HOME' ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
             }`}
         >
           <HomeView
@@ -139,7 +139,7 @@ function App() {
 
         {/* Shop View Container */}
         <div
-          className={`absolute inset-0 overflow-y-auto hide-scrollbar transition-opacity duration-500 ease-in-out ${view === 'SHOP' ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
+          className={`absolute inset-0 overflow-y-auto hide-scrollbar bg-background-dark transition-opacity duration-500 ease-in-out ${view === 'SHOP' ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
             }`}
         >
           <ShopView
@@ -153,7 +153,7 @@ function App() {
 
         {/* Saved View Placeholder */}
         <div
-          className={`absolute inset-0 overflow-y-auto hide-scrollbar flex items-center justify-center transition-opacity duration-500 ease-in-out ${view === 'SAVED' ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
+          className={`absolute inset-0 overflow-y-auto hide-scrollbar bg-background-dark flex items-center justify-center transition-opacity duration-500 ease-in-out ${view === 'SAVED' ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
             }`}
         >
           <div className="text-white/40 flex flex-col items-center">
@@ -170,7 +170,7 @@ function App() {
 
         {/* Profile View Placeholder */}
         <div
-          className={`absolute inset-0 overflow-y-auto hide-scrollbar flex items-center justify-center transition-opacity duration-500 ease-in-out ${view === 'PROFILE' ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
+          className={`absolute inset-0 overflow-y-auto hide-scrollbar bg-background-dark flex items-center justify-center transition-opacity duration-500 ease-in-out ${view === 'PROFILE' ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
             }`}
         >
           <div className="text-white/40 flex flex-col items-center">
@@ -181,7 +181,7 @@ function App() {
 
         {/* Admin View */}
         <div
-          className={`absolute inset-0 overflow-y-auto hide-scrollbar transition-opacity duration-500 ease-in-out ${view === 'ADMIN' ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'}`}
+          className={`absolute inset-0 overflow-y-auto hide-scrollbar bg-background-dark transition-opacity duration-500 ease-in-out ${view === 'ADMIN' ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'}`}
         >
           <Admin products={products} onUpdateCatalog={setProducts} />
           {/* Spacer for bottom nav */}

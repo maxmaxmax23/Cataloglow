@@ -15,7 +15,7 @@ const HomeView: React.FC<HomeViewProps> = ({ products, onProductClick, onChangeV
     const featured = products.slice(0, 4); // Just take first 4 for featured if no specific flag
 
     return (
-        <div className="pb-32">
+        <div className="pb-32 bg-background-dark">
             {/* Hero Section */}
             <section className="relative h-[75vh] w-full overflow-hidden group">
                 <img
@@ -89,7 +89,7 @@ const HomeView: React.FC<HomeViewProps> = ({ products, onProductClick, onChangeV
             </section>
 
             {/* Featured Products Grid */}
-            <section className="px-6 lg:px-12 py-24">
+            <section className="px-6 lg:px-12 py-24 bg-background-dark">
                 <RevealOnScroll className="mb-16 text-center">
                     <span className="text-primary text-xs font-bold tracking-[0.3em] uppercase mb-4 block">Curación</span>
                     <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight">Lo Mejor de la Temporada</h2>

@@ -76,7 +76,7 @@ const ShopView: React.FC<ShopViewProps> = ({ products, onProductClick, onAddToCa
   };
 
   return (
-    <div className="pt-24 pb-32 min-h-screen">
+    <div className="pt-24 pb-32 min-h-screen bg-background-dark">
       {/* Header */}
       <div className="text-center mb-8 px-4 animate-fade-in">
         <h1 className="text-3xl md:text-5xl font-serif font-light mb-2">
