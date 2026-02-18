@@ -11,17 +11,17 @@ export const generateDescription = async (
 
     // Construct a prompt based on available product data
     const prompt = `
-    Write a short, luxurious, and captivating product description (max 2 sentences) for a high-end cosmetic product.
+    Escribe una descripción de producto corta, lujosa y cautivadora (máximo 2 oraciones) para un producto cosmético de alta gama en ESPAÑOL.
     
     Product Name: ${product.name}
     Category: ${product.category}
     Subtitle: ${product.subtitle}
-    Benefits: ${product.benefits?.join(", ") || "Premium quality"}
+    Benefits: ${product.benefits?.join(", ") || "Calidad Premium"}
     
-    The tone should be sophisticated, elegant, and persuasive. 
-    Focus on the benefits and the feeling of using the product.
-    Do NOT use hashtags.
-    Do NOT include the product name in the description if possible, just describe it.
+    El tono debe ser sofisticado, elegante y persuasivo. 
+    Enfócate en los beneficios y la sensación de usar el producto.
+    NO uses hashtags.
+    NO incluyas el nombre del producto en la descripción si es posible, solo descríbelo.
   `;
 
     try {
