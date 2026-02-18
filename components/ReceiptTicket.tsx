@@ -19,10 +19,15 @@ const ReceiptTicket = forwardRef<HTMLDivElement, ReceiptTicketProps>(({ items, t
 
     return (
         <div ref={ref} className="bg-[#020202] text-white p-8 w-[400px] border border-primary/20 font-sans relative overflow-hidden" style={{ borderRadius: '0px' }}>
-            {/* Background Texture */}
-            <div className="absolute inset-0 z-0 opacity-10 pointer-events-none">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary/20 via-black to-black"></div>
+            {/* Marble Background Texture */}
+            <div className="absolute inset-0 z-0 opacity-20 pointer-events-none mix-blend-overlay">
+                <img
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0kTKo9_sOFSSO9SYdhK4g-mGmAF2FiSxC_RLg-bGHuwYHDQMZGR9j4GP8o5wYWILMGjNZVnLdjX6-zQHkAw0BTWoxE9TQroTpvEAhcePjJTmR0WiUOrFmZudTs6mn4mbmDpDmUGg9pQeMiVUzYWqgk0bnU-7N_-xv_gQWwzyDHCqfeWHZRgONrQebxa2bXxbang70PHKJfn_xr2TflEdgW2K_Ji8GyUpbBKd-JTaCdBAbO3Qg30IHrUiIMjy6M_EdjKfFgGok8QSP"
+                    className="w-full h-full object-cover grayscale contrast-125"
+                    alt="Marble Texture"
+                />
             </div>
+            <div className="absolute inset-0 z-0 bg-gradient-to-b from-black/80 via-black/90 to-black pointer-events-none"></div>
 
             <div className="relative z-10 flex flex-col items-center">
                 {/* Header */}
@@ -35,17 +40,17 @@ const ReceiptTicket = forwardRef<HTMLDivElement, ReceiptTicketProps>(({ items, t
                 <div className="w-full border-b border-primary/20 border-dashed mb-6"></div>
 
                 {/* Customer Details */}
-                <div className="w-full mb-6">
-                    <div className="flex justify-between items-end mb-2">
-                        <span className="text-[10px] uppercase tracking-widest text-white/40">Cliente</span>
-                        <span className="text-xs font-bold text-white uppercase">{customerName}</span>
+                <div className="w-full mb-6 text-right">
+                    <div className="flex justify-between items-start mb-2">
+                        <span className="text-[9px] uppercase tracking-widest text-white/40 mt-0.5">Cliente</span>
+                        <span className="text-xs font-bold text-white uppercase text-right leading-tight max-w-[200px]">{customerName}</span>
                     </div>
-                    <div className="flex justify-between items-end mb-2">
-                        <span className="text-[10px] uppercase tracking-widest text-white/40">Destino</span>
-                        <span className="text-xs font-bold text-white uppercase text-right max-w-[150px] truncate">{customerAddress}</span>
+                    <div className="flex justify-between items-start mb-2">
+                        <span className="text-[9px] uppercase tracking-widest text-white/40 mt-0.5">Destino</span>
+                        <span className="text-xs font-bold text-white uppercase text-right leading-tight max-w-[200px] break-words">{customerAddress}</span>
                     </div>
                     <div className="flex justify-between items-end">
-                        <span className="text-[10px] uppercase tracking-widest text-white/40">Fecha</span>
+                        <span className="text-[9px] uppercase tracking-widest text-white/40">Fecha</span>
                         <span className="text-xs font-mono text-primary/80">{date}</span>
                     </div>
                 </div>
@@ -53,14 +58,17 @@ const ReceiptTicket = forwardRef<HTMLDivElement, ReceiptTicketProps>(({ items, t
                 <div className="w-full border-b border-white/10 mb-6"></div>
 
                 {/* Items List */}
-                <div className="w-full space-y-3 mb-6">
+                <div className="w-full space-y-4 mb-6">
                     {items.map((item, index) => (
-                        <div key={index} className="flex justify-between items-start text-xs">
-                            <div className="flex gap-2">
-                                <span className="text-primary font-mono">{item.quantity}x</span>
-                                <span className="text-white/80 uppercase tracking-wide">{item.name}</span>
+                        <div key={index} className="flex justify-between items-start text-xs group">
+                            <div className="flex gap-3">
+                                <span className="text-primary font-mono pt-0.5">{item.quantity}x</span>
+                                <div className="flex flex-col">
+                                    <span className="text-white/90 uppercase tracking-wide font-bold">{item.name}</span>
+                                    <span className="text-[8px] text-white/30 tracking-wider font-mono">SKU: {item.id.substring(0, 8).toUpperCase()}</span>
+                                </div>
                             </div>
-                            <span className="text-white font-mono">${(item.price * item.quantity).toFixed(2)}</span>
+                            <span className="text-white font-mono pt-0.5">${(item.price * item.quantity).toFixed(2)}</span>
                         </div>
                     ))}
                 </div>

@@ -94,7 +94,7 @@ function App() {
     );
   };
 
-  const cartTotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0) * 1.08; // including tax
+  const cartTotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0); // Tax removed per user request
 
   if (showSplash) {
     return <SplashScreen onComplete={() => setShowSplash(false)} />;
