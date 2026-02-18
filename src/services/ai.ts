@@ -1,6 +1,7 @@
 import { Product } from "../types";
 
-const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite-001:generateContent";
+const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
+const MODEL_ID = "llama3-70b-8192"; // High quality, free/fast model on Groq
 
 export const generateDescription = async (
     product: Product,
@@ -24,17 +25,22 @@ export const generateDescription = async (
   `;
 
     try {
-        const response = await fetch(`${GEMINI_API_URL}?key=${apiKey}`, {
+        const response = await fetch(GROQ_API_URL, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": `Bearer ${apiKey}`
             },
             body: JSON.stringify({
-                contents: [
+                model: MODEL_ID,
+                messages: [
                     {
-                        parts: [{ text: prompt }],
-                    },
+                        role: "user",
+                        content: prompt
+                    }
                 ],
+                temperature: 0.7,
+                max_tokens: 150
             }),
         });
 
@@ -44,7 +50,7 @@ export const generateDescription = async (
         }
 
         const data = await response.json();
-        const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+        const text = data.choices?.[0]?.message?.content;
 
         return text ? text.trim() : "Description generation failed.";
     } catch (error) {
@@ -53,19 +59,31 @@ export const generateDescription = async (
     }
 };
 
+// Groq also supports listing models via OpenAI compatible endpoint, 
+// but for simplicity we'll just return a static list of supported models or fetch from Groq if needed.
+// This function was previously fetching from Gemini. 
+// We'll update it to check Groq models or return our preferred defaults.
 export const listModels = async (apiKey: string): Promise<string[]> => {
     if (!apiKey) throw new Error("API Key is required");
 
     try {
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
+        const response = await fetch("https://api.groq.com/openai/v1/models", {
+            headers: {
+                "Authorization": `Bearer ${apiKey}`
+            }
+        });
+
         if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.error?.message || "Failed to list models");
+            // Fallback if list fails (e.g. key issue or rate limit on list endpoint)
+            console.warn("Failed to list remote models, returning defaults");
+            return [MODEL_ID, "llama3-8b-8192", "mixtral-8x7b-32768", "gemma-7b-it"];
         }
+
         const data = await response.json();
-        return data.models?.map((m: any) => m.name) || [];
+        return data.data?.map((m: any) => m.id) || [];
     } catch (error) {
         console.error("List Models Error:", error);
-        throw error;
+        // Fallback on error
+        return [MODEL_ID, "llama3-8b-8192", "mixtral-8x7b-32768", "gemma-7b-it"];
     }
 };

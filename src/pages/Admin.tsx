@@ -20,7 +20,7 @@ const Admin: React.FC<AdminProps> = ({ products, onUpdateCatalog }) => {
     const [error, setError] = useState("");
 
     const [apiKey, setApiKey] = useState(
-        localStorage.getItem("gemini_api_key") || ""
+        import.meta.env.VITE_GROQ_API_KEY || localStorage.getItem("groq_api_key") || ""
     );
     const [localProducts, setLocalProducts] = useState<Product[]>([]);
     const [isProcessing, setIsProcessing] = useState(false);
@@ -62,7 +62,7 @@ const Admin: React.FC<AdminProps> = ({ products, onUpdateCatalog }) => {
     };
 
     const handleSaveKey = () => {
-        localStorage.setItem("gemini_api_key", apiKey);
+        localStorage.setItem("groq_api_key", apiKey);
         addLog("API Key saved to local storage.");
     };
 
@@ -77,7 +77,7 @@ const Admin: React.FC<AdminProps> = ({ products, onUpdateCatalog }) => {
             addLog("--- AVAILABLE MODELS ---");
             models.forEach(m => addLog(m));
             addLog("------------------------");
-            addLog("If you see 'models/gemini-1.5-flash', it should work.");
+            addLog("If you see 'llama3-70b/8b', it should work.");
         } catch (err: any) {
             addLog(`Error listing models: ${err.message}`);
         }
@@ -86,7 +86,7 @@ const Admin: React.FC<AdminProps> = ({ products, onUpdateCatalog }) => {
     // 1. GENERATE DESCRIPTIONS
     const handleGenerateDescriptions = async () => {
         if (!apiKey) {
-            alert("Please enter a Gemini API Key first.");
+            alert("Please enter a Groq API Key first.");
             return;
         }
 
@@ -277,7 +277,7 @@ const Admin: React.FC<AdminProps> = ({ products, onUpdateCatalog }) => {
             {/* API Key Section */}
             <div className="mb-8 bg-white/5 p-6 rounded-lg border border-white/10">
                 <label className="block text-xs uppercase tracking-widest mb-2 text-primary">
-                    Gemini API Key
+                    Groq API Key (Llama 3)
                 </label>
                 <div className="flex gap-4">
                     <input
@@ -301,7 +301,7 @@ const Admin: React.FC<AdminProps> = ({ products, onUpdateCatalog }) => {
                     </button>
                 </div>
                 <p className="mt-2 text-[10px] text-white/40">
-                    Key is stored locally in your browser. Get one at aistudio.google.com (Free).
+                    Key is stored locally in your browser. Get one at console.groq.com (Free).
                 </p>
             </div>
 
