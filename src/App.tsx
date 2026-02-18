@@ -114,11 +114,12 @@ function App() {
 
   return (
     <div className="relative h-full w-full overflow-hidden">
-      {/* Top Nav is shared and fixed */}
+      {/* Top Nav is shared and fixed (Admin Mode aware) */}
       <TopNav
         cartCount={cart.reduce((a, b) => a + b.quantity, 0)}
         onCartClick={() => setIsCartOpen(true)}
         animateCart={animateCart}
+        isAdmin={view === 'ADMIN'}
       />
 
       {/* Main Content Area - Each view is a cached scrollable container */}
@@ -184,13 +185,15 @@ function App() {
           className={`absolute inset-0 overflow-y-auto hide-scrollbar bg-background-dark transition-opacity duration-500 ease-in-out ${view === 'ADMIN' ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'}`}
         >
           <Admin products={products} onUpdateCatalog={setProducts} />
-          {/* Spacer for bottom nav */}
-          <div className="h-24"></div>
+          {/* Spacer for bottom nav - NOT needed in Admin but kept for safe scroll */}
+          <div className="h-24 md:h-0"></div>
         </div>
 
       </main>
 
-      <BottomNav currentView={view} onChangeView={setView} />
+      {view !== 'ADMIN' && (
+        <BottomNav currentView={view} onChangeView={setView} />
+      )}
 
       {/* Modals & Drawers - Outside of main scroll area */}
       <ProductDetailModal

@@ -5,9 +5,10 @@ interface TopNavProps {
   onCartClick: () => void;
   cartCount: number;
   animateCart?: boolean;
+  isAdmin?: boolean;
 }
 
-export const TopNav: React.FC<TopNavProps> = ({ onCartClick, cartCount, animateCart }) => {
+export const TopNav: React.FC<TopNavProps> = ({ onCartClick, cartCount, animateCart, isAdmin }) => {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background-dark/80 backdrop-blur-md border-b border-white/5 px-6 lg:px-12 py-4 transition-all duration-300">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
@@ -19,13 +20,15 @@ export const TopNav: React.FC<TopNavProps> = ({ onCartClick, cartCount, animateC
           </h1>
         </div>
 
-        {/* Desktop Navigation Links */}
-        <div className="hidden md:flex items-center gap-8">
-          <a href="#" className="text-[11px] uppercase tracking-[0.2em] font-bold text-stone-400 hover:text-primary transition-colors">Novedades</a>
-          <a href="#" className="text-[11px] uppercase tracking-[0.2em] font-bold text-stone-400 hover:text-primary transition-colors">La Colección</a>
-          <a href="#" className="text-[11px] uppercase tracking-[0.2em] font-bold text-stone-400 hover:text-primary transition-colors">Opulencia Científica</a>
-          <a href="#" className="text-[11px] uppercase tracking-[0.2em] font-bold text-stone-400 hover:text-primary transition-colors">Diario</a>
-        </div>
+        {/* Desktop Navigation Links - HIDDEN IN ADMIN */}
+        {!isAdmin && (
+          <div className="hidden md:flex items-center gap-8">
+            <a href="#" className="text-[11px] uppercase tracking-[0.2em] font-bold text-stone-400 hover:text-primary transition-colors">Novedades</a>
+            <a href="#" className="text-[11px] uppercase tracking-[0.2em] font-bold text-stone-400 hover:text-primary transition-colors">La Colección</a>
+            <a href="#" className="text-[11px] uppercase tracking-[0.2em] font-bold text-stone-400 hover:text-primary transition-colors">Opulencia Científica</a>
+            <a href="#" className="text-[11px] uppercase tracking-[0.2em] font-bold text-stone-400 hover:text-primary transition-colors">Diario</a>
+          </div>
+        )}
 
         {/* Icons / Actions */}
         <div className="flex items-center gap-6">
@@ -33,15 +36,18 @@ export const TopNav: React.FC<TopNavProps> = ({ onCartClick, cartCount, animateC
             <span className="material-symbols-outlined">search</span>
           </button>
 
-          <button
-            className={`relative text-stone-300 hover:text-primary transition-colors ${animateCart ? 'scale-110 text-primary' : ''}`}
-            onClick={onCartClick}
-          >
-            <span className="material-symbols-outlined">shopping_bag</span>
-            <span className={`absolute -top-1 -right-1 bg-primary text-background-dark text-[9px] font-bold px-1 rounded-sm transition-all duration-300 ${cartCount > 0 ? 'opacity-100 scale-100' : 'opacity-0 scale-0'}`}>
-              {cartCount}
-            </span>
-          </button>
+          {/* Cart - HIDDEN IN ADMIN */}
+          {!isAdmin && (
+            <button
+              className={`relative text-stone-300 hover:text-primary transition-colors ${animateCart ? 'scale-110 text-primary' : ''}`}
+              onClick={onCartClick}
+            >
+              <span className="material-symbols-outlined">shopping_bag</span>
+              <span className={`absolute -top-1 -right-1 bg-primary text-background-dark text-[9px] font-bold px-1 rounded-sm transition-all duration-300 ${cartCount > 0 ? 'opacity-100 scale-100' : 'opacity-0 scale-0'}`}>
+                {cartCount}
+              </span>
+            </button>
+          )}
 
           <button className="hidden md:block text-stone-300 hover:text-primary transition-colors">
             <span className="material-symbols-outlined">account_circle</span>
