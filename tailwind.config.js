@@ -11,7 +11,8 @@ export default {
       "primary-light": "#faeeb6",
       "background-dark": "#020202", // Pure Deep Black (Rich)
       "background-light": "#fcfcfc",
-      "neutral-dark": "#121212", // True Neutral
+      "neutral-dark": "#080808", // Pure Dark Gray, no warmth
+      "background-card": "#050505", // Card background
       "gold-muted": "#594d2e", // Reduced green, more brown/gold
       fontFamily: {
         sans: ['Manrope', 'sans-serif'], // AURUM Typography

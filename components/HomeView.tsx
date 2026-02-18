@@ -21,18 +21,18 @@ const HomeView: React.FC<HomeViewProps> = ({ products, onProductClick, onChangeV
                 <img
                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuAgSKVGYLwTHw67P6JZiwmWNY6z2aezTC-H7KNX-1mffbewdiXmBCdOf4M2i5-leEjm2usfs_R_rLqbGRnyPWDfh4Iwl-xYdVtJUyb8cUgMLtAlgVY0ISN4vjoWs9TDM0UCsBzdlNJMbtZIBaERH0yqyHJR9ySna9_x4yJ9VclpnryO5NPqh7sQ4onAb-u-jfcQq9ehRdqwpzfCwTivSWGpibYStFukMdSQ1SMv7e8zISS4YdkOYj1Kcxy-Y2Xfal85MbdRblLx1An6"
                     alt="Hero Model"
-                    className="w-full h-full object-cover transition-transform duration-[3s] group-hover:scale-105 ease-in-out grayscale-[30%] group-hover:grayscale-0"
+                    className="w-full h-full object-cover transition-transform duration-[3s] group-hover:scale-105 ease-in-out grayscale-[100%] group-hover:grayscale-0"
                 />
-                <div className="absolute inset-0 bg-black/40"></div>
+                <div className="absolute inset-0 bg-black/60"></div>
 
                 <div className="absolute bottom-0 left-0 p-8 md:p-16 max-w-3xl">
                     <span className="text-primary text-xs font-bold tracking-[0.5em] uppercase mb-6 block animate-slide-up opacity-0" style={{ animationDelay: '0.1s' }}>
                         Scientific Opulence
                     </span>
                     <h1 className="text-5xl md:text-7xl font-extrabold text-white mb-8 leading-none tracking-tighter animate-slide-up opacity-0" style={{ animationDelay: '0.3s' }}>
-                        AURUM: <span className="font-light italic text-stone-300">The Alchemist's</span> Secret
+                        AURUM: <span className="font-light italic text-neutral-400">The Alchemist's</span> Secret
                     </h1>
-                    <p className="text-stone-300 text-sm md:text-lg font-light leading-relaxed mb-10 max-w-xl animate-slide-up opacity-0" style={{ animationDelay: '0.5s' }}>
+                    <p className="text-neutral-300 text-sm md:text-lg font-light leading-relaxed mb-10 max-w-xl animate-slide-up opacity-0" style={{ animationDelay: '0.5s' }}>
                         Experimenta la intersección de la dermatología avanzada y el lujo puro con nuestros tratamientos restauradores infundidos con oro de 24K.
                     </p>
                     <div className="flex gap-6 animate-slide-up opacity-0" style={{ animationDelay: '0.7s' }}>
@@ -79,7 +79,7 @@ const HomeView: React.FC<HomeViewProps> = ({ products, onProductClick, onChangeV
 
                                     <div className="absolute bottom-6 left-6">
                                         <p className="text-xl font-bold text-white group-hover:text-primary transition-colors duration-300">{cat.name}</p>
-                                        <p className="text-[10px] uppercase tracking-widest text-stone-400 mt-1 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-500">Explorar Colección</p>
+                                        <p className="text-[10px] uppercase tracking-widest text-neutral-400 mt-1 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-500">Explorar Colección</p>
                                     </div>
                                 </div>
                             </div>
@@ -119,7 +119,7 @@ const HomeView: React.FC<HomeViewProps> = ({ products, onProductClick, onChangeV
                                 </div>
                                 <div className="text-center group-hover:-translate-y-1 transition-transform duration-500">
                                     <h3 className="text-lg font-bold text-white mb-2 group-hover:text-primary transition-colors">{product.name}</h3>
-                                    <p className="text-stone-500 text-xs uppercase tracking-widest mb-2">{product.category}</p>
+                                    <p className="text-neutral-500 text-xs uppercase tracking-widest mb-2">{product.category}</p>
                                     <p className="text-white font-light">${product.price.toFixed(2)}</p>
                                 </div>
                             </div>
