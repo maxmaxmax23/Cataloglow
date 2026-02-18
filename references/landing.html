@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AURUM | The Alchemist's Secret</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#d4af35",
+                        "background-light": "#f8f7f6",
+                        "background-dark": "#0a0a0a",
+                        "neutral-dark": "#1a1a1a",
+                        "gold-muted": "#433d28",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #0a0a0a;
+            color: #ffffff;
+        }
+        .gold-gradient {
+            background: linear-gradient(135deg, #d4af35 0%, #fcf6ba 45%, #bf953f 70%, #8a6e2f 100%);
+        }
+        .text-gold {
+            background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .custom-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-white font-display">
+<!-- Navigation -->
+<nav class="fixed top-0 w-full z-50 bg-background-dark/80 backdrop-blur-md border-b border-white/10 px-6 lg:px-20 py-4 flex items-center justify-between">
+<div class="flex items-center gap-12">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-3xl">flare</span>
+<h1 class="text-2xl font-extrabold tracking-[0.2em] text-white">AURUM</h1>
+</div>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-[11px] uppercase tracking-[0.2em] font-semibold hover:text-primary transition-colors" href="#">New Arrivals</a>
+<a class="text-[11px] uppercase tracking-[0.2em] font-semibold hover:text-primary transition-colors" href="#">The Collection</a>
+<a class="text-[11px] uppercase tracking-[0.2em] font-semibold hover:text-primary transition-colors" href="#">Our Philosophy</a>
+<a class="text-[11px] uppercase tracking-[0.2em] font-semibold hover:text-primary transition-colors" href="#">Journal</a>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden lg:flex items-center bg-white/5 border border-white/10 rounded px-3 py-1.5">
+<span class="material-symbols-outlined text-sm text-gray-400">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-xs w-40 placeholder:text-gray-500" placeholder="Search collection" type="text"/>
+</div>
+<button class="hover:text-primary transition-colors">
+<span class="material-symbols-outlined">shopping_bag</span>
+</button>
+<button class="hover:text-primary transition-colors">
+<span class="material-symbols-outlined">person</span>
+</button>
+</div>
+</nav>
+<!-- Hero Section -->
+<section class="relative h-screen flex items-center justify-center overflow-hidden">
+<div class="absolute inset-0 z-0">
+<div class="absolute inset-0 bg-black/40 z-10"></div>
+<div class="w-full h-full bg-cover bg-center" data-alt="Abstract black and liquid gold luxury marble pattern" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAB_dzRiKBmJ7x-NohmM1sFG84-8rwUW0jami1N7VU2G9y-0RUsGXafg9hZG1-zDuvXCWnpOq2xYJ30EUocZlUQbxeqNG6_7R99xHYv_3suGYQDvznaHovhjpI57J8M2kxRYTxjZ_Vdbv0O7WrG0NppeWn1zNzZyAa85WAEwxNx8PiUiVR6BrCAnA9jjYmJxPPfYjQDpQVqGfjWIUZDVkc9Y0UfJgFWXHTpefx0lNwQO-Bsxl5XF03xPMedIObsq4q2scZAOhwLAAq4');"></div>
+</div>
+<div class="relative z-20 text-center px-4 max-w-4xl mx-auto">
+<p class="text-primary tracking-[0.5em] uppercase text-xs mb-6 font-bold">Scientific Opulence</p>
+<h2 class="text-5xl md:text-8xl font-extrabold leading-tight mb-8 tracking-tighter">
+                AURUM: <span class="italic font-light">The Alchemist's</span> Secret
+            </h2>
+<p class="text-lg md:text-xl text-gray-300 mb-10 max-w-2xl mx-auto font-light leading-relaxed">
+                Experience the intersection of advanced dermatology and pure luxury with our 24K gold-infused restorative treatments.
+            </p>
+<div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+<button class="bg-primary text-background-dark px-10 py-4 font-bold text-sm uppercase tracking-widest hover:bg-white transition-all w-full sm:w-auto">
+                    Enter the Golden Era
+                </button>
+<button class="border border-white/20 bg-white/5 backdrop-blur-sm text-white px-10 py-4 font-bold text-sm uppercase tracking-widest hover:bg-white/10 transition-all w-full sm:w-auto">
+                    Shop the Edit
+                </button>
+</div>
+</div>
+<div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-50">
+<span class="text-[10px] tracking-[0.3em] uppercase">Scroll</span>
+<div class="w-px h-12 bg-gradient-to-b from-primary to-transparent"></div>
+</div>
+</section>
+<!-- New Arrivals Section -->
+<section class="py-24 px-6 lg:px-20 bg-background-dark">
+<div class="flex justify-between items-end mb-12">
+<div>
+<span class="text-primary text-xs font-bold tracking-[0.3em] uppercase mb-2 block">Latest Innovations</span>
+<h3 class="text-4xl font-bold tracking-tight">New Arrivals</h3>
+</div>
+<a class="text-sm font-semibold border-b border-primary text-primary pb-1 hover:text-white hover:border-white transition-all" href="#">View All</a>
+</div>
+<div class="flex overflow-x-auto gap-8 custom-scrollbar pb-12">
+<!-- Product 1 -->
+<div class="min-w-[320px] group cursor-pointer">
+<div class="relative aspect-[3/4] bg-neutral-dark mb-6 overflow-hidden">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110" data-alt="Gold bottle of luxury serum on black background" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBncZLu1YwKQi_VUxpzerKNMrZbxXTrNi3LsTFQwszN95niz3EfjsnGTtuS50bsBLGBP7xkH-w0l566ZezSQCL0yEfaK2v1MFE4_o8YIdk98T3tK_bn0GHASr3Q81HK5iv5WJZ9N5sJocfHWlXbMSI3EBJQ2F6BfIe7fEicDQ2b_QYRCnvR173J9RsmZBs--OmaBImgFYp_lMps8_C3g5CcKODwoLTi6Np8e2oZxYfPGJzGebF0Zvox1rkzqmP8-RZKj6LQokoXYyp0');"></div>
+<div class="absolute top-4 left-4 bg-primary text-background-dark text-[10px] font-bold px-2 py-1 uppercase tracking-tighter">New</div>
+<div class="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors"></div>
+</div>
+<h4 class="text-lg font-bold mb-1 group-hover:text-primary transition-colors">24K Glow Serum</h4>
+<p class="text-gray-500 text-sm mb-4">Illuminating Treatment</p>
+<button class="w-full border border-white/10 py-3 text-xs font-bold uppercase tracking-widest group-hover:bg-white group-hover:text-black transition-all">
+                    Add to Bag — $245
+                </button>
+</div>
+<!-- Product 2 -->
+<div class="min-w-[320px] group cursor-pointer">
+<div class="relative aspect-[3/4] bg-neutral-dark mb-6 overflow-hidden">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110" data-alt="Luxury black glass jar of night cream" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDGLJXp5vGU-jyHx9Fct9ne-geMkR-ga4MFEjKkohpp4GFFGkG2gqY3ak1sxn9XxxaE4W2bndOoUJvchXwiTb3dIrMkps0N2rtMWWK0ksSwz11WJJDHHDkl84tOBV8M2cAHevd6c0MzLQxKtBJEdsPFDNa_xrbqHjO5UW8QB3qlreoBwwp8X5zw4bzZztx8Tvj-Gokj1g4yeULdCqgEw4HGxYHqjxi00QuqqBmMMak2vlZnyrRKvJQ29cJD0zkFlvAqklmuHrD28JdW');"></div>
+<div class="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors"></div>
+</div>
+<h4 class="text-lg font-bold mb-1 group-hover:text-primary transition-colors">Obsidian Night Balm</h4>
+<p class="text-gray-500 text-sm mb-4">Restorative Overnight Balm</p>
+<button class="w-full border border-white/10 py-3 text-xs font-bold uppercase tracking-widest group-hover:bg-white group-hover:text-black transition-all">
+                    Add to Bag — $180
+                </button>
+</div>
+<!-- Product 3 -->
+<div class="min-w-[320px] group cursor-pointer">
+<div class="relative aspect-[3/4] bg-neutral-dark mb-6 overflow-hidden">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110" data-alt="Dropper bottle with gold flecks in oil" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBfjHQdxNvgY4T-ikT2KSqFLiHKA7kCfrCVM-bhkYtA4s8dNQyYG2HWp-0RrcOl2iyK8f3T18AmyJKv3hM650GZWFPbNRqjj-C9XhqmXj0bTUi0XzDB-JXSgsdOQRhkDFaibkEVoLqD3ZIGFjzXHdYv8q6zosB497UvkHjhNPfGPBaRkvlmJ0WKkQ5a-UUIhe2neM297ti_FvL706kvTItq_z3-FSMADgEkfZg4aiz4jVXM3Gw_kjN4sR1jc7P221CZkhxTkbB4be0-');"></div>
+<div class="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors"></div>
+</div>
+<h4 class="text-lg font-bold mb-1 group-hover:text-primary transition-colors">Radiance Elixir</h4>
+<p class="text-gray-500 text-sm mb-4">Mineral-Infused Oil</p>
+<button class="w-full border border-white/10 py-3 text-xs font-bold uppercase tracking-widest group-hover:bg-white group-hover:text-black transition-all">
+                    Add to Bag — $320
+                </button>
+</div>
+<!-- Product 4 -->
+<div class="min-w-[320px] group cursor-pointer">
+<div class="relative aspect-[3/4] bg-neutral-dark mb-6 overflow-hidden">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110" data-alt="Gold facial mask in premium packaging" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDRbtBCV5NXI9DdvxmrGSrl6xS_WYfw0fssolQA0VXtdeA6GmvVKmlvbVYk1JZY7J5hl85RqHDCMf8fQulpJEdKEOZzU-AIclzhiQtskgrLe7dwTFphyBu5AcZCmDEX2mP7TcshdUkJW5FThh5uT3XSPgoHSlVQJpBz5VGJUFDCIzmg_tKRLnqYRIsxAusLymsNaD38GbaD_3OkOcGz8n3aVUridPjhbzsVmDi4jM1yEPzYzjZ9BitjksvQNNDAgXngT-pfyWjiw5ti');"></div>
+<div class="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors"></div>
+</div>
+<h4 class="text-lg font-bold mb-1 group-hover:text-primary transition-colors">Auric Sculpting Mask</h4>
+<p class="text-gray-500 text-sm mb-4">Lifting Treatment</p>
+<button class="w-full border border-white/10 py-3 text-xs font-bold uppercase tracking-widest group-hover:bg-white group-hover:text-black transition-all">
+                    Add to Bag — $210
+                </button>
+</div>
+</div>
+</section>
+<!-- Philosophy Section -->
+<section class="py-32 bg-neutral-dark overflow-hidden">
+<div class="max-w-7xl mx-auto px-6 lg:px-20 grid lg:grid-cols-2 gap-20 items-center">
+<div class="relative">
+<div class="absolute -top-10 -left-10 w-40 h-40 bg-primary/10 rounded-full blur-3xl"></div>
+<div class="relative z-10 aspect-square overflow-hidden border border-white/10">
+<div class="w-full h-full bg-cover bg-center grayscale hover:grayscale-0 transition-all duration-1000 scale-105" data-alt="Professional scientist working in a high-end lab with gold elements" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDgdq-LBso7-gyegUqYO_6vr4bFx9wXGmjJF33rJJMFdd9URu3s64RNo_ew2WHf2SpisMh0rhE4Cjk1sHHYvAf0DMdRwMuaLVXlxlqL8NybAg9Oj9cRy7mcBUclVKms500SgTlCv9l-KbYcpl4_Gy1otBDmqsPpiVnp_NdGXdywR9B4Rdp3pYReen2RNoVNbA97wm93EkogPgQX9B2f9o8Npn-RWeEJQAP2ko5SsXILy7uX8GAsq9O10vnOY5T0sN1dHAWboYiG8BsM');"></div>
+</div>
+<div class="absolute -bottom-6 -right-6 bg-primary p-8 text-background-dark max-w-[240px]">
+<p class="font-bold italic text-2xl leading-tight">"Science is the tool, gold is the alchemy."</p>
+</div>
+</div>
+<div>
+<span class="text-primary text-xs font-bold tracking-[0.3em] uppercase mb-4 block">Our Philosophy</span>
+<h3 class="text-4xl md:text-5xl font-bold mb-8 leading-tight">The intersection of <span class="text-primary">Ancient Wisdom</span> and Modern Science.</h3>
+<div class="space-y-6 text-gray-400 leading-relaxed font-light text-lg">
+<p>At AURUM, we believe true beauty is an expression of health and luxury intertwined. Our laboratories spend years perfecting the molecular structure of our formulas to ensure deep cellular penetration.</p>
+<p>We source only the purest 24-karat gold, renowned for its antioxidant and anti-inflammatory properties, combining it with rare botanical extracts from the world's most untouched environments.</p>
+<p>Each product is a masterpiece, crafted in limited batches to maintain the integrity of our active ingredients. This is more than skincare—it's a ritual of self-reverence.</p>
+</div>
+<div class="mt-12 flex items-center gap-12">
+<div>
+<p class="text-2xl font-bold text-white">98%</p>
+<p class="text-xs uppercase tracking-widest text-gray-500">Natural Origins</p>
+</div>
+<div class="w-px h-10 bg-white/10"></div>
+<div>
+<p class="text-2xl font-bold text-white">24K</p>
+<p class="text-xs uppercase tracking-widest text-gray-500">Certified Gold</p>
+</div>
+<div class="w-px h-10 bg-white/10"></div>
+<div>
+<p class="text-2xl font-bold text-white">15yr</p>
+<p class="text-xs uppercase tracking-widest text-gray-500">Research</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- The Collection Section -->
+<section class="py-24 px-6 lg:px-20 bg-background-dark">
+<div class="text-center mb-20">
+<span class="text-primary text-xs font-bold tracking-[0.3em] uppercase mb-4 block">Curation</span>
+<h3 class="text-4xl md:text-5xl font-bold">The Collection</h3>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1">
+<div class="relative group h-[600px] overflow-hidden">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-1000 group-hover:scale-110" data-alt="Model with glowing skin in dramatic gold lighting" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDLHuECZkKZg1giJiDq3XUobAuDhYG4WNEUAP91JCGeUkj7t42c0XjMZSA1lkxojlvBuFcmkgvFSN1cVjCst-ZsXl9jwpEqtaxc17awfYysVUyc1zSwz4DRqQ2lXXJsN-xe0DBiysuWn3y_EgVZ32NMdEeStdHZ79wb1C0YHRf7ntR3ZYxN5cCu-7WSXvMX_mpwIZm8Ek5FXK-g_FwrXsnGtMJoN9kOoeI3tiP5NrZMYIrwvf_ODZ2mYD78kwPrGns_A6gCqEN898_V');"></div>
+<div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all"></div>
+<div class="absolute inset-0 flex flex-col items-center justify-center p-8 text-center opacity-0 group-hover:opacity-100 transition-opacity">
+<h4 class="text-3xl font-bold mb-4">The Elixirs</h4>
+<p class="text-sm text-gray-300 mb-6">Liquid gold for the soul.</p>
+<button class="bg-primary text-background-dark px-6 py-2 font-bold text-[10px] uppercase tracking-widest">Explore</button>
+</div>
+<div class="absolute bottom-10 left-10 group-hover:opacity-0 transition-opacity">
+<h4 class="text-xl font-bold uppercase tracking-widest">Elixirs</h4>
+</div>
+</div>
+<div class="relative group h-[600px] overflow-hidden lg:mt-12">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-1000 group-hover:scale-110" data-alt="Still life of luxury gold skincare tools" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAb7ZMQ4-VG2E4hyyfZhyFtvN1HdS0F5LuYUrtiL89vbzqwXf_audABt8EtU8qKj2L9sooVzDpJUMDHp44AiPUe8r-h-bdMwabT75opC-RRI1-qnOv7ZrRdNicPrNKESQ94JpGktkmr8FUPdTROzm9CyZd6Mj0q7hBoue6xuUL_3jqkMJk0lT1MP7kYhiUosLfAT8hJ2rRjsTv9TDSkjJ4IOGSItRsT0bRYtoJkhIm8952fLLamc73bvqcG5OwVrKYChIyG0sqZaaP7');"></div>
+<div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all"></div>
+<div class="absolute inset-0 flex flex-col items-center justify-center p-8 text-center opacity-0 group-hover:opacity-100 transition-opacity">
+<h4 class="text-3xl font-bold mb-4">Sculpt</h4>
+<p class="text-sm text-gray-300 mb-6">Defy gravity with ancient minerals.</p>
+<button class="bg-primary text-background-dark px-6 py-2 font-bold text-[10px] uppercase tracking-widest">Explore</button>
+</div>
+<div class="absolute bottom-10 left-10 group-hover:opacity-0 transition-opacity">
+<h4 class="text-xl font-bold uppercase tracking-widest">Sculpt</h4>
+</div>
+</div>
+<div class="relative group h-[600px] overflow-hidden">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-1000 group-hover:scale-110" data-alt="Gold particles being dropped into a dark liquid" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBp17YYegNrD6puDfXp8pVtH0SdPPx91aExQJESGFSHX1W_FBDMYpt1l5lK9ftiG1B60EbZOUVkqdA8akI1otlESPxWbFKU8BQRl4ZDgu73OpXNyDlYlEThf7BGYGtFCXvpjOTSNg-lr6DZIkMNcpNH5uXjVq1bCKwIAn9GkZBTKawZJaWfUHCr-j-_GJzBJeVHl8gGnVFnzHnLvHpOV3ZO8qOfBQpdX0xLDyB7UIytWjbD8pp8LQ4cXyblQ14hTHBXGU_T9X1WVE88');"></div>
+<div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all"></div>
+<div class="absolute inset-0 flex flex-col items-center justify-center p-8 text-center opacity-0 group-hover:opacity-100 transition-opacity">
+<h4 class="text-3xl font-bold mb-4">Radiance</h4>
+<p class="text-sm text-gray-300 mb-6">Illuminate from within.</p>
+<button class="bg-primary text-background-dark px-6 py-2 font-bold text-[10px] uppercase tracking-widest">Explore</button>
+</div>
+<div class="absolute bottom-10 left-10 group-hover:opacity-0 transition-opacity">
+<h4 class="text-xl font-bold uppercase tracking-widest">Radiance</h4>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="bg-background-dark pt-24 pb-12 px-6 lg:px-20 border-t border-white/5">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-20">
+<div class="col-span-1 lg:col-span-1">
+<div class="flex items-center gap-2 mb-8">
+<span class="material-symbols-outlined text-primary text-3xl">flare</span>
+<h1 class="text-2xl font-extrabold tracking-[0.2em] text-white">AURUM</h1>
+</div>
+<p class="text-gray-500 text-sm leading-relaxed mb-8">Crafting the future of beauty through the lens of luxury and the precision of science.</p>
+<div class="flex gap-4">
+<a class="w-10 h-10 border border-white/10 flex items-center justify-center rounded-full hover:bg-primary hover:text-background-dark transition-all" href="#">
+<span class="material-symbols-outlined text-sm">public</span>
+</a>
+<a class="w-10 h-10 border border-white/10 flex items-center justify-center rounded-full hover:bg-primary hover:text-background-dark transition-all" href="#">
+<span class="material-symbols-outlined text-sm">photo_camera</span>
+</a>
+<a class="w-10 h-10 border border-white/10 flex items-center justify-center rounded-full hover:bg-primary hover:text-background-dark transition-all" href="#">
+<span class="material-symbols-outlined text-sm">play_arrow</span>
+</a>
+</div>
+</div>
+<div>
+<h5 class="text-xs font-bold uppercase tracking-[0.2em] mb-8 text-primary">Discover</h5>
+<ul class="space-y-4 text-sm text-gray-400">
+<li><a class="hover:text-white transition-colors" href="#">Best Sellers</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Gift Sets</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Sustainability</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Bespoke Rituals</a></li>
+</ul>
+</div>
+<div>
+<h5 class="text-xs font-bold uppercase tracking-[0.2em] mb-8 text-primary">Customer Care</h5>
+<ul class="space-y-4 text-sm text-gray-400">
+<li><a class="hover:text-white transition-colors" href="#">Shipping &amp; Returns</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Track Order</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Store Locator</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Contact Us</a></li>
+</ul>
+</div>
+<div>
+<h5 class="text-xs font-bold uppercase tracking-[0.2em] mb-8 text-primary">Newsletter</h5>
+<p class="text-gray-500 text-sm mb-6">Join the inner circle for exclusive previews.</p>
+<div class="flex">
+<input class="bg-white/5 border-white/10 border-r-0 rounded-l w-full text-xs p-3 focus:ring-0" placeholder="Email Address" type="email"/>
+<button class="bg-primary text-background-dark px-4 font-bold text-[10px] uppercase tracking-widest rounded-r">Join</button>
+</div>
+</div>
+</div>
+<div class="flex flex-col md:flex-row justify-between items-center pt-12 border-t border-white/5 text-[10px] text-gray-600 uppercase tracking-widest gap-4 text-center">
+<p>© 2024 AURUM LUXURY COSMETICS. ALL RIGHTS RESERVED.</p>
+<div class="flex gap-8">
+<a class="hover:text-white transition-colors" href="#">Privacy Policy</a>
+<a class="hover:text-white transition-colors" href="#">Terms of Service</a>
+<a class="hover:text-white transition-colors" href="#">Accessibility</a>
+</div>
+</div>
+</footer>
+</body></html>

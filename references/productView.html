@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AURUM | 24K Glow Serum</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#d4af35",
+                        "background-light": "#f8f7f6",
+                        "background-dark": "#0a0a0a",
+                        "neutral-dark": "#1a1814",
+                        "border-gold": "#433d28",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Manrope', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        .glass-effect {
+            background: rgba(20, 18, 14, 0.7);
+            backdrop-filter: blur(10px);
+        }
+        .gold-gradient {
+            background: linear-gradient(135deg, #d4af35 0%, #f1d57a 50%, #b8860b 100%);
+        }
+        .product-glow {
+            box-shadow: 0 0 50px rgba(212, 175, 53, 0.15);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-stone-800 dark:text-stone-200 min-h-screen">
+<!-- Navigation -->
+<header class="sticky top-0 z-50 w-full border-b border-white/5 bg-background-dark/80 backdrop-blur-md px-6 md:px-12 py-4">
+<nav class="max-w-7xl mx-auto flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-3xl">flare</span>
+<h1 class="text-2xl font-extrabold tracking-widest text-white uppercase">AURUM</h1>
+</div>
+<div class="hidden md:flex items-center gap-10 text-xs font-bold tracking-[0.2em] text-stone-400 uppercase">
+<a class="hover:text-primary transition-colors" href="#">Skincare</a>
+<a class="hover:text-primary transition-colors" href="#">Collections</a>
+<a class="hover:text-primary transition-colors" href="#">Scientific Opulence</a>
+<a class="hover:text-primary transition-colors" href="#">The Ritual</a>
+</div>
+<div class="flex items-center gap-6">
+<button class="text-stone-300 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">search</span>
+</button>
+<button class="text-stone-300 hover:text-primary transition-colors relative">
+<span class="material-symbols-outlined">shopping_bag</span>
+<span class="absolute -top-1 -right-1 bg-primary text-[10px] text-background-dark font-bold px-1 rounded-full">2</span>
+</button>
+<button class="text-stone-300 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</nav>
+</header>
+<main class="max-w-7xl mx-auto px-6 md:px-12 py-12 lg:py-20">
+<div class="flex flex-col lg:flex-row gap-16 lg:gap-24 items-start">
+<!-- Left: Product Image Section -->
+<div class="w-full lg:w-3/5 lg:sticky lg:top-32 space-y-6">
+<div class="relative aspect-[4/5] bg-neutral-dark rounded overflow-hidden group product-glow">
+<div class="absolute inset-0 bg-gradient-to-t from-background-dark/60 to-transparent z-10"></div>
+<img alt="Luxurious 24K Glow Serum Bottle" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="Luxury glass serum bottle with gold particles inside" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCfe2wI7pca07pW2bMHbNDu2l-x-Y-_FyCjFkdtpbAb3t4Cw5BiiyBCWBjxS9nOblJOFE4Rmhfb9ahg1UUnU4b_y_zi3JHKy1cSPP2BvX5fxjI-Ofao9Pzp-uN7AAUB9_6IZzrarkrr2OvTtuXMrGSBxBrDFZwHz_5v9cNzWS3BkrURnU4KNJtzItvcptRjHmtIyFeOd3ZIE6L3FM32MvJ8X3AjjwhEV5kuQWall79Qz8G_mF-96RhNBTqxAO9T0wI1JAV92llBZbXs"/>
+<div class="absolute bottom-8 left-8 z-20">
+<span class="px-3 py-1 bg-primary text-background-dark text-[10px] font-bold tracking-widest uppercase rounded-sm">Featured Selection</span>
+</div>
+</div>
+<div class="grid grid-cols-4 gap-4">
+<div class="aspect-square bg-neutral-dark rounded cursor-pointer border border-primary/30 overflow-hidden">
+<img class="w-full h-full object-cover opacity-60 hover:opacity-100 transition-opacity" data-alt="Close up of serum texture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCsdsLceq_9vlDv-7pTySA4sTo71X7TnuMGz_cB8RDnDJmjLY_bogkFAXMYY7bD7T1Mn71ewjE0CF3_QHE2aO7xsK82L6bGt8v265y5oLhB2vbtjNHjYdN3iv_j6_ROsFbpMzSYji9dcfWEipK5_nEj-Mj7g7aE-o-A8FkOzsq4O3mBcy5wVz4CNa6iRPv3cza9eYeRCjmcnHhM11KlibVJiVX4LS-4kH0XF-2yenlz7kQ3i4t_SkluM86viA70QU4aDMXB0sUcn-Zt"/>
+</div>
+<div class="aspect-square bg-neutral-dark rounded cursor-pointer border border-transparent overflow-hidden">
+<img class="w-full h-full object-cover opacity-60 hover:opacity-100 transition-opacity" data-alt="Botanical extracts and ingredients" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCCBgCvqZU4v6Z8vwzOMea3jcEWu-c2fTbhWkv2rSXPqPBAhB_RP5UDLDnPz-cipbGAZ4UH5EWOC48R935-MGKywZihzvYoDZMmY8-7s7sEqgJdEyqVtxBgpMR03tI26yZMX9KKE28bQICsAlkQ4-nCkfkpIq8rUMpQHobiihnKz8thpImTxzysC5bK5mIW5Kgw1Kxl_UI03srupBHSJXYBojrk98y4QxxZ6mlqgCqTtXykPwEOK8aTVNBz77_8xqCmc29Ao77lY5jm"/>
+</div>
+<div class="aspect-square bg-neutral-dark rounded cursor-pointer border border-transparent overflow-hidden">
+<img class="w-full h-full object-cover opacity-60 hover:opacity-100 transition-opacity" data-alt="Model applying serum to face" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCNeBdZAvsMASXBLZiRCK-KOlXR19bt7vC31Oy-gw391Z-fP_0TlEE7E7fDgGDowwWX7Mf6GMfHHTf-DwMxyeN_9HT9tBSPW25UX3NbYnpY_U0BG8OC8a3_4xpKBoHH2Uog5mxqAoBhx5mug-IqeABXEMpuo41u5PuZtIYr9-L-VELoSglhSc4U_CUcLYZ0cIzQrARhSacUM-7r3r9df1v3RcVJ82bigDt41P5TbterPbA4k4N7sL1SPkwFhQd3-BfSmH7P_hyAco_C"/>
+</div>
+<div class="aspect-square bg-neutral-dark rounded cursor-pointer border border-transparent overflow-hidden">
+<img class="w-full h-full object-cover opacity-60 hover:opacity-100 transition-opacity" data-alt="Product packaging and box" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCCRlByikQjHUyYop5pFr5bRK05GncBcics2KSLOA0DeRntiTBDxmj0ndKFPlWd_aq7tgUY7KRRscA3FJUExZCU6B3bGb5z3NYkgHVpW51uxrt59In23N9Icojk_gwm9XwVi5i3tZg5Kk7iesxdngnYWb2Rs8jO2YxK94IJOaudQKVQTc7A2lv_XPuD2sw2wLfRUi_fWlpneP5q5UITIKhsNOFcR78en_276FJNMfXPK2XT3I0IqsLTf2tAz9fhuG5irZM3Kcyq765E"/>
+</div>
+</div>
+</div>
+<!-- Right: Product Details Section -->
+<div class="w-full lg:w-2/5 flex flex-col space-y-10">
+<div class="space-y-4">
+<p class="text-primary font-bold tracking-[0.3em] uppercase text-xs">Scientific Opulence</p>
+<h2 class="text-5xl md:text-6xl font-light tracking-tight text-white">24K Glow Serum</h2>
+<div class="flex items-center gap-4">
+<span class="text-2xl font-light text-primary">$150.00</span>
+<div class="h-4 w-[1px] bg-stone-700"></div>
+<div class="flex items-center text-primary">
+<span class="material-symbols-outlined text-sm">star</span>
+<span class="material-symbols-outlined text-sm">star</span>
+<span class="material-symbols-outlined text-sm">star</span>
+<span class="material-symbols-outlined text-sm">star</span>
+<span class="material-symbols-outlined text-sm">star</span>
+<span class="ml-2 text-xs text-stone-500 uppercase font-bold tracking-widest">(48 Reviews)</span>
+</div>
+</div>
+</div>
+<div class="space-y-6">
+<p class="text-stone-400 font-light leading-relaxed text-lg">
+                        Experience the rejuvenating power of high-purity 24K gold-infused elixir combined with rare botanical extracts for a transformative restorative treatment. A scientific masterpiece crafted for ultimate luminosity.
+                    </p>
+<div class="grid grid-cols-2 gap-4 py-6 border-y border-white/5">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary">temp_preferences_custom</span>
+<div>
+<p class="text-white text-sm font-bold tracking-wide">24K Gold</p>
+<p class="text-stone-500 text-xs">High-purity particles</p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary">nature</span>
+<div>
+<p class="text-white text-sm font-bold tracking-wide">Botanicals</p>
+<p class="text-stone-500 text-xs">Rare organic extracts</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Product Actions -->
+<div class="space-y-6">
+<div class="flex flex-col space-y-3">
+<label class="text-[10px] font-bold tracking-widest uppercase text-stone-500">Quantity</label>
+<div class="flex items-center w-32 border border-stone-800 rounded-sm overflow-hidden">
+<button class="px-4 py-3 text-stone-400 hover:text-white transition-colors">
+<span class="material-symbols-outlined text-sm">remove</span>
+</button>
+<span class="flex-1 text-center text-sm font-bold text-white">1</span>
+<button class="px-4 py-3 text-stone-400 hover:text-white transition-colors">
+<span class="material-symbols-outlined text-sm">add</span>
+</button>
+</div>
+</div>
+<div class="flex flex-col sm:flex-row gap-4">
+<button class="flex-1 bg-primary hover:bg-primary/90 text-background-dark py-5 px-8 text-xs font-black tracking-[0.2em] uppercase transition-all duration-300 rounded-sm">
+                            Add to Bag
+                        </button>
+<button class="px-8 py-5 border border-stone-800 hover:border-primary/50 text-white transition-all duration-300 rounded-sm">
+<span class="material-symbols-outlined">favorite</span>
+</button>
+</div>
+<p class="text-center text-[10px] text-stone-500 font-bold tracking-[0.1em] uppercase">Free Express Shipping on Orders Over $200</p>
+</div>
+<!-- Expandable Sections -->
+<div class="border-t border-white/5 pt-4">
+<details class="group py-4 border-b border-white/5" open="">
+<summary class="flex justify-between items-center cursor-pointer list-none">
+<span class="text-xs font-bold tracking-[0.2em] uppercase text-white">How to Use</span>
+<span class="material-symbols-outlined text-primary group-open:rotate-180 transition-transform">expand_more</span>
+</summary>
+<div class="pt-6 pb-2 text-stone-400 font-light text-sm leading-relaxed space-y-4">
+<p>Dispense 2-3 drops of the elixir onto clean fingertips. Gently press into face, neck, and décolletage until fully absorbed.</p>
+<p class="italic">Best used as part of your morning and evening ritual after cleansing and before moisturizing.</p>
+</div>
+</details>
+<details class="group py-4 border-b border-white/5">
+<summary class="flex justify-between items-center cursor-pointer list-none">
+<span class="text-xs font-bold tracking-[0.2em] uppercase text-white">Ingredients</span>
+<span class="material-symbols-outlined text-primary group-open:rotate-180 transition-transform">expand_more</span>
+</summary>
+<div class="pt-6 pb-2 text-stone-400 font-light text-sm leading-relaxed">
+<p class="mb-4">Aqua, 24K Gold Particles, Hyaluronic Acid, Rosehip Seed Oil, Marula Oil, Vitamin C Ester, Squalane, Rare Orchid Extract.</p>
+<p class="text-stone-500 text-xs">Cruelty-free, Vegan, and Parabens-free. Formulated for all skin types.</p>
+</div>
+</details>
+<details class="group py-4 border-b border-white/5">
+<summary class="flex justify-between items-center cursor-pointer list-none">
+<span class="text-xs font-bold tracking-[0.2em] uppercase text-white">Shipping &amp; Returns</span>
+<span class="material-symbols-outlined text-primary group-open:rotate-180 transition-transform">expand_more</span>
+</summary>
+<div class="pt-6 pb-2 text-stone-400 font-light text-sm leading-relaxed">
+<p>Complimentary standard shipping on all domestic orders. Express international shipping available at checkout. Returns accepted within 30 days of purchase in original condition.</p>
+</div>
+</details>
+</div>
+</div>
+</div>
+</main>
+<!-- Detailed Features Section -->
+<section class="bg-neutral-dark/50 py-24 px-6 md:px-12 border-t border-white/5 mt-12">
+<div class="max-w-7xl mx-auto">
+<div class="text-center space-y-4 mb-20">
+<h3 class="text-primary font-bold tracking-[0.4em] uppercase text-sm">The Science of Light</h3>
+<h2 class="text-4xl md:text-5xl font-light text-white tracking-tight">Redefining Radiance</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-20">
+<div class="text-center space-y-6">
+<div class="w-16 h-16 mx-auto flex items-center justify-center border border-primary/30 rounded-full">
+<span class="material-symbols-outlined text-primary text-3xl">biotech</span>
+</div>
+<h4 class="text-white font-bold tracking-widest uppercase text-sm">Cellular Renewal</h4>
+<p class="text-stone-500 text-sm font-light leading-loose">Deeply penetrates the dermal layer to stimulate collagen production and cellular repair.</p>
+</div>
+<div class="text-center space-y-6">
+<div class="w-16 h-16 mx-auto flex items-center justify-center border border-primary/30 rounded-full">
+<span class="material-symbols-outlined text-primary text-3xl">auto_awesome</span>
+</div>
+<h4 class="text-white font-bold tracking-widest uppercase text-sm">Instant Glow</h4>
+<p class="text-stone-500 text-sm font-light leading-loose">Light-reflecting gold particles provide an immediate luminous finish for a youthful appearance.</p>
+</div>
+<div class="text-center space-y-6">
+<div class="w-16 h-16 mx-auto flex items-center justify-center border border-primary/30 rounded-full">
+<span class="material-symbols-outlined text-primary text-3xl">eco</span>
+</div>
+<h4 class="text-white font-bold tracking-widest uppercase text-sm">Ethical Opulence</h4>
+<p class="text-stone-500 text-sm font-light leading-loose">Responsibly sourced minerals and pure botanical extracts harvested at the peak of potency.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="bg-background-dark py-20 px-6 md:px-12 border-t border-white/5">
+<div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-12">
+<div class="space-y-6 max-w-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-2xl">flare</span>
+<h1 class="text-xl font-extrabold tracking-widest text-white uppercase">AURUM</h1>
+</div>
+<p class="text-stone-500 text-sm font-light leading-relaxed">
+                    Bridging the gap between ancient alchemy and modern dermatological science. Luxury skincare for the discerning individual.
+                </p>
+</div>
+<div class="grid grid-cols-2 lg:grid-cols-3 gap-12">
+<div class="space-y-4">
+<h5 class="text-white text-xs font-bold tracking-widest uppercase">Explore</h5>
+<ul class="text-stone-500 text-sm space-y-3 font-light">
+<li><a class="hover:text-primary transition-colors" href="#">Our Story</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Sustainability</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Ingredients Glossary</a></li>
+</ul>
+</div>
+<div class="space-y-4">
+<h5 class="text-white text-xs font-bold tracking-widest uppercase">Support</h5>
+<ul class="text-stone-500 text-sm space-y-3 font-light">
+<li><a class="hover:text-primary transition-colors" href="#">Contact Us</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Shipping Policy</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">FAQ</a></li>
+</ul>
+</div>
+<div class="space-y-6 md:col-span-2 lg:col-span-1">
+<h5 class="text-white text-xs font-bold tracking-widest uppercase">Newsletter</h5>
+<div class="flex border-b border-stone-800 pb-2">
+<input class="bg-transparent border-none focus:ring-0 text-sm text-white w-full placeholder:text-stone-700" placeholder="Email Address" type="email"/>
+<button class="text-primary"><span class="material-symbols-outlined">arrow_forward</span></button>
+</div>
+</div>
+</div>
+</div>
+<div class="max-w-7xl mx-auto mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="text-stone-700 text-[10px] font-bold tracking-widest uppercase">© 2024 AURUM Scientific Opulence. All Rights Reserved.</p>
+<div class="flex gap-6 text-stone-700">
+<a class="hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined text-xl">share_reviews</span></a>
+<a class="hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined text-xl">camera</span></a>
+<a class="hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined text-xl">brand_family</span></a>
+</div>
+</div>
+</footer>
+</body></html>
