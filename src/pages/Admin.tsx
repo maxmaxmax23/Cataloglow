@@ -353,7 +353,11 @@ const Admin: React.FC<AdminProps> = ({ products, onUpdateCatalog }) => {
                             const hasDesc = p.description && p.description !== "No description available." && p.description.length > 20;
 
                             return (
-                                <div key={p.id} className="grid grid-cols-12 gap-4 p-4 border-b border-white/5 hover:bg-white/5 transition-colors items-center group">
+                                <div
+                                    key={p.id}
+                                    onClick={() => handleEditProduct(p)}
+                                    className="grid grid-cols-12 gap-4 p-4 border-b border-white/5 hover:bg-white/5 transition-colors items-center group cursor-pointer"
+                                >
                                     {/* Image */}
                                     <div className="col-span-1">
                                         <div className="w-8 h-8 bg-white/10 overflow-hidden relative">
