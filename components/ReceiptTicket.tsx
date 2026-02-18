@@ -6,9 +6,10 @@ interface ReceiptTicketProps {
     total: number;
     customerName: string;
     customerAddress: string;
+    orderNumber?: string;
 }
 
-const ReceiptTicket = forwardRef<HTMLDivElement, ReceiptTicketProps>(({ items, total, customerName, customerAddress }, ref) => {
+const ReceiptTicket = forwardRef<HTMLDivElement, ReceiptTicketProps>(({ items, total, customerName, customerAddress, orderNumber }, ref) => {
     const date = new Date().toLocaleDateString('es-AR', {
         day: '2-digit',
         month: '2-digit',
@@ -20,9 +21,9 @@ const ReceiptTicket = forwardRef<HTMLDivElement, ReceiptTicketProps>(({ items, t
     return (
         <div ref={ref} className="bg-[#020202] text-white p-8 w-[400px] border border-primary/20 font-sans relative overflow-hidden" style={{ borderRadius: '0px' }}>
             {/* Marble Background Texture */}
-            <div className="absolute inset-0 z-0 opacity-20 pointer-events-none mix-blend-overlay">
+            <div className="absolute inset-0 z-0 opacity-40 pointer-events-none mix-blend-overlay">
                 <img
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0kTKo9_sOFSSO9SYdhK4g-mGmAF2FiSxC_RLg-bGHuwYHDQMZGR9j4GP8o5wYWILMGjNZVnLdjX6-zQHkAw0BTWoxE9TQroTpvEAhcePjJTmR0WiUOrFmZudTs6mn4mbmDpDmUGg9pQeMiVUzYWqgk0bnU-7N_-xv_gQWwzyDHCqfeWHZRgONrQebxa2bXxbang70PHKJfn_xr2TflEdgW2K_Ji8GyUpbBKd-JTaCdBAbO3Qg30IHrUiIMjy6M_EdjKfFgGok8QSP"
+                    src="/marble-background.png"
                     className="w-full h-full object-cover grayscale contrast-125"
                     alt="Marble Texture"
                 />
@@ -35,6 +36,11 @@ const ReceiptTicket = forwardRef<HTMLDivElement, ReceiptTicketProps>(({ items, t
                     <span className="material-icons text-4xl text-primary mb-2">flare</span>
                     <h1 className="text-3xl font-extrabold tracking-[0.3em] uppercase text-primary">AURUM</h1>
                     <p className="text-[8px] uppercase tracking-[0.4em] text-white/40 mt-1">Lujo Redefinido</p>
+                    {orderNumber && (
+                        <div className="mt-4 border border-white/10 bg-white/5 py-1 px-3 inline-block rounded">
+                            <p className="text-[10px] font-mono tracking-widest text-primary">{orderNumber}</p>
+                        </div>
+                    )}
                 </div>
 
                 <div className="w-full border-b border-primary/20 border-dashed mb-6"></div>
