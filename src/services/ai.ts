@@ -1,7 +1,7 @@
 import { Product } from "../types";
 
 const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
-const MODEL_ID = "llama3-70b-8192"; // High quality, free/fast model on Groq
+const MODEL_ID = "llama-3.3-70b-versatile"; // High quality, free/fast model on Groq
 
 export const generateDescription = async (
     product: Product,
@@ -76,7 +76,7 @@ export const listModels = async (apiKey: string): Promise<string[]> => {
         if (!response.ok) {
             // Fallback if list fails (e.g. key issue or rate limit on list endpoint)
             console.warn("Failed to list remote models, returning defaults");
-            return [MODEL_ID, "llama3-8b-8192", "mixtral-8x7b-32768", "gemma-7b-it"];
+            return [MODEL_ID, "llama-3.1-8b-instant", "mixtral-8x7b-32768", "gemma2-9b-it"];
         }
 
         const data = await response.json();
@@ -84,6 +84,6 @@ export const listModels = async (apiKey: string): Promise<string[]> => {
     } catch (error) {
         console.error("List Models Error:", error);
         // Fallback on error
-        return [MODEL_ID, "llama3-8b-8192", "mixtral-8x7b-32768", "gemma-7b-it"];
+        return [MODEL_ID, "llama-3.1-8b-instant", "mixtral-8x7b-32768", "gemma2-9b-it"];
     }
 };
