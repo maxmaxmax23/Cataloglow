@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { CartItem } from '../src/types';
+import html2canvas from 'html2canvas';
+import ReceiptTicket from './ReceiptTicket';
 
 interface CheckoutFormProps {
     items: CartItem[];
@@ -10,18 +12,62 @@ interface CheckoutFormProps {
 const CheckoutForm: React.FC<CheckoutFormProps> = ({ items, total, onClose }) => {
     const [name, setName] = useState('');
     const [address, setAddress] = useState('');
+    const [isGenerating, setIsGenerating] = useState(false);
+    const receiptRef = useRef<HTMLDivElement>(null);
 
-    const handleWhatsAppRedirect = (e: React.FormEvent) => {
+    const handleWhatsAppRedirect = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!name || !address) return;
 
-        const itemList = items.map(i => `• ${i.name} (x${i.quantity})`).join('\n');
-        const message = `Hola, me gustaría realizar un pedido de los siguientes productos:\n\n${itemList}\n\nInversión Total: $${total.toFixed(2)}\n\nMis Datos:\nNombre: ${name}\nZona: ${address}`;
+        setIsGenerating(true);
 
-        const encodedMessage = encodeURIComponent(message);
-        const whatsappUrl = `https://wa.me/?text=${encodedMessage}`;
+        try {
+            // 1. Generate Image from Receipt Component
+            if (receiptRef.current) {
+                const canvas = await html2canvas(receiptRef.current, {
+                    backgroundColor: '#020202', // Force black background
+                    scale: 2, // High resolution
+                    useCORS: true // Allow loading images if needed
+                });
 
-        window.open(whatsappUrl, '_blank');
+                const imageBlob = await new Promise<Blob | null>(resolve => canvas.toBlob(resolve, 'image/png'));
+
+                if (imageBlob) {
+                    const file = new File([imageBlob], "aurum_receipt.png", { type: "image/png" });
+
+                    // 2. Try Native Share (Mobile)
+                    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                        await navigator.share({
+                            files: [file],
+                            title: 'Su Recibo AURUM',
+                            text: `Hola ${name}, aquí tiene el detalle de su pedido.`
+                        });
+                    } else {
+                        // 3. Fallback: Download Image & Open WhatsApp Web
+                        const link = document.createElement('a');
+                        link.href = URL.createObjectURL(imageBlob);
+                        link.download = 'aurum_receipt.png';
+                        link.click();
+
+                        // Wait a moment for download to start before redirecting
+                        setTimeout(() => {
+                            const itemList = items.map(i => `• ${i.name} (x${i.quantity})`).join('\n');
+                            const message = `Hola, envío adjunto el comprobante de mi pedido:\n\n${itemList}\n\nTotal: $${total.toFixed(2)}\n\nMis Datos:\nNombre: ${name}\nZona: ${address}`;
+                            const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+                            window.open(whatsappUrl, '_blank');
+                        }, 1000);
+                    }
+                }
+            }
+        } catch (error) {
+            console.error("Error generating receipt:", error);
+            // Fallback to text only if image fails
+            const itemList = items.map(i => `• ${i.name} (x${i.quantity})`).join('\n');
+            const message = `Hola, me gustaría realizar un pedido:\n\n${itemList}\n\nTotal: $${total.toFixed(2)}\n\nDatos:\n${name}\n${address}`;
+            window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
+        } finally {
+            setIsGenerating(false);
+        }
     };
 
     return (
@@ -47,7 +93,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ items, total, onClose }) =>
                         </div>
                         <h2 className="text-2xl text-white font-light tracking-[0.15em] uppercase mb-2">Finalizar Compra</h2>
                         <div className="h-px w-12 bg-primary mx-auto mb-6"></div>
-                        <p className="text-white/40 text-xs font-light">Ingresa tus datos para confirmar tu selección de lujo y proceder a WhatsApp.</p>
+                        <p className="text-white/40 text-xs font-light">Ingresa tus datos para generar tu recibo digital de lujo.</p>
                     </header>
 
                     <form onSubmit={handleWhatsAppRedirect} className="flex-grow space-y-6">
@@ -94,10 +140,20 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ items, total, onClose }) =>
 
                         <button
                             type="submit"
-                            className="w-full bg-primary hover:bg-white hover:text-black text-black font-bold py-4 rounded mt-4 uppercase tracking-[0.15em] text-sm flex items-center justify-center gap-3 transition-colors"
+                            disabled={isGenerating}
+                            className={`w-full bg-primary hover:bg-white hover:text-black text-black font-bold py-4 rounded mt-4 uppercase tracking-[0.15em] text-sm flex items-center justify-center gap-3 transition-all ${isGenerating ? 'opacity-70 cursor-wait' : ''}`}
                         >
-                            <span className="material-icons text-sm">message</span>
-                            Continuar a WhatsApp
+                            {isGenerating ? (
+                                <>
+                                    <span className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin"></span>
+                                    <span>Generando Recibo...</span>
+                                </>
+                            ) : (
+                                <>
+                                    <span className="material-icons text-sm">receipt_long</span>
+                                    Generar Ticket y Continuar
+                                </>
+                            )}
                         </button>
                     </form>
 
@@ -105,6 +161,17 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ items, total, onClose }) =>
                         Compra segura vía WhatsApp Business
                     </p>
                 </div>
+            </div>
+
+            {/* Hidden Receipt Component for Generation */}
+            <div className="fixed left-[-9999px] top-0">
+                <ReceiptTicket
+                    ref={receiptRef}
+                    items={items}
+                    total={total}
+                    customerName={name || 'Cliente'}
+                    customerAddress={address || 'Sin dirección'}
+                />
             </div>
         </div>
     );
