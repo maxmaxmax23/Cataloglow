@@ -173,7 +173,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ items, total, onClose }) =>
             </div>
 
             {/* Hidden Ticket for Capture */}
-            <div className="absolute top-0 left-0 -z-50 opacity-0 pointer-events-none">
+            <div className="fixed left-[-9999px] top-0 pointer-events-none">
                 <ReceiptTicket
                     ref={receiptRef}
                     items={items}
