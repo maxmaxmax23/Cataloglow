@@ -112,12 +112,61 @@ function App() {
     );
   }
 
+  // --- History API Integration for Back Button Safety ---
+  useEffect(() => {
+    const handlePopState = (event: PopStateEvent) => {
+      const state = event.state;
+      // Close all modals if we return to a state without specific modal flags
+      if (!state || !state.modal) {
+        setIsCartOpen(false);
+        setIsCheckoutOpen(false);
+        setSelectedProduct(null);
+      } else if (state.modal === 'cart') {
+        setIsCartOpen(true);
+        setIsCheckoutOpen(false);
+        setSelectedProduct(null);
+      } else if (state.modal === 'product') {
+        // We generally keep the product in state if it was already there, 
+        // essentially just ensuring other overlays are closed.
+        setIsCartOpen(false);
+        setIsCheckoutOpen(false);
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  // Modal Openers (Wrappers with History Push)
+  const openProduct = (product: Product) => {
+    window.history.pushState({ modal: 'product' }, '', '#product');
+    setSelectedProduct(product);
+  };
+
+  const openCart = () => {
+    window.history.pushState({ modal: 'cart' }, '', '#cart');
+    setIsCartOpen(true);
+  };
+
+  const openCheckout = () => {
+    window.history.pushState({ modal: 'checkout' }, '', '#checkout');
+    setIsCheckoutOpen(true);
+    // Note: We don't explicitly close Cart here in state, 
+    // but the UI typically overlays or replaces it.
+    // Ideally, Checkout replaces Cart in the "Visual Stack".
+    setIsCartOpen(false);
+  };
+
+  const closeModal = () => {
+    window.history.back();
+  };
+
   return (
     <div className="relative h-full w-full overflow-hidden">
       {/* Top Nav is shared and fixed (Admin Mode aware) */}
       <TopNav
         cartCount={cart.reduce((a, b) => a + b.quantity, 0)}
-        onCartClick={() => setIsCartOpen(true)}
+        onCartClick={openCart}
         animateCart={animateCart}
         isAdmin={view === 'ADMIN'}
         onLogoClick={() => {
@@ -135,7 +184,7 @@ function App() {
         >
           <HomeView
             products={products}
-            onProductClick={setSelectedProduct}
+            onProductClick={openProduct}
             onChangeView={setView}
           />
           {/* Spacer for bottom nav */}
@@ -149,7 +198,7 @@ function App() {
         >
           <ShopView
             products={products}
-            onProductClick={setSelectedProduct}
+            onProductClick={openProduct}
             onAddToCart={addToCart}
           />
           {/* Spacer for bottom nav */}
@@ -203,20 +252,20 @@ function App() {
       <ProductDetailModal
         product={selectedProduct}
         products={products}
-        onClose={() => setSelectedProduct(null)}
+        onClose={closeModal}
         onAddToCart={addToCart}
-        onProductClick={setSelectedProduct}
+        onProductClick={openProduct}
       />
 
       <CartDrawer
         isOpen={isCartOpen}
-        onClose={() => setIsCartOpen(false)}
+        onClose={closeModal}
         items={cart}
         onRemoveItem={removeFromCart}
         onUpdateQuantity={updateQuantity}
         onCheckout={() => {
-          setIsCartOpen(false);
-          setIsCheckoutOpen(true);
+          // Transition from Cart -> Checkout
+          openCheckout();
         }}
       />
 
@@ -224,7 +273,7 @@ function App() {
         <CheckoutForm
           items={cart}
           total={cartTotal}
-          onClose={() => setIsCheckoutOpen(false)}
+          onClose={closeModal}
         />
       )}
     </div>
