@@ -6,9 +6,10 @@ interface ReceiptTicketProps {
     total: number;
     customerName: string;
     customerAddress: string;
+    orderNumber?: string;
 }
 
-const ReceiptTicket = forwardRef<HTMLDivElement, ReceiptTicketProps>(({ items, total, customerName, customerAddress }, ref) => {
+const ReceiptTicket = forwardRef<HTMLDivElement, ReceiptTicketProps>(({ items, total, customerName, customerAddress, orderNumber }, ref) => {
     const date = new Date().toLocaleDateString('es-AR', {
         day: '2-digit',
         month: '2-digit',
@@ -30,6 +31,11 @@ const ReceiptTicket = forwardRef<HTMLDivElement, ReceiptTicketProps>(({ items, t
                     <span className="material-icons text-4xl text-primary mb-2">flare</span>
                     <h1 className="text-3xl font-extrabold tracking-[0.3em] uppercase text-primary">AURUM</h1>
                     <p className="text-[8px] uppercase tracking-[0.4em] text-white/40 mt-1">Lujo Redefinido</p>
+                    {orderNumber && (
+                        <div className="mt-2 border border-white/10 bg-white/5 py-1 px-3 inline-block rounded">
+                            <p className="text-[10px] font-mono tracking-widest text-primary">{orderNumber}</p>
+                        </div>
+                    )}
                 </div>
 
                 <div className="w-full border-b border-primary/20 border-dashed mb-6"></div>
@@ -40,9 +46,9 @@ const ReceiptTicket = forwardRef<HTMLDivElement, ReceiptTicketProps>(({ items, t
                         <span className="text-[10px] uppercase tracking-widest text-white/40">Cliente</span>
                         <span className="text-xs font-bold text-white uppercase">{customerName}</span>
                     </div>
-                    <div className="flex justify-between items-end mb-2">
-                        <span className="text-[10px] uppercase tracking-widest text-white/40">Destino</span>
-                        <span className="text-xs font-bold text-white uppercase text-right max-w-[150px] truncate">{customerAddress}</span>
+                    <div className="flex justify-between items-start mb-2">
+                        <span className="text-[10px] uppercase tracking-widest text-white/40 mt-0.5">Destino</span>
+                        <span className="text-xs font-bold text-white uppercase text-right leading-tight max-w-[200px] break-words">{customerAddress}</span>
                     </div>
                     <div className="flex justify-between items-end">
                         <span className="text-[10px] uppercase tracking-widest text-white/40">Fecha</span>
@@ -55,12 +61,15 @@ const ReceiptTicket = forwardRef<HTMLDivElement, ReceiptTicketProps>(({ items, t
                 {/* Items List */}
                 <div className="w-full space-y-3 mb-6">
                     {items.map((item, index) => (
-                        <div key={index} className="flex justify-between items-start text-xs">
-                            <div className="flex gap-2">
-                                <span className="text-primary font-mono">{item.quantity}x</span>
-                                <span className="text-white/80 uppercase tracking-wide">{item.name}</span>
+                        <div key={index} className="flex justify-between items-start text-xs group">
+                            <div className="flex gap-3">
+                                <span className="text-primary font-mono pt-0.5">{item.quantity}x</span>
+                                <div className="flex flex-col">
+                                    <span className="text-white/90 uppercase tracking-wide font-bold">{item.name}</span>
+                                    <span className="text-[9px] text-white/30 tracking-wider font-mono">ID: {item.id.substring(0, 8).toUpperCase()}</span>
+                                </div>
                             </div>
-                            <span className="text-white font-mono">${(item.price * item.quantity).toFixed(2)}</span>
+                            <span className="text-white font-mono pt-0.5">${(item.price * item.quantity).toFixed(2)}</span>
                         </div>
                     ))}
                 </div>

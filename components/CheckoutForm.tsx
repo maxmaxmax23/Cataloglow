@@ -3,6 +3,8 @@ import { CartItem } from '../src/types';
 import html2canvas from 'html2canvas';
 import ReceiptTicket from './ReceiptTicket';
 
+import { generateOrderNumber } from '../src/services/orders';
+
 interface CheckoutFormProps {
     items: CartItem[];
     total: number;
@@ -13,6 +15,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ items, total, onClose }) =>
     const [name, setName] = useState('');
     const [address, setAddress] = useState('');
     const [isGenerating, setIsGenerating] = useState(false);
+    const [currentOrderNumber, setCurrentOrderNumber] = useState('');
     const receiptRef = useRef<HTMLDivElement>(null);
 
     const handleWhatsAppRedirect = async (e: React.FormEvent) => {
@@ -22,7 +25,14 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ items, total, onClose }) =>
         setIsGenerating(true);
 
         try {
-            // 1. Generate Image from Receipt Component
+            // 1. Generate Order Number
+            const orderNum = await generateOrderNumber();
+            setCurrentOrderNumber(orderNum);
+
+            // Wait for state update and render
+            await new Promise(resolve => setTimeout(resolve, 500));
+
+            // 2. Generate Image from Receipt Component
             if (receiptRef.current) {
                 const canvas = await html2canvas(receiptRef.current, {
                     backgroundColor: '#020202', // Force black background
@@ -52,7 +62,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ items, total, onClose }) =>
                         // Wait a moment for download to start before redirecting
                         setTimeout(() => {
                             const itemList = items.map(i => `• ${i.name} (x${i.quantity})`).join('\n');
-                            const message = `Hola, envío adjunto el comprobante de mi pedido:\n\n${itemList}\n\nTotal: $${total.toFixed(2)}\n\nMis Datos:\nNombre: ${name}\nZona: ${address}`;
+                            const message = `Hola, envío adjunto el comprobante de mi pedido:\n\n${itemList}\n\nTotal: $${total.toFixed(2)}\n\nMis Datos:\nNombre: ${name}\nZona: ${address}\nPedido: ${orderNum}`;
                             const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
                             window.open(whatsappUrl, '_blank');
                         }, 1000);
@@ -171,6 +181,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ items, total, onClose }) =>
                     total={total}
                     customerName={name || 'Cliente'}
                     customerAddress={address || 'Sin dirección'}
+                    orderNumber={currentOrderNumber}
                 />
             </div>
         </div>
