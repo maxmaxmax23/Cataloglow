@@ -15,47 +15,62 @@ This document tracks all implemented features, pending tasks, and future ideas f
 -   **Security**: Restricted access to authenticated users only.
 -   **Firestore Rules**: Secured `system/catalog_manifest` for authorized writes.
 
-### 3. Deployment Fixes (Vercel)
+### 3. Deployment & Infrastructure (Robustness)
 -   **SPA Routing**: Added `vercel.json` to handle client-side routing (fixes 404s).
 -   **Environment Variables**: Configured via Vercel Project Settings for production.
+-   **Build Safety**: Added `tsc` type-checking to build pipeline to prevent silent failures.
+-   **Tailwind Config**: Fixed `content` paths to include all component directories.
 
-### 4. High-End UI/UX Polish & AURUM Expansion (Completed)
+### 4. High-End UI/UX Polish & AURUM Expansion
 *Goal: Transform the UI to match a "Scientific Opulence" luxury aesthetic (Manrope, Gold/Black) and localize for the Spanish market.*
--   [x] **Global Theme Update**:
+-   **Global Theme Update**:
     -   Typography: Manrope (Sans) & Cinzel (Serif).
     -   Color Palette: Refined Deep Black (#020202) & Gold (#d4af35).
     -   Spacing & Layout: Sharp corners, glassmorphism, responsive grids.
--   [x] **Component Polish**: Navigation, Cart, Checkout, and Product Cards redesigned.
--   [x] **Splash Screen**: "Lujo Redefinido" with parallax and gold branding.
--   [x] **Spanish Localization**: Full UI translation (Home, Shop, Checkout, Admin).
--   [x] **Product Detail Enhancements**: Trust badges added, accordions removed.
+-   **Component Polish**: Navigation, Cart, Checkout, and Product Cards redesigned.
+-   **Splash Screen**: "Lujo Redefinido" with parallax and gold branding.
+-   **Spanish Localization**: Full UI translation (Home, Shop, Checkout, Admin).
+-   **Product Detail Enhancements**: Trust badges added, accordions removed.
 
-### 5. WhatsApp Integration (Level 2: Visual Ticket) (Completed)
+### 5. WhatsApp Integration & Digital Receipt
 *Goal: Replace text-based messages with a premium "digital invoice" image.*
--   [x] **Receipt Generation**: Created `ReceiptTicket` component with Marble texture and Gold/Black aesthetic.
--   [x] **Image Conversion**: Integrated `html2canvas` to generate high-res PNGs of the receipt.
--   [x] **Smart Sharing**: Implemented `navigator.share` (Mobile) and Download+Web fallback (Desktop).
+-   **Receipt Generation**: Created `ReceiptTicket` component with Marble texture and Gold/Black aesthetic.
+-   **Image Conversion**: Integrated `html2canvas` to generate high-res PNGs of the receipt.
+-   **Smart Sharing**: Implemented `navigator.share` (Mobile) and Download+Web fallback (Desktop).
     -   Includes Product SKUs and Full Address.
 
----
-
-## 🚧 In Progress / Next Steps
-
-### 6. Admin Dashboard Overhaul (Completed)
+### 6. Admin Dashboard Overhaul
 *Goal: Build a powerful, AURUM-styled "Command Center" for full catalog control.*
--   [x] **Admin UI Redesign**: Applied the "Scientific Opulence" dark theme to the Admin panel.
--   [x] **Product Management**:
-    -   [x] **Editor Form**: Edit Name, Price, SKU, Stock, Category, and Images.
-    -   [x] **Create/Delete**: Ability to add new items or remove obsolete ones.
--   [x] **Category Management**: Integrated category creation into the Product Editor.
--   [x] **Firebase Sync**:
-    -   [x] **Push**: Save local changes to the Cloud Manifest.
-    -   [x] **Pull**: Force refresh data from the Cloud.
+-   **Admin UI Redesign**: Applied the "Scientific Opulence" dark theme to the Admin panel.
+-   **Product Management**:
+    -   **Editor Form**: Edit Name, Price, SKU, Stock, Category, and Images.
+    -   **Create/Delete**: Ability to add new items or remove obsolete ones.
+-   **Category Management**: Integrated category creation into the Product Editor.
+-   **Firebase Sync**:
+    -   **Push**: Save local changes to the Cloud Manifest.
+    -   **Pull**: Force refresh data from the Cloud.
+
+### 7. Order System & Checkout Logic
+-   **Order Numbering**: Implemented atomic counter in `src/services/orders.ts` (e.g., AURUM-0042).
+-   **Checkout Form**:
+    -   User inputs for Name and Delivery Zone.
+    -   Validation and Loading states.
+    -   Seamless transition to WhatsApp with pre-filled message and image attachment.
 
 ---
 
 ## 🚧 In Progress / Next Steps
 
-*(Awaiting new objectives)*
+### 8. Analytics & Reporting (Planned)
+*Goal: Track sales and user engagement.*
+-   [ ] **Google Analytics**: Integration for page views and events.
+-   [ ] **Order Logging**: Save order details to Firestore before redirecting to WhatsApp (currently client-side only).
+
+### 9. Inventory Management (Planned)
+*Goal: Real-time stock decrementing.*
+-   [ ] **Stock Deduction**: Decrease stock count automatically when an order is generated.
+-   [ ] **Low Stock Alerts**: Notify admin when products are running low.
+
+---
 
 
