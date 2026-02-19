@@ -20,6 +20,7 @@ This document tracks all implemented features, pending tasks, and future ideas f
 -   **Environment Variables**: Configured via Vercel Project Settings for production.
 -   **Build Safety**: Added `tsc` type-checking to build pipeline to prevent silent failures.
 -   **Tailwind Config**: Fixed `content` paths to include all component directories.
+-   **Cleanup**: Removed temporary build files to ensure clean deployments.
 
 ### 4. High-End UI/UX Polish & AURUM Expansion
 *Goal: Transform the UI to match a "Scientific Opulence" luxury aesthetic (Manrope, Gold/Black) and localize for the Spanish market.*
@@ -37,7 +38,8 @@ This document tracks all implemented features, pending tasks, and future ideas f
 -   **Receipt Generation**: Created `ReceiptTicket` component with Marble texture and Gold/Black aesthetic.
 -   **Image Conversion**: Integrated `html2canvas` to generate high-res PNGs of the receipt.
 -   **Smart Sharing**: Implemented `navigator.share` (Mobile) and Download+Web fallback (Desktop).
-    -   Includes Product SKUs and Full Address.
+    -   **Enhanced Details**: Added **Product SKUs/IDs**, **Full Address** (no truncation), and **Order Number**.
+-   **Robustness**: Fixed image loading race conditions and cross-origin issues.
 
 ### 6. Admin Dashboard Overhaul
 *Goal: Build a powerful, AURUM-styled "Command Center" for full catalog control.*
@@ -52,6 +54,7 @@ This document tracks all implemented features, pending tasks, and future ideas f
 
 ### 7. Order System & Checkout Logic
 -   **Order Numbering**: Implemented atomic counter in `src/services/orders.ts` (e.g., AURUM-0042).
+    -   **Display**: Integrated into Receipt Header and WhatsApp message.
 -   **Checkout Form**:
     -   User inputs for Name and Delivery Zone.
     -   Validation and Loading states.
