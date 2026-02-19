@@ -17,21 +17,17 @@ const ReceiptTicket = forwardRef<HTMLDivElement, ReceiptTicketProps>(({ items, t
         hour: '2-digit',
         minute: '2-digit'
     });
-
     return (
         <div ref={ref} className="bg-[#020202] text-white p-8 w-[400px] border border-primary/20 font-sans relative overflow-hidden" style={{ borderRadius: '0px' }}>
             {/* Marble Background Texture */}
-            {/* Marble Background Texture (CSS Simulation) */}
-            <div className="absolute inset-0 z-0 opacity-30 pointer-events-none mix-blend-overlay"
-                style={{
-                    backgroundImage: `
-                        radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.1) 0%, transparent 60%),
-                        radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.05) 0%, transparent 40%),
-                        radial-gradient(circle at 90% 80%, rgba(255, 255, 255, 0.05) 0%, transparent 40%)
-                    `,
-                    backgroundSize: '100% 100%'
-                }}
-            ></div>
+            <div className="absolute inset-0 z-0 opacity-40 pointer-events-none mix-blend-overlay">
+                <img
+                    src="/marble-background.png"
+                    className="w-full h-full object-cover grayscale contrast-125"
+                    alt="Marble Texture"
+                    crossOrigin="anonymous"
+                />
+            </div>
             <div className="absolute inset-0 z-0 bg-gradient-to-b from-black/80 via-black/90 to-black pointer-events-none"></div>
 
             <div className="relative z-10 flex flex-col items-center">
@@ -99,7 +95,7 @@ const ReceiptTicket = forwardRef<HTMLDivElement, ReceiptTicketProps>(({ items, t
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 });
 
