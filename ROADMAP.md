@@ -1,4 +1,6 @@
 # Master Roadmap & Feature Tracker
+> **Version**: 1.0beta
+> *Directive: Increment this version number with every significant update to this roadmap.*
 
 This document tracks all implemented features, pending tasks, and future ideas for the Cataloglow project.
 
@@ -73,6 +75,21 @@ This document tracks all implemented features, pending tasks, and future ideas f
 *Goal: Real-time stock decrementing.*
 -   [ ] **Stock Deduction**: Decrease stock count automatically when an order is generated.
 -   [ ] **Low Stock Alerts**: Notify admin when products are running low.
+
+## 🧪 QA & Fine-tuning (Updates to Existing Features)
+
+### A. Localization & formatting
+-   [ ] **Currency Format**: Replace `toFixed(2)` with `Intl.NumberFormat('es-AR')` for correct usage of commas/dots ($1.234,50).
+-   [ ] **Date Locale**: Ensure all date displays use strict 'es-AR' configuration.
+
+### B. Resilience & Validation
+-   [ ] **Input Trimming**: Trim whitespace from Name/Address in `CheckoutForm` to prevent empty submissions.
+-   [ ] **Office ID Collision**: Add random suffix to `orders.ts` offline fallback to technically eliminate collision risk.
+-   [ ] **Image Pre-loading**: Ensure branded fonts (Manrope/Cinzel) are fully loaded before `html2canvas` runs to prevent "Flash of Unstyled Text" in receipts.
+
+### C. UX Edge Cases
+-   [ ] **Long Item Lists**: Verify `ReceiptTicket` behavior when order has 10+ items (does background scaling work?).
+-   [ ] **Mobile Keyboard**: Ensure `CheckoutForm` modal doesn't get covered by the virtual keyboard on mobile devices.
 
 ---
 
