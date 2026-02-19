@@ -20,14 +20,8 @@ const ReceiptTicket = forwardRef<HTMLDivElement, ReceiptTicketProps>(({ items, t
     return (
         <div ref={ref} className="bg-[#020202] text-white p-8 w-[400px] border border-primary/20 font-sans relative overflow-hidden" style={{ borderRadius: '0px' }}>
             {/* Marble Background Texture */}
-            <div className="absolute inset-0 z-0 opacity-40 pointer-events-none mix-blend-overlay">
-                <img
-                    src="/marble-background.png"
-                    className="w-full h-full object-cover grayscale contrast-125"
-                    alt="Marble Texture"
-                    crossOrigin="anonymous"
-                />
-            </div>
+            {/* Simple Dark Background (Restored) */}
+            <div className="absolute inset-0 z-0 bg-[#050505] pointer-events-none"></div>
             <div className="absolute inset-0 z-0 bg-gradient-to-b from-black/80 via-black/90 to-black pointer-events-none"></div>
 
             <div className="relative z-10 flex flex-col items-center">

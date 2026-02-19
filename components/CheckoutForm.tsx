@@ -33,16 +33,6 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ items, total, onClose }) =>
 
             // 2. Generate Image from Receipt Component
             if (receiptRef.current) {
-                // Ensure images are loaded before capture
-                const images = Array.from(receiptRef.current.querySelectorAll('img'));
-                await Promise.all(images.map(img => {
-                    if (img.complete) return Promise.resolve();
-                    return new Promise(resolve => {
-                        img.onload = resolve;
-                        img.onerror = resolve; // Continue even if error
-                    });
-                }));
-
                 // Small delay to ensure rendering is complete
                 await new Promise(resolve => setTimeout(resolve, 100));
 
