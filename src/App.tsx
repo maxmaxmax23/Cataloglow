@@ -96,22 +96,6 @@ function App() {
 
   const cartTotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0); // Tax removed per user request
 
-  if (showSplash) {
-    return <SplashScreen onComplete={() => setShowSplash(false)} />;
-  }
-
-  // Basic luxury loader if still fetching data after splash
-  if (loadingProducts) {
-    return (
-      <div className="fixed inset-0 bg-black flex items-center justify-center">
-        <div className="flex flex-col items-center gap-4">
-          <div className="w-12 h-12 border border-primary/20 border-t-primary rounded-full animate-spin"></div>
-          <span className="text-[10px] tracking-[0.3em] uppercase text-primary animate-pulse">Sincronizando Inventario</span>
-        </div>
-      </div>
-    );
-  }
-
   // --- History API Integration for Back Button Safety ---
   useEffect(() => {
     const handlePopState = (event: PopStateEvent) => {
@@ -136,6 +120,22 @@ function App() {
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
+
+  if (showSplash) {
+    return <SplashScreen onComplete={() => setShowSplash(false)} />;
+  }
+
+  // Basic luxury loader if still fetching data after splash
+  if (loadingProducts) {
+    return (
+      <div className="fixed inset-0 bg-black flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-12 h-12 border border-primary/20 border-t-primary rounded-full animate-spin"></div>
+          <span className="text-[10px] tracking-[0.3em] uppercase text-primary animate-pulse">Sincronizando Inventario</span>
+        </div>
+      </div>
+    );
+  }
 
   // Modal Openers (Wrappers with History Push)
   const openProduct = (product: Product) => {
