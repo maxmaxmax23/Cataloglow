@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { CartItem } from '../src/types';
+import { useCms } from '../src/hooks/useCMS';
 
 interface CartDrawerProps {
     isOpen: boolean;
@@ -110,7 +111,7 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, items, onRemov
                     <button onClick={handleClose} className="absolute left-6 top-1/2 -translate-y-1/2 text-stone-500 hover:text-white transition-colors">
                         <span className="material-symbols-outlined">arrow_forward</span>
                     </button>
-                    <h2 className="text-xl font-bold tracking-[0.2em] uppercase text-white">Tu Selección</h2>
+                    <h2 className="text-xl font-bold tracking-[0.2em] uppercase text-white">{useCms('cart.drawer.title', 'Tu Selección')}</h2>
                     <div className="flex justify-center mt-2">
                         <span className="material-symbols-outlined text-primary text-xs">manage_history</span>
                     </div>
@@ -120,9 +121,9 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, items, onRemov
                     {items.length === 0 ? (
                         <div className="h-full flex flex-col items-center justify-center text-stone-500 animate-fade-in">
                             <span className="material-symbols-outlined text-4xl mb-4 font-thin">shopping_bag</span>
-                            <p className="uppercase tracking-[0.2em] text-xs">Tu bolsa está vacía</p>
+                            <p className="uppercase tracking-[0.2em] text-xs">{useCms('cart.drawer.emptyText', 'Tu bolsa está vacía')}</p>
                             <button onClick={handleClose} className="mt-8 border-b border-primary text-primary text-xs uppercase tracking-widest pb-1 hover:text-white hover:border-white transition-colors">
-                                Descubrir Colección
+                                {useCms('cart.drawer.discoverButton', 'Descubrir Colección')}
                             </button>
                         </div>
                     ) : (
@@ -135,7 +136,7 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, items, onRemov
                                     <div className="flex justify-between items-start">
                                         <div>
                                             <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-1">{item.name}</h3>
-                                            <p className="text-[10px] text-stone-500 uppercase tracking-widest">{item.volume || 'Estándar'}</p>
+                                            <p className="text-[10px] text-stone-500 uppercase tracking-widest">{item.volume || useCms('cart.drawer.volumeDefault', 'Estándar')}</p>
                                         </div>
                                         <button onClick={() => onRemoveItem(item.id)} className="text-stone-600 hover:text-white transition-colors">
                                             <span className="material-symbols-outlined text-sm">close</span>
@@ -163,19 +164,19 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, items, onRemov
                     <div className="p-8 bg-background-card border-t border-primary/20">
                         <div className="space-y-3 mb-8">
                             <div className="flex justify-between text-xs text-stone-400 uppercase tracking-wider">
-                                <span>Subtotal</span>
+                                <span>{useCms('cart.summary.subtotal', 'Subtotal')}</span>
                                 <span>${subtotal.toFixed(2)}</span>
                             </div>
                             <div className="flex justify-between text-xs text-stone-400 uppercase tracking-wider">
-                                <span>Envío</span>
-                                <span className="text-primary">Cortesía</span>
+                                <span>{useCms('cart.summary.shipping', 'Envío')}</span>
+                                <span className="text-primary">{useCms('cart.summary.shippingFree', 'Cortesía')}</span>
                             </div>
                             <div className="flex justify-between text-xs text-stone-400 uppercase tracking-wider">
-                                <span>Impuestos (Est.)</span>
+                                <span>{useCms('cart.summary.tax', 'Impuestos (Est.)')}</span>
                                 <span>${tax.toFixed(2)}</span>
                             </div>
                             <div className="flex justify-between items-center pt-6 border-t border-white/5 mt-4">
-                                <span className="text-sm font-bold uppercase tracking-[0.2em] text-white">Total</span>
+                                <span className="text-sm font-bold uppercase tracking-[0.2em] text-white">{useCms('cart.summary.total', 'Total')}</span>
                                 <span className="text-xl font-light text-primary">${total.toFixed(2)}</span>
                             </div>
                         </div>
@@ -183,7 +184,7 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, items, onRemov
                             onClick={onCheckout}
                             className="w-full bg-primary hover:bg-white hover:text-black text-background-dark font-extrabold py-5 uppercase tracking-[0.2em] text-xs transition-all duration-300 transform active:scale-[0.99] relative overflow-hidden group"
                         >
-                            <span className="relative z-10">Continuar al Pago</span>
+                            <span className="relative z-10">{useCms('cart.summary.checkoutButton', 'Continuar al Pago')}</span>
                             <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
                         </button>
                     </div>

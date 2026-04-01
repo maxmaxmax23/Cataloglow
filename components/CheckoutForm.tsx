@@ -4,6 +4,7 @@ import html2canvas from 'html2canvas';
 import ReceiptTicket from './ReceiptTicket';
 
 import { generateOrderNumber } from '../src/services/orders';
+import { useCms } from '../src/hooks/useCMS';
 
 interface CheckoutFormProps {
     items: CartItem[];
@@ -101,21 +102,21 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ items, total, onClose }) =>
                         <div className="inline-block mb-4">
                             <span className="material-icons text-primary text-4xl">auto_fix_high</span>
                         </div>
-                        <h2 className="text-2xl text-white font-light tracking-[0.15em] uppercase mb-2">Finalizar Compra</h2>
+                        <h2 className="text-2xl text-white font-light tracking-[0.15em] uppercase mb-2">{useCms('checkout.header.title', 'Finalizar Compra')}</h2>
                         <div className="h-px w-12 bg-primary mx-auto mb-6"></div>
-                        <p className="text-white/40 text-xs font-light">Ingresa tus datos para generar tu recibo digital de lujo.</p>
+                        <p className="text-white/40 text-xs font-light">{useCms('checkout.header.subtitle', 'Ingresa tus datos para generar tu recibo digital de lujo.')}</p>
                     </header>
 
                     <form onSubmit={handleWhatsAppRedirect} className="flex-grow space-y-6">
                         <div className="group">
-                            <label htmlFor="name" className="block text-primary text-[10px] uppercase tracking-[0.15em] mb-2 font-bold">Nombre Completo</label>
+                            <label htmlFor="name" className="block text-primary text-[10px] uppercase tracking-[0.15em] mb-2 font-bold">{useCms('checkout.form.nameLabel', 'Nombre Completo')}</label>
                             <div className="border border-primary/30 rounded overflow-hidden focus-within:border-primary focus-within:shadow-[0_0_10px_rgba(242,185,13,0.2)] transition-all">
                                 <input
                                     id="name"
                                     type="text"
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
-                                    placeholder="ej. Arabella Sterling"
+                                    placeholder={useCms('checkout.form.namePlaceholder', 'ej. Arabella Sterling')}
                                     className="w-full bg-black/40 border-none text-white px-4 py-3 focus:ring-0 placeholder:text-white/20 font-light text-sm"
                                     required
                                 />
@@ -123,14 +124,14 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ items, total, onClose }) =>
                         </div>
 
                         <div className="group">
-                            <label htmlFor="area" className="block text-primary text-[10px] uppercase tracking-[0.15em] mb-2 font-bold">Zona de Entrega</label>
+                            <label htmlFor="area" className="block text-primary text-[10px] uppercase tracking-[0.15em] mb-2 font-bold">{useCms('checkout.form.addressLabel', 'Zona de Entrega')}</label>
                             <div className="border border-primary/30 rounded overflow-hidden focus-within:border-primary focus-within:shadow-[0_0_10px_rgba(242,185,13,0.2)] transition-all">
                                 <input
                                     id="area"
                                     type="text"
                                     value={address}
                                     onChange={(e) => setAddress(e.target.value)}
-                                    placeholder="ej. Palermo, Buenos Aires"
+                                    placeholder={useCms('checkout.form.addressPlaceholder', 'ej. Palermo, Buenos Aires')}
                                     className="w-full bg-black/40 border-none text-white px-4 py-3 focus:ring-0 placeholder:text-white/20 font-light text-sm"
                                     required
                                 />
@@ -139,11 +140,11 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ items, total, onClose }) =>
 
                         <div className="p-4 rounded bg-primary/5 border border-primary/10 mt-6">
                             <div className="flex justify-between items-center mb-2">
-                                <span className="text-white/40 text-[10px] uppercase tracking-wider">Items Seleccionados</span>
-                                <span className="text-white text-xs">{items.length} Productos</span>
+                                <span className="text-white/40 text-[10px] uppercase tracking-wider">{useCms('checkout.form.itemsInfo', 'Items Seleccionados')}</span>
+                                <span className="text-white text-xs">{items.length} {useCms('checkout.form.productsText', 'Productos')}</span>
                             </div>
                             <div className="flex justify-between items-center">
-                                <span className="text-white/40 text-[10px] uppercase tracking-wider">Total Estimado</span>
+                                <span className="text-white/40 text-[10px] uppercase tracking-wider">{useCms('checkout.form.totalInfo', 'Total Estimado')}</span>
                                 <span className="text-primary font-bold text-sm">${total.toFixed(2)}</span>
                             </div>
                         </div>
@@ -156,19 +157,19 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ items, total, onClose }) =>
                             {isGenerating ? (
                                 <>
                                     <span className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin"></span>
-                                    <span>Generando Recibo...</span>
+                                    <span>{useCms('checkout.form.generating', 'Generando Recibo...')}</span>
                                 </>
                             ) : (
                                 <>
                                     <span className="material-icons text-sm">receipt_long</span>
-                                    Generar Ticket y Continuar
+                                    {useCms('checkout.form.submitButton', 'Generar Ticket y Continuar')}
                                 </>
                             )}
                         </button>
                     </form>
 
                     <p className="text-center text-[9px] text-white/30 uppercase tracking-widest mt-6">
-                        Compra segura vía WhatsApp Business
+                        {useCms('checkout.footer.secureText', 'Compra segura vía WhatsApp Business')}
                     </p>
                 </div>
             </div>

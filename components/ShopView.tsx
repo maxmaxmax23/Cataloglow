@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Product } from '../src/types';
 import RevealOnScroll from './RevealOnScroll';
+import { useCms } from '../src/hooks/useCMS';
 
 interface ShopViewProps {
   products: Product[];
@@ -80,9 +81,9 @@ const ShopView: React.FC<ShopViewProps> = ({ products, onProductClick, onAddToCa
       {/* Header */}
       <div className="text-center mb-8 px-4 animate-fade-in">
         <h1 className="text-3xl md:text-5xl font-serif font-light mb-2">
-          La Colección <span className="text-primary font-bold">Midnight</span>
+          {useCms('shop.header.titlePrefix', 'La Colección')} <span className="text-primary font-bold">{useCms('shop.header.titleHighlight', 'Midnight')}</span>
         </h1>
-        <p className="text-white/40 text-[10px] uppercase tracking-[0.3em]">Pura Elegancia en Cada Aplicación</p>
+        <p className="text-white/40 text-[10px] uppercase tracking-[0.3em]">{useCms('shop.header.subtitle', 'Pura Elegancia en Cada Aplicación')}</p>
       </div>
 
       {/* Filter Bar */}
@@ -95,17 +96,17 @@ const ShopView: React.FC<ShopViewProps> = ({ products, onProductClick, onAddToCa
                 onClick={() => setFilter(f)}
                 className={`text-[10px] font-bold uppercase tracking-widest whitespace-nowrap transition-all duration-300 relative ${filter === f ? 'text-primary scale-110' : 'text-white/60 hover:text-white'}`}
               >
-                {f === 'All' ? 'Todo' : f}
+                {f === 'All' ? useCms('shop.filters.all', 'Todo') : f}
                 {filter === f && <span className="absolute -bottom-2 left-0 right-0 h-[1px] bg-primary animate-scale-in"></span>}
               </button>
             ))}
           </div>
           <div className="flex items-center gap-4 border-l border-white/10 pl-6 shrink-0">
             <button className="flex items-center text-[10px] font-bold uppercase tracking-widest text-white/80 hover:text-primary transition-colors">
-              Ordenar <span className="material-icons text-sm ml-1">expand_more</span>
+              {useCms('shop.filters.sort', 'Ordenar')} <span className="material-icons text-sm ml-1">expand_more</span>
             </button>
             <button className="flex items-center text-[10px] font-bold uppercase tracking-widest text-white/80 hover:text-primary transition-colors">
-              Filtrar <span className="material-icons text-sm ml-1">tune</span>
+              {useCms('shop.filters.filter', 'Filtrar')} <span className="material-icons text-sm ml-1">tune</span>
             </button>
           </div>
         </div>
@@ -135,7 +136,7 @@ const ShopView: React.FC<ShopViewProps> = ({ products, onProductClick, onAddToCa
                     onClick={(e) => handleQuickAdd(e, product)}
                     className="hidden md:block w-full bg-primary/90 text-black font-bold py-3 rounded uppercase tracking-[0.2em] text-[10px] hover:bg-white transition-all duration-300 transform translate-y-4 group-hover:translate-y-0 shadow-lg backdrop-blur-sm btn-shimmer"
                   >
-                    Agregar
+                    {useCms('shop.productCard.add', 'Agregar')}
                   </button>
                 </div>
 
@@ -148,10 +149,10 @@ const ShopView: React.FC<ShopViewProps> = ({ products, onProductClick, onAddToCa
                 </button>
 
                 {product.isNew && (
-                  <div className="absolute top-2 left-2 bg-primary/90 text-black text-[8px] font-bold px-2 py-1 rounded uppercase tracking-wider shadow-md z-20">Nuevo</div>
+                  <div className="absolute top-2 left-2 bg-primary/90 text-black text-[8px] font-bold px-2 py-1 rounded uppercase tracking-wider shadow-md z-20">{useCms('shop.productCard.new', 'Nuevo')}</div>
                 )}
                 {product.isLimited && (
-                  <div className="absolute top-2 left-2 bg-white/10 backdrop-blur-md text-white border border-white/20 text-[8px] font-bold px-2 py-1 rounded uppercase tracking-wider z-20">Limitado</div>
+                  <div className="absolute top-2 left-2 bg-white/10 backdrop-blur-md text-white border border-white/20 text-[8px] font-bold px-2 py-1 rounded uppercase tracking-wider z-20">{useCms('shop.productCard.limited', 'Limitado')}</div>
                 )}
               </div>
               <div className="text-center group-hover:transform group-hover:-translate-y-1 transition-transform duration-300">
@@ -173,19 +174,19 @@ const ShopView: React.FC<ShopViewProps> = ({ products, onProductClick, onAddToCa
         {isLoading && (
           <div className="flex flex-col items-center gap-3">
             <div className="w-6 h-6 border-[1px] border-primary/20 border-t-primary rounded-full animate-spin"></div>
-            <span className="text-[9px] uppercase tracking-[0.3em] text-primary animate-pulse">Cargando Colección</span>
+            <span className="text-[9px] uppercase tracking-[0.3em] text-primary animate-pulse">{useCms('shop.loading.text', 'Cargando Colección')}</span>
           </div>
         )}
 
         {!isLoading && !hasMore && filteredProducts.length > 0 && (
           <div className="flex flex-col items-center gap-2">
             <div className="w-1 h-8 bg-gradient-to-b from-transparent via-white/20 to-transparent"></div>
-            <span className="text-[9px] uppercase tracking-[0.3em] text-white/20">Fin de la Colección</span>
+            <span className="text-[9px] uppercase tracking-[0.3em] text-white/20">{useCms('shop.loading.end', 'Fin de la Colección')}</span>
           </div>
         )}
 
         {!isLoading && !hasMore && filteredProducts.length === 0 && (
-          <span className="text-[10px] uppercase tracking-[0.3em] text-white/40">No se encontraron productos</span>
+          <span className="text-[10px] uppercase tracking-[0.3em] text-white/40">{useCms('shop.loading.empty', 'No se encontraron productos')}</span>
         )}
       </div>
 
@@ -193,8 +194,8 @@ const ShopView: React.FC<ShopViewProps> = ({ products, onProductClick, onAddToCa
       {!isLoading && (
         <section className="mt-8 pt-12 border-t border-white/5 px-6 max-w-7xl mx-auto animate-fade-in">
           <div className="text-center mb-10">
-            <span className="text-primary text-[10px] uppercase tracking-[0.3em] font-bold block mb-3">Selección Curada</span>
-            <h2 className="text-2xl md:text-3xl font-serif text-white">También te podría gustar</h2>
+            <span className="text-primary text-[10px] uppercase tracking-[0.3em] font-bold block mb-3">{useCms('shop.recommendations.subtitle', 'Selección Curada')}</span>
+            <h2 className="text-2xl md:text-3xl font-serif text-white">{useCms('shop.recommendations.title', 'También te podría gustar')}</h2>
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-x-5 gap-y-10">
@@ -215,7 +216,7 @@ const ShopView: React.FC<ShopViewProps> = ({ products, onProductClick, onAddToCa
                         onClick={(e) => handleQuickAdd(e, product)}
                         className="w-full bg-primary/90 text-black font-bold py-2 rounded uppercase tracking-[0.2em] text-[8px] hover:bg-white transition-all duration-300 transform translate-y-4 group-hover:translate-y-0 shadow-lg backdrop-blur-sm btn-shimmer"
                       >
-                        Agregar
+                        {useCms('shop.productCard.add', 'Agregar')}
                       </button>
                     </div>
                   </div>

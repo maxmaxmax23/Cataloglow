@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Product } from '../src/types';
+import { useCms } from '../src/hooks/useCMS';
 
 interface ProductDetailModalProps {
     product: Product | null;
@@ -192,19 +193,19 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, produc
                                 <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-stone-400 group-hover:border-primary/50 group-hover:text-primary transition-all">
                                     <span className="material-symbols-outlined text-lg">cruelty_free</span>
                                 </div>
-                                <span className="text-[9px] uppercase tracking-widest text-stone-400 group-hover:text-white transition-colors">Cruelty Free</span>
+                                <span className="text-[9px] uppercase tracking-widest text-stone-400 group-hover:text-white transition-colors">{useCms('product.badges.crueltyFree', 'Cruelty Free')}</span>
                             </div>
                             <div className="flex flex-col items-center text-center gap-2 group">
                                 <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-stone-400 group-hover:border-primary/50 group-hover:text-primary transition-all">
                                     <span className="material-symbols-outlined text-lg">science</span>
                                 </div>
-                                <span className="text-[9px] uppercase tracking-widest text-stone-400 group-hover:text-white transition-colors">Lab Tested</span>
+                                <span className="text-[9px] uppercase tracking-widest text-stone-400 group-hover:text-white transition-colors">{useCms('product.badges.labTested', 'Lab Tested')}</span>
                             </div>
                             <div className="flex flex-col items-center text-center gap-2 group">
                                 <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-stone-400 group-hover:border-primary/50 group-hover:text-primary transition-all">
                                     <span className="material-symbols-outlined text-lg">verified_user</span>
                                 </div>
-                                <span className="text-[9px] uppercase tracking-widest text-stone-400 group-hover:text-white transition-colors">Aprobado ANMAT</span>
+                                <span className="text-[9px] uppercase tracking-widest text-stone-400 group-hover:text-white transition-colors">{useCms('product.badges.approved', 'Aprobado ANMAT')}</span>
                             </div>
                         </div>
 
@@ -215,14 +216,14 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, produc
                                     onClick={() => toggleSection('ingredients')}
                                     className="w-full flex items-center justify-between p-4 text-left hover:bg-white/5 transition-colors"
                                 >
-                                    <span className="text-xs font-bold uppercase tracking-widest text-white">Ingredientes</span>
+                                    <span className="text-xs font-bold uppercase tracking-widest text-white">{useCms('product.accordions.ingredients', 'Ingredientes')}</span>
                                     <span className={`material-symbols-outlined text-sm text-stone-500 transition-transform duration-300 ${openSection === 'ingredients' ? 'rotate-180' : ''}`}>expand_more</span>
                                 </button>
                                 <div className={`grid transition-[grid-template-rows] duration-300 ease-out ${openSection === 'ingredients' ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}>
                                     <div className="overflow-hidden">
                                         <div className="p-4 pt-0 text-sm text-stone-400 font-light leading-relaxed">
                                             Aqua / Water, Glycerin, Dimethicone, Alcohol Denat., Squalane, Ammonium Polyacryloyldimethyl Taurate, Macadamia Ternifolia Seed Oil.
-                                            <div className="mt-2 text-[10px] text-stone-600 italic">* Lista de ingredientes sujeta a cambios. Ver empaque del producto.</div>
+                                            <div className="mt-2 text-[10px] text-stone-600 italic">{useCms('product.accordions.disclaimer', '* Lista de ingredientes sujeta a cambios. Ver empaque del producto.')}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -252,18 +253,18 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, produc
                                     className="flex-1 bg-primary hover:bg-white hover:text-black text-background-dark font-extrabold py-4 px-6 rounded-lg uppercase tracking-[0.2em] text-xs transition-all duration-300 shadow-[0_0_20px_rgba(212,175,53,0.2)] hover:shadow-[0_0_30px_rgba(255,255,255,0.4)] relative overflow-hidden group"
                                 >
                                     <span className="relative z-10 flex items-center justify-center gap-2">
-                                        Agregar al Carrito
+                                        {useCms('product.buttons.add', 'Agregar al Carrito')}
                                         <span className="hidden group-hover:inline-block material-symbols-outlined text-sm animate-fade-in">arrow_forward</span>
                                     </span>
                                 </button>
                             </div>
-                            <p className="text-center text-[9px] uppercase tracking-widest text-stone-600 font-bold mt-4">Envío gratuito en todos los pedidos</p>
+                            <p className="text-center text-[9px] uppercase tracking-widest text-stone-600 font-bold mt-4">{useCms('product.footer.shippingInfo', 'Envío gratuito en todos los pedidos')}</p>
                         </div>
 
                         {/* Related Products - Simplified for Modal */}
                         {relatedProducts.length > 0 && (
                             <div className="mt-12 pt-12 border-t border-white/5">
-                                <h3 className="text-xl font-serif text-white mb-6 text-center">Completa tu Ritual</h3>
+                                <h3 className="text-xl font-serif text-white mb-6 text-center">{useCms('product.related.title', 'Completa tu Ritual')}</h3>
                                 <div className="grid grid-cols-2 gap-4">
                                     {relatedProducts.slice(0, 2).map((rp) => (
                                         <div key={rp.id} onClick={() => onProductClick(rp)} className="cursor-pointer group">

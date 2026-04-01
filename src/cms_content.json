@@ -23,5 +23,129 @@
     "contactEmail": "contacto@aurum.com",
     "shippingBanner": "Envío gratis en pedidos superiores a $150",
     "shopButton": "Comprar Ahora"
+  },
+  "navigation": {
+    "top": {
+      "link1": "Novedades",
+      "link2": "La Colección",
+      "link3": "Opulencia Científica",
+      "link4": "Diario"
+    },
+    "bottom": {
+      "home": "Inicio",
+      "shop": "Tienda",
+      "saved": "Guardados",
+      "profile": "Perfil"
+    }
+  },
+  "shop": {
+    "header": {
+      "titlePrefix": "La Colección",
+      "titleHighlight": "Midnight",
+      "subtitle": "Pura Elegancia en Cada Aplicación"
+    },
+    "filters": {
+      "all": "Todo",
+      "sort": "Ordenar",
+      "filter": "Filtrar"
+    },
+    "productCard": {
+      "add": "Agregar",
+      "new": "Nuevo",
+      "limited": "Limitado"
+    },
+    "loading": {
+      "text": "Cargando Colección",
+      "end": "Fin de la Colección",
+      "empty": "No se encontraron productos"
+    },
+    "recommendations": {
+      "subtitle": "Selección Curada",
+      "title": "También te podría gustar"
+    }
+  },
+  "product": {
+    "buttons": {
+      "add": "Agregar al Carrito"
+    },
+    "badges": {
+      "crueltyFree": "Cruelty Free",
+      "labTested": "Lab Tested",
+      "approved": "Aprobado ANMAT"
+    },
+    "accordions": {
+      "ingredients": "Ingredientes",
+      "disclaimer": "* Lista de ingredientes sujeta a cambios. Ver empaque del producto."
+    },
+    "footer": {
+      "shippingInfo": "Envío gratuito en todos los pedidos"
+    },
+    "related": {
+      "title": "Completa tu Ritual"
+    }
+  },
+  "cart": {
+    "drawer": {
+      "title": "Tu Selección",
+      "emptyText": "Tu bolsa está vacía",
+      "discoverButton": "Descubrir Colección",
+      "volumeDefault": "Estándar"
+    },
+    "summary": {
+      "subtotal": "Subtotal",
+      "shipping": "Envío",
+      "shippingFree": "Cortesía",
+      "tax": "Impuestos (Est.)",
+      "total": "Total",
+      "checkoutButton": "Continuar al Pago"
+    }
+  },
+  "checkout": {
+    "header": {
+      "title": "Finalizar Compra",
+      "subtitle": "Ingresa tus datos para generar tu recibo digital de lujo."
+    },
+    "form": {
+      "nameLabel": "Nombre Completo",
+      "namePlaceholder": "ej. Arabella Sterling",
+      "addressLabel": "Zona de Entrega",
+      "addressPlaceholder": "ej. Palermo, Buenos Aires",
+      "itemsInfo": "Items Seleccionados",
+      "productsText": "Productos",
+      "totalInfo": "Total Estimado",
+      "submitButton": "Generar Ticket y Continuar",
+      "generating": "Generando Recibo..."
+    },
+    "footer": {
+      "secureText": "Compra segura vía WhatsApp Business"
+    }
+  },
+  "receipt": {
+    "header": {
+      "title": "AURUM",
+      "subtitle": "Lujo Redefinido"
+    },
+    "details": {
+      "client": "Cliente",
+      "destination": "Destino",
+      "date": "Fecha",
+      "idLabel": "ID:"
+    },
+    "summary": {
+      "total": "Total Final"
+    },
+    "footer": {
+      "thankYou": "Gracias por su preferencia",
+      "brand": "AURUM AUTHENTIC"
+    }
+  },
+  "splash": {
+    "text": {
+      "title": "AURUM",
+      "tagline": "Lujo Redefinido",
+      "loading": "Cargando",
+      "established": "Establecido",
+      "year": "MMXXIV"
+    }
   }
 }

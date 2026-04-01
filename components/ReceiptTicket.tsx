@@ -1,5 +1,6 @@
 import React, { forwardRef } from 'react';
 import { CartItem } from '../src/types';
+import { useCms } from '../src/hooks/useCMS';
 
 interface ReceiptTicketProps {
     items: CartItem[];
@@ -29,8 +30,8 @@ const ReceiptTicket = forwardRef<HTMLDivElement, ReceiptTicketProps>(({ items, t
                 {/* Header */}
                 <div className="mb-6 text-center">
                     <span className="material-icons text-4xl text-primary mb-2">flare</span>
-                    <h1 className="text-3xl font-extrabold tracking-[0.3em] uppercase text-primary">AURUM</h1>
-                    <p className="text-[8px] uppercase tracking-[0.4em] text-white/40 mt-1">Lujo Redefinido</p>
+                    <h1 className="text-3xl font-extrabold tracking-[0.3em] uppercase text-primary">{useCms('receipt.header.title', 'AURUM')}</h1>
+                    <p className="text-[8px] uppercase tracking-[0.4em] text-white/40 mt-1">{useCms('receipt.header.subtitle', 'Lujo Redefinido')}</p>
                     {orderNumber && (
                         <div className="mt-2 border border-white/10 bg-white/5 py-1 px-3 inline-block rounded">
                             <p className="text-[10px] font-mono tracking-widest text-primary">{orderNumber}</p>
@@ -43,15 +44,15 @@ const ReceiptTicket = forwardRef<HTMLDivElement, ReceiptTicketProps>(({ items, t
                 {/* Customer Details */}
                 <div className="w-full mb-6">
                     <div className="flex justify-between items-end mb-2">
-                        <span className="text-[10px] uppercase tracking-widest text-white/40">Cliente</span>
+                        <span className="text-[10px] uppercase tracking-widest text-white/40">{useCms('receipt.details.client', 'Cliente')}</span>
                         <span className="text-xs font-bold text-white uppercase">{customerName}</span>
                     </div>
                     <div className="flex justify-between items-start mb-2">
-                        <span className="text-[10px] uppercase tracking-widest text-white/40 mt-0.5">Destino</span>
+                        <span className="text-[10px] uppercase tracking-widest text-white/40 mt-0.5">{useCms('receipt.details.destination', 'Destino')}</span>
                         <span className="text-xs font-bold text-white uppercase text-right leading-tight max-w-[200px] break-words">{customerAddress}</span>
                     </div>
                     <div className="flex justify-between items-end">
-                        <span className="text-[10px] uppercase tracking-widest text-white/40">Fecha</span>
+                        <span className="text-[10px] uppercase tracking-widest text-white/40">{useCms('receipt.details.date', 'Fecha')}</span>
                         <span className="text-xs font-mono text-primary/80">{date}</span>
                     </div>
                 </div>
@@ -66,7 +67,7 @@ const ReceiptTicket = forwardRef<HTMLDivElement, ReceiptTicketProps>(({ items, t
                                 <span className="text-primary font-mono pt-0.5">{item.quantity}x</span>
                                 <div className="flex flex-col">
                                     <span className="text-white/90 uppercase tracking-wide font-bold">{item.name}</span>
-                                    <span className="text-[9px] text-white/30 tracking-wider font-mono">ID: {item.id.substring(0, 8).toUpperCase()}</span>
+                                    <span className="text-[9px] text-white/30 tracking-wider font-mono">{useCms('receipt.details.idLabel', 'ID:')} {item.id.substring(0, 8).toUpperCase()}</span>
                                 </div>
                             </div>
                             <span className="text-white font-mono pt-0.5">${(item.price * item.quantity).toFixed(2)}</span>
@@ -78,15 +79,15 @@ const ReceiptTicket = forwardRef<HTMLDivElement, ReceiptTicketProps>(({ items, t
 
                 {/* Total */}
                 <div className="w-full flex justify-between items-center mb-8">
-                    <span className="text-sm uppercase tracking-[0.2em] text-white">Total Final</span>
+                    <span className="text-sm uppercase tracking-[0.2em] text-white">{useCms('receipt.summary.total', 'Total Final')}</span>
                     <span className="text-2xl font-bold text-primary font-mono">${total.toFixed(2)}</span>
                 </div>
 
                 {/* Footer */}
                 <div className="text-center">
-                    <p className="text-[8px] uppercase tracking-[0.2em] text-white/30 mb-2">Gracias por su preferencia</p>
+                    <p className="text-[8px] uppercase tracking-[0.2em] text-white/30 mb-2">{useCms('receipt.footer.thankYou', 'Gracias por su preferencia')}</p>
                     <div className="w-24 h-8 bg-white/5 mx-auto rounded flex items-center justify-center border border-white/10">
-                        <span className="text-[6px] tracking-widest text-white/20">AURUM AUTHENTIC</span>
+                        <span className="text-[6px] tracking-widest text-white/20">{useCms('receipt.footer.brand', 'AURUM AUTHENTIC')}</span>
                     </div>
                 </div>
             </div>

@@ -20,6 +20,11 @@ export const CMSManager: React.FC<CMSManagerProps> = ({ addLog }) => {
     const [isSavingTest, setIsSavingTest] = useState(false);
     const [isSavingProd, setIsSavingProd] = useState(false);
     const [showSettings, setShowSettings] = useState(false);
+    const [collapsedSections, setCollapsedSections] = useState<Record<string, boolean>>({});
+
+    const toggleSection = (title: string) => {
+        setCollapsedSections(prev => ({...prev, [title]: !prev[title]}));
+    };
 
     // Persist settings
     useEffect(() => {
@@ -41,22 +46,28 @@ export const CMSManager: React.FC<CMSManagerProps> = ({ addLog }) => {
             return;
         }
 
-        isProd ? setIsSavingProd(true) : setIsSavingTest(true);
-        addLog(`Compiling CMS mapping for branch: ${targetBranch}...`);
-        
-        const config: GitHubConfig = {
-            token: githubToken,
-            owner: githubOwner,
-            repo: githubRepo,
-            branch: targetBranch
-        };
-
         try {
+            // Very basic validation: don't save if cmsState is somehow empty or borked
+            if (!cmsState || typeof cmsState !== 'object' || Object.keys(cmsState).length === 0) {
+                throw new Error("CMS Data is empty or invalid. Prevented save.");
+            }
+
+            isProd ? setIsSavingProd(true) : setIsSavingTest(true);
+            addLog(`Compiling CMS mapping for branch: ${targetBranch}...`);
+            
+            const config: GitHubConfig = {
+                token: githubToken,
+                owner: githubOwner,
+                repo: githubRepo,
+                branch: targetBranch
+            };
+
             await saveCmsToGithub(config, 'src/cms_content.json', cmsState, `Update CMS via Admin (${isProd ? 'Prod' : 'Test'})`);
             addLog(`✅ CMS Content pushed successfully to ${targetBranch}!`);
             addLog(`Build triggered for ${targetBranch}. Changes will be live in ~2-5 minutes.`);
         } catch(e: any) {
-            addLog(`❌ API Error on ${targetBranch}: ` + e.message);
+            addLog(`❌ Application Error on ${targetBranch}: ` + (e.message || "Unknown error occurred."));
+            alert(`Failed to save: ${e.message}`);
         } finally {
             isProd ? setIsSavingProd(false) : setIsSavingTest(false);
         }
@@ -76,55 +87,65 @@ export const CMSManager: React.FC<CMSManagerProps> = ({ addLog }) => {
 
     // Helper to render form groups. Flattens JSON slightly for UI simplicity.
     const renderSection = (title: string, dataNode: any, pathTracker: string[]) => {
+        const isCollapsed = collapsedSections[title];
         return (
-            <div className="mb-8 border border-white/10 bg-black p-6" key={title}>
-                <h3 className="text-xl font-cinzel text-primary mb-6 border-b border-primary/20 pb-2">{title}</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {Object.keys(dataNode).map((key) => {
-                        const pathString = [...pathTracker, key].join('.');
-                        if (typeof dataNode[key] === 'object') {
-                             return (
-                                 <div className="col-span-full mt-4" key={key}>
-                                     <h4 className="text-sm font-bold text-white mb-4 uppercase tracking-widest">{key} Settings</h4>
-                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pl-4 border-l border-white/10">
-                                         {Object.keys(dataNode[key]).map((subKey) => (
-                                              <div key={subKey} className="flex flex-col gap-2">
-                                                  <label className="text-[10px] uppercase tracking-widest text-white/40">{subKey}</label>
-                                                  {subKey.toLowerCase().includes('description') || dataNode[key][subKey].length > 60 ? (
-                                                      <textarea 
-                                                          rows={3}
-                                                          value={dataNode[key][subKey]}
-                                                          onChange={(e) => updateField([...pathTracker, key, subKey], e.target.value)}
-                                                          className="w-full bg-white/5 border border-white/10 p-3 text-sm text-white focus:border-primary outline-none transition-colors"
-                                                      />
-                                                  ) : (
-                                                      <input
-                                                          type="text"
-                                                          value={dataNode[key][subKey]}
-                                                          onChange={(e) => updateField([...pathTracker, key, subKey], e.target.value)}
-                                                          className="w-full bg-white/5 border border-white/10 p-3 text-sm text-white focus:border-primary outline-none transition-colors"
-                                                      />
-                                                  )}
-                                              </div>
-                                         ))}
-                                     </div>
-                                 </div>
-                             )
-                        } else {
-                            return (
-                                <div key={key} className="flex flex-col gap-2 col-span-full">
-                                    <label className="text-[10px] uppercase tracking-widest text-white/40">{key}</label>
-                                    <input
-                                        type="text"
-                                        value={dataNode[key]}
-                                        onChange={(e) => updateField([...pathTracker, key], e.target.value)}
-                                        className="w-full bg-white/5 border border-white/10 p-3 text-sm text-white focus:border-primary outline-none transition-colors"
-                                    />
-                                </div>
-                            )
-                        }
-                    })}
+            <div className="mb-4 border border-white/10 bg-black p-6 transition-all duration-300" key={title}>
+                <div 
+                    className={`flex justify-between items-center cursor-pointer ${isCollapsed ? '' : 'mb-6 border-b border-primary/20 pb-2'}`}
+                    onClick={() => toggleSection(title)}
+                >
+                    <h3 className="text-xl font-cinzel text-primary">{title}</h3>
+                    <span className="material-symbols-outlined text-white/50">{isCollapsed ? 'expand_more' : 'expand_less'}</span>
                 </div>
+                
+                {!isCollapsed && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-fade-in">
+                        {Object.keys(dataNode).map((key) => {
+                            const pathString = [...pathTracker, key].join('.');
+                            if (typeof dataNode[key] === 'object' && dataNode[key] !== null && !Array.isArray(dataNode[key])) {
+                                 return (
+                                     <div className="col-span-full mt-4" key={key}>
+                                         <h4 className="text-sm font-bold text-white mb-4 uppercase tracking-widest">{key} Settings</h4>
+                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pl-4 border-l border-white/10">
+                                             {Object.keys(dataNode[key]).map((subKey) => (
+                                                  <div key={subKey} className="flex flex-col gap-2">
+                                                      <label className="text-[10px] uppercase tracking-widest text-white/40">{subKey}</label>
+                                                      {subKey.toLowerCase().includes('description') || (typeof dataNode[key][subKey] === 'string' && dataNode[key][subKey].length > 60) ? (
+                                                          <textarea 
+                                                              rows={3}
+                                                              value={dataNode[key][subKey] || ''}
+                                                              onChange={(e) => updateField([...pathTracker, key, subKey], e.target.value)}
+                                                              className="w-full bg-white/5 border border-white/10 p-3 text-sm text-white focus:border-primary outline-none transition-colors"
+                                                          />
+                                                      ) : (
+                                                          <input
+                                                              type="text"
+                                                              value={dataNode[key][subKey] || ''}
+                                                              onChange={(e) => updateField([...pathTracker, key, subKey], e.target.value)}
+                                                              className="w-full bg-white/5 border border-white/10 p-3 text-sm text-white focus:border-primary outline-none transition-colors"
+                                                          />
+                                                      )}
+                                                  </div>
+                                             ))}
+                                         </div>
+                                     </div>
+                                 )
+                            } else {
+                                return (
+                                    <div key={key} className="flex flex-col gap-2 col-span-full">
+                                        <label className="text-[10px] uppercase tracking-widest text-white/40">{key}</label>
+                                        <input
+                                            type="text"
+                                            value={dataNode[key] || ''}
+                                            onChange={(e) => updateField([...pathTracker, key], e.target.value)}
+                                            className="w-full bg-white/5 border border-white/10 p-3 text-sm text-white focus:border-primary outline-none transition-colors"
+                                        />
+                                    </div>
+                                )
+                            }
+                        })}
+                    </div>
+                )}
             </div>
         );
     };

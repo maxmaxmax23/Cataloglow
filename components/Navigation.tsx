@@ -1,5 +1,5 @@
-import React from 'react';
 import { ViewState } from '../src/types';
+import { useCms } from '../src/hooks/useCMS';
 
 interface TopNavProps {
   onCartClick: () => void;
@@ -27,10 +27,10 @@ export const TopNav: React.FC<TopNavProps> = ({ onCartClick, cartCount, animateC
         {/* Desktop Navigation Links - HIDDEN IN ADMIN */}
         {!isAdmin && (
           <div className="hidden md:flex items-center gap-8">
-            <a href="#" className="text-[11px] uppercase tracking-[0.2em] font-bold text-stone-400 hover:text-primary transition-colors">Novedades</a>
-            <a href="#" className="text-[11px] uppercase tracking-[0.2em] font-bold text-stone-400 hover:text-primary transition-colors">La Colección</a>
-            <a href="#" className="text-[11px] uppercase tracking-[0.2em] font-bold text-stone-400 hover:text-primary transition-colors">Opulencia Científica</a>
-            <a href="#" className="text-[11px] uppercase tracking-[0.2em] font-bold text-stone-400 hover:text-primary transition-colors">Diario</a>
+            <a href="#" className="text-[11px] uppercase tracking-[0.2em] font-bold text-stone-400 hover:text-primary transition-colors">{useCms('navigation.top.link1', 'Novedades')}</a>
+            <a href="#" className="text-[11px] uppercase tracking-[0.2em] font-bold text-stone-400 hover:text-primary transition-colors">{useCms('navigation.top.link2', 'La Colección')}</a>
+            <a href="#" className="text-[11px] uppercase tracking-[0.2em] font-bold text-stone-400 hover:text-primary transition-colors">{useCms('navigation.top.link3', 'Opulencia Científica')}</a>
+            <a href="#" className="text-[11px] uppercase tracking-[0.2em] font-bold text-stone-400 hover:text-primary transition-colors">{useCms('navigation.top.link4', 'Diario')}</a>
           </div>
         )}
 
@@ -69,10 +69,10 @@ interface BottomNavProps {
 
 export const BottomNav: React.FC<BottomNavProps> = ({ currentView, onChangeView }) => {
   const navItems = [
-    { id: 'HOME', icon: 'home', label: 'Inicio' },
-    { id: 'SHOP', icon: 'category', label: 'Tienda' },
-    { id: 'SAVED', icon: 'favorite', label: 'Guardados' },
-    { id: 'PROFILE', icon: 'person', label: 'Perfil' },
+    { id: 'HOME', icon: 'home', label: useCms('navigation.bottom.home', 'Inicio') },
+    { id: 'SHOP', icon: 'category', label: useCms('navigation.bottom.shop', 'Tienda') },
+    { id: 'SAVED', icon: 'favorite', label: useCms('navigation.bottom.saved', 'Guardados') },
+    { id: 'PROFILE', icon: 'person', label: useCms('navigation.bottom.profile', 'Perfil') },
   ];
 
   return (
