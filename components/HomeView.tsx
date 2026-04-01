@@ -2,6 +2,7 @@ import React from 'react';
 import { CATEGORIES } from '../constants';
 import { Product, ViewState } from '../src/types';
 import RevealOnScroll from './RevealOnScroll';
+import { useCms } from '../src/hooks/useCMS';
 
 interface HomeViewProps {
     products: Product[];
@@ -19,7 +20,7 @@ const HomeView: React.FC<HomeViewProps> = ({ products, onProductClick, onChangeV
             {/* Hero Section */}
             <section className="relative h-[75vh] w-full overflow-hidden group">
                 <img
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuAgSKVGYLwTHw67P6JZiwmWNY6z2aezTC-H7KNX-1mffbewdiXmBCdOf4M2i5-leEjm2usfs_R_rLqbGRnyPWDfh4Iwl-xYdVtJUyb8cUgMLtAlgVY0ISN4vjoWs9TDM0UCsBzdlNJMbtZIBaERH0yqyHJR9ySna9_x4yJ9VclpnryO5NPqh7sQ4onAb-u-jfcQq9ehRdqwpzfCwTivSWGpibYStFukMdSQ1SMv7e8zISS4YdkOYj1Kcxy-Y2Xfal85MbdRblLx1An6"
+                    src={useCms('home.hero.backgroundImage', 'https://lh3.googleusercontent.com/aida-public/AB6AXuAgSKVGYLwTHw67P6JZiwmWNY6z2aezTC-H7KNX-1mffbewdiXmBCdOf4M2i5-leEjm2usfs_R_rLqbGRnyPWDfh4Iwl-xYdVtJUyb8cUgMLtAlgVY0ISN4vjoWs9TDM0UCsBzdlNJMbtZIBaERH0yqyHJR9ySna9_x4yJ9VclpnryO5NPqh7sQ4onAb-u-jfcQq9ehRdqwpzfCwTivSWGpibYStFukMdSQ1SMv7e8zISS4YdkOYj1Kcxy-Y2Xfal85MbdRblLx1An6')}
                     alt="Hero Model"
                     className="w-full h-full object-cover transition-transform duration-[3s] group-hover:scale-105 ease-in-out grayscale-[100%] group-hover:grayscale-0"
                 />
@@ -27,26 +28,26 @@ const HomeView: React.FC<HomeViewProps> = ({ products, onProductClick, onChangeV
 
                 <div className="absolute bottom-0 left-0 p-8 md:p-16 max-w-3xl">
                     <span className="text-primary text-xs font-bold tracking-[0.5em] uppercase mb-6 block animate-slide-up opacity-0" style={{ animationDelay: '0.1s' }}>
-                        Scientific Opulence
+                        {useCms('home.hero.subtitle', 'Scientific Opulence')}
                     </span>
                     <h1 className="text-5xl md:text-7xl font-extrabold text-white mb-8 leading-none tracking-tighter animate-slide-up opacity-0" style={{ animationDelay: '0.3s' }}>
-                        AURUM: <span className="font-light italic text-neutral-400">The Alchemist's</span> Secret
+                        {useCms('home.hero.title', "AURUM: The Alchemist's Secret")}
                     </h1>
                     <p className="text-neutral-300 text-sm md:text-lg font-light leading-relaxed mb-10 max-w-xl animate-slide-up opacity-0" style={{ animationDelay: '0.5s' }}>
-                        Experimenta la intersección de la dermatología avanzada y el lujo puro con nuestros tratamientos restauradores infundidos con oro de 24K.
+                        {useCms('home.hero.description', 'Experimenta la intersección de la dermatología avanzada y el lujo puro con nuestros tratamientos restauradores infundidos con oro de 24K.')}
                     </p>
                     <div className="flex gap-6 animate-slide-up opacity-0" style={{ animationDelay: '0.7s' }}>
                         <button
                             onClick={() => onChangeView('SHOP')}
                             className="bg-primary text-background-dark px-10 py-4 font-bold uppercase tracking-[0.2em] text-xs hover:bg-white transition-colors duration-300"
                         >
-                            Entra en la Era Dorada
+                            {useCms('home.hero.buttonPrimary', 'Entra en la Era Dorada')}
                         </button>
                         <button
                             onClick={() => onChangeView('SHOP')}
                             className="border border-white/20 bg-white/5 backdrop-blur-sm text-white px-10 py-4 font-bold uppercase tracking-[0.2em] text-xs hover:bg-white/10 hover:border-white transition-all duration-300"
                         >
-                            Comprar la Edición
+                            {useCms('home.hero.buttonSecondary', 'Comprar la Edición')}
                         </button>
                     </div>
                 </div>
@@ -56,10 +57,10 @@ const HomeView: React.FC<HomeViewProps> = ({ products, onProductClick, onChangeV
             <section className="py-20 px-6 lg:px-12 bg-background-dark border-b border-white/5">
                 <RevealOnScroll className="flex justify-between items-end mb-12">
                     <div>
-                        <span className="text-primary text-xs font-bold tracking-[0.3em] uppercase mb-2 block">Innovaciones</span>
-                        <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-white">Categorías Seleccionadas</h2>
+                        <span className="text-primary text-xs font-bold tracking-[0.3em] uppercase mb-2 block">{useCms('home.categories.subtitle', 'Innovaciones')}</span>
+                        <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-white">{useCms('home.categories.title', 'Categorías Seleccionadas')}</h2>
                     </div>
-                    <button onClick={() => onChangeView('SHOP')} className="text-xs font-bold uppercase tracking-[0.2em] text-white hover:text-primary transition-colors border-b border-transparent hover:border-primary pb-1">Ver Todo</button>
+                    <button onClick={() => onChangeView('SHOP')} className="text-xs font-bold uppercase tracking-[0.2em] text-white hover:text-primary transition-colors border-b border-transparent hover:border-primary pb-1">{useCms('home.categories.buttonAll', 'Ver Todo')}</button>
                 </RevealOnScroll>
 
                 <div className="flex gap-8 overflow-x-auto hide-scrollbar pb-8">
@@ -79,7 +80,7 @@ const HomeView: React.FC<HomeViewProps> = ({ products, onProductClick, onChangeV
 
                                     <div className="absolute bottom-6 left-6">
                                         <p className="text-xl font-bold text-white group-hover:text-primary transition-colors duration-300">{cat.name}</p>
-                                        <p className="text-[10px] uppercase tracking-widest text-neutral-400 mt-1 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-500">Explorar Colección</p>
+                                        <p className="text-[10px] uppercase tracking-widest text-neutral-400 mt-1 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-500">{useCms('home.categories.hoverExplorar', 'Explorar Colección')}</p>
                                     </div>
                                 </div>
                             </div>
@@ -91,8 +92,8 @@ const HomeView: React.FC<HomeViewProps> = ({ products, onProductClick, onChangeV
             {/* Featured Products Grid */}
             <section className="px-6 lg:px-12 py-24 bg-background-dark">
                 <RevealOnScroll className="mb-16 text-center">
-                    <span className="text-primary text-xs font-bold tracking-[0.3em] uppercase mb-4 block">Curación</span>
-                    <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight">Lo Mejor de la Temporada</h2>
+                    <span className="text-primary text-xs font-bold tracking-[0.3em] uppercase mb-4 block">{useCms('home.featured.subtitle', 'Curación')}</span>
+                    <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight">{useCms('home.featured.title', 'Lo Mejor de la Temporada')}</h2>
                 </RevealOnScroll>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-16">

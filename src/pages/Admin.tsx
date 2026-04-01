@@ -6,6 +6,7 @@ import { db, auth } from "../firebase";
 import { signInWithEmailAndPassword, signOut, onAuthStateChanged, User } from "firebase/auth";
 
 import { ProductEditor } from "../../components/admin/ProductEditor";
+import { CMSManager } from "../../components/admin/CMSManager";
 
 interface AdminProps {
     products: Product[];
@@ -21,7 +22,8 @@ const Admin: React.FC<AdminProps> = ({ products, onUpdateCatalog }) => {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
 
-    // Admin State
+    // Admin State & Tabs
+    const [activeTab, setActiveTab] = useState<'catalog' | 'cms'>('catalog');
     const [apiKey, setApiKey] = useState(
         import.meta.env.VITE_GROQ_API_KEY || localStorage.getItem("groq_api_key") || ""
     );
@@ -253,7 +255,22 @@ const Admin: React.FC<AdminProps> = ({ products, onUpdateCatalog }) => {
                 <div className="flex flex-col md:flex-row justify-between items-end gap-6 mb-8 border-b border-white/10 pb-6">
                     <div>
                         <h1 className="text-4xl font-cinzel text-white mb-2">Command Center</h1>
-                        <p className="text-xs uppercase tracking-[0.2em] text-primary">Global Catalog Management</p>
+                        <p className="text-xs uppercase tracking-[0.2em] text-primary">Global Management</p>
+                    </div>
+                    {/* Tab Switcher */}
+                    <div className="flex gap-4">
+                        <button 
+                            onClick={() => setActiveTab('catalog')} 
+                            className={`px-8 py-3 text-xs uppercase tracking-widest font-bold transition-colors ${activeTab === 'catalog' ? 'bg-primary text-black' : 'border border-white/10 text-white/40 hover:text-white'}`}
+                        >
+                            Catalog
+                        </button>
+                        <button 
+                            onClick={() => setActiveTab('cms')} 
+                            className={`px-8 py-3 text-xs uppercase tracking-widest font-bold transition-colors ${activeTab === 'cms' ? 'bg-primary text-black' : 'border border-white/10 text-white/40 hover:text-white'}`}
+                        >
+                            Content CMS
+                        </button>
                     </div>
                     <div className="flex gap-4">
                         <div className="text-right hidden md:block">
@@ -266,8 +283,12 @@ const Admin: React.FC<AdminProps> = ({ products, onUpdateCatalog }) => {
                     </div>
                 </div>
 
-                {/* Toolbar */}
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                {activeTab === 'cms' ? (
+                    <CMSManager addLog={addLog} />
+                ) : (
+                    <>
+                        {/* Toolbar */}
+                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
                     {/* Search */}
                     <div className="bg-white/5 border border-white/10 p-1 flex items-center">
                         <span className="material-symbols-outlined text-white/40 px-3">search</span>
@@ -396,6 +417,8 @@ const Admin: React.FC<AdminProps> = ({ products, onUpdateCatalog }) => {
                         })}
                     </div>
                 </div>
+                </>
+                )}
             </div>
             {/* PRODUCT EDITOR MODAL */}
             <ProductEditor

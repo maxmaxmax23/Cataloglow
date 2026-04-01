@@ -1,0 +1,27 @@
+{
+  "home": {
+    "hero": {
+      "subtitle": "Scientific Opulence",
+      "title": "AURUM: The Alchemist's Secret",
+      "description": "Experimenta la intersección de la dermatología avanzada y el lujo puro con nuestros tratamientos restauradores infundidos con oro de 24K.",
+      "buttonPrimary": "Entra en la Era Dorada",
+      "buttonSecondary": "Comprar la Edición",
+      "backgroundImage": "https://lh3.googleusercontent.com/aida-public/AB6AXuAgSKVGYLwTHw67P6JZiwmWNY6z2aezTC-H7KNX-1mffbewdiXmBCdOf4M2i5-leEjm2usfs_R_rLqbGRnyPWDfh4Iwl-xYdVtJUyb8cUgMLtAlgVY0ISN4vjoWs9TDM0UCsBzdlNJMbtZIBaERH0yqyHJR9ySna9_x4yJ9VclpnryO5NPqh7sQ4onAb-u-jfcQq9ehRdqwpzfCwTivSWGpibYStFukMdSQ1SMv7e8zISS4YdkOYj1Kcxy-Y2Xfal85MbdRblLx1An6"
+    },
+    "categories": {
+      "subtitle": "Innovaciones",
+      "title": "Categorías Seleccionadas",
+      "buttonAll": "Ver Todo",
+      "hoverExplorar": "Explorar Colección"
+    },
+    "featured": {
+      "subtitle": "Curación",
+      "title": "Lo Mejor de la Temporada"
+    }
+  },
+  "global": {
+    "contactEmail": "contacto@aurum.com",
+    "shippingBanner": "Envío gratis en pedidos superiores a $150",
+    "shopButton": "Comprar Ahora"
+  }
+}
