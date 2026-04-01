@@ -14,9 +14,11 @@ export const CMSManager: React.FC<CMSManagerProps> = ({ addLog }) => {
     const [githubToken, setGithubToken] = useState(localStorage.getItem('github_cms_token') || '');
     const [githubOwner, setGithubOwner] = useState(localStorage.getItem('github_cms_owner') || '');
     const [githubRepo, setGithubRepo] = useState(localStorage.getItem('github_cms_repo') || '');
-    const [githubBranch, setGithubBranch] = useState(localStorage.getItem('github_cms_branch') || 'main');
+    const [githubTestBranch, setGithubTestBranch] = useState(localStorage.getItem('github_cms_test_branch') || 'test');
+    const [githubProdBranch, setGithubProdBranch] = useState(localStorage.getItem('github_cms_prod_branch') || 'main');
     
-    const [isSaving, setIsSaving] = useState(false);
+    const [isSavingTest, setIsSavingTest] = useState(false);
+    const [isSavingProd, setIsSavingProd] = useState(false);
     const [showSettings, setShowSettings] = useState(false);
 
     // Persist settings
@@ -24,34 +26,39 @@ export const CMSManager: React.FC<CMSManagerProps> = ({ addLog }) => {
         localStorage.setItem('github_cms_token', githubToken);
         localStorage.setItem('github_cms_owner', githubOwner);
         localStorage.setItem('github_cms_repo', githubRepo);
-        localStorage.setItem('github_cms_branch', githubBranch);
-    }, [githubToken, githubOwner, githubRepo, githubBranch]);
+        localStorage.setItem('github_cms_test_branch', githubTestBranch);
+        localStorage.setItem('github_cms_prod_branch', githubProdBranch);
+    }, [githubToken, githubOwner, githubRepo, githubTestBranch, githubProdBranch]);
 
-    const handleSave = async () => {
-        if (!githubToken || !githubOwner || !githubRepo) {
+    const saveToBranch = async (targetBranch: string, isProd: boolean) => {
+        if (!githubToken || !githubOwner || !githubRepo || !targetBranch) {
             alert("Please configure your GitHub settings first.");
             setShowSettings(true);
             return;
         }
 
-        setIsSaving(true);
-        addLog("Compiling new CMS mapping...");
+        if (isProd && !confirm(`Are you sure you want to push these changes to production (${targetBranch})?`)) {
+            return;
+        }
+
+        isProd ? setIsSavingProd(true) : setIsSavingTest(true);
+        addLog(`Compiling CMS mapping for branch: ${targetBranch}...`);
         
         const config: GitHubConfig = {
             token: githubToken,
             owner: githubOwner,
             repo: githubRepo,
-            branch: githubBranch
+            branch: targetBranch
         };
 
         try {
-            await saveCmsToGithub(config, 'src/cms_content.json', cmsState);
-            addLog("✅ CMS Content pushed successfully to repo!");
-            addLog("A new Vercel/EAS build is now running. Changes will be live in ~2-5 minutes.");
+            await saveCmsToGithub(config, 'src/cms_content.json', cmsState, `Update CMS via Admin (${isProd ? 'Prod' : 'Test'})`);
+            addLog(`✅ CMS Content pushed successfully to ${targetBranch}!`);
+            addLog(`Build triggered for ${targetBranch}. Changes will be live in ~2-5 minutes.`);
         } catch(e: any) {
-            addLog("❌ API Error: " + e.message);
+            addLog(`❌ API Error on ${targetBranch}: ` + e.message);
         } finally {
-            setIsSaving(false);
+            isProd ? setIsSavingProd(false) : setIsSavingTest(false);
         }
     };
 
@@ -137,12 +144,20 @@ export const CMSManager: React.FC<CMSManagerProps> = ({ addLog }) => {
                          <span className="material-symbols-outlined text-sm">settings</span> Settings
                      </button>
                      <button
-                         onClick={handleSave}
-                         disabled={isSaving}
-                         className={`px-8 border transition-colors flex items-center gap-2 text-xs uppercase font-bold tracking-widest ${isSaving ? 'border-primary/50 text-primary/50 cursor-not-allowed' : 'bg-primary text-black border-primary hover:bg-white'}`}
+                         onClick={() => saveToBranch(githubTestBranch, false)}
+                         disabled={isSavingTest || isSavingProd}
+                         className={`px-6 border transition-colors flex items-center gap-2 text-xs uppercase font-bold tracking-widest ${isSavingTest ? 'border-primary/50 text-white/40 cursor-not-allowed' : 'border-white/10 text-white/60 hover:text-white hover:border-white'}`}
+                     >
+                         <span className="material-symbols-outlined text-sm">science</span> 
+                         {isSavingTest ? "Publishing..." : "Publish To Test"}
+                     </button>
+                     <button
+                         onClick={() => saveToBranch(githubProdBranch, true)}
+                         disabled={isSavingProd || isSavingTest}
+                         className={`px-6 border transition-colors flex items-center gap-2 text-xs uppercase font-bold tracking-widest ${isSavingProd ? 'border-primary/50 text-primary/50 cursor-not-allowed' : 'bg-primary text-black border-primary hover:bg-white'}`}
                      >
                          <span className="material-symbols-outlined text-sm">publish</span> 
-                         {isSaving ? "Publishing..." : "Publish To Production"}
+                         {isSavingProd ? "Promoting..." : "Promote To Prod"}
                      </button>
                  </div>
              </div>
@@ -166,8 +181,12 @@ export const CMSManager: React.FC<CMSManagerProps> = ({ addLog }) => {
                           <input type="text" value={githubRepo} onChange={e => setGithubRepo(e.target.value)} className="w-full bg-black/50 border border-white/10 p-3 text-xs text-white" placeholder="e.g. glowapp-web" />
                      </div>
                      <div className="flex flex-col gap-2">
-                          <label className="text-[10px] uppercase tracking-widest text-white/40">Target Branch</label>
-                          <input type="text" value={githubBranch} onChange={e => setGithubBranch(e.target.value)} className="w-full bg-black/50 border border-white/10 p-3 text-xs text-white" placeholder="main" />
+                          <label className="text-[10px] uppercase tracking-widest text-white/40">Test Branch</label>
+                          <input type="text" value={githubTestBranch} onChange={e => setGithubTestBranch(e.target.value)} className="w-full bg-black/50 border border-white/10 p-3 text-xs text-white" placeholder="test" />
+                     </div>
+                     <div className="flex flex-col gap-2">
+                          <label className="text-[10px] uppercase tracking-widest text-white/40">Production Branch</label>
+                          <input type="text" value={githubProdBranch} onChange={e => setGithubProdBranch(e.target.value)} className="w-full bg-black/50 border border-white/10 p-3 text-xs text-white" placeholder="main" />
                      </div>
                  </div>
              )}
