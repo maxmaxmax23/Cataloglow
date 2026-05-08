@@ -28,7 +28,7 @@
     "top": {
       "link1": "Novedades",
       "link2": "La Colección",
-      "link3": "Opulencia Científica",
+      "link3": "Imperdibles",
       "link4": "Diario"
     },
     "bottom": {
@@ -41,8 +41,8 @@
   "shop": {
     "header": {
       "titlePrefix": "La Colección",
-      "titleHighlight": "Midnight",
-      "subtitle": "Pura Elegancia en Cada Aplicación"
+      "titleHighlight": "IMPERDIBLE",
+      "subtitle": "Pura Elegancia"
     },
     "filters": {
       "all": "Todo",
@@ -60,7 +60,7 @@
       "empty": "No se encontraron productos"
     },
     "recommendations": {
-      "subtitle": "Selección Curada",
+      "subtitle": "Selecciónados",
       "title": "También te podría gustar"
     }
   },
@@ -122,8 +122,8 @@
   },
   "receipt": {
     "header": {
-      "title": "AURUM",
-      "subtitle": "Lujo Redefinido"
+      "title": "GLOWUP",
+      "subtitle": "BAHIA BLANCA - VM"
     },
     "details": {
       "client": "Cliente",
@@ -135,17 +135,17 @@
       "total": "Total Final"
     },
     "footer": {
-      "thankYou": "Gracias por su preferencia",
-      "brand": "AURUM AUTHENTIC"
+      "thankYou": "Gracias por tu pedido!",
+      "brand": "GLOWUP"
     }
   },
   "splash": {
     "text": {
-      "title": "AURUM",
-      "tagline": "Lujo Redefinido",
+      "title": "GLOWUP",
+      "tagline": "BAHIA BLANCA - VM",
       "loading": "Cargando",
-      "established": "Establecido",
-      "year": "MMXXIV"
+      "established": "Cargando",
+      "year": "2026"
     }
   }
 }
