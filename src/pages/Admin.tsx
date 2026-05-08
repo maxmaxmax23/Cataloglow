@@ -429,12 +429,17 @@ const Admin: React.FC<AdminProps> = ({ products, onUpdateCatalog }) => {
 
                                     {/* Status / Actions */}
                                     <div className="col-span-2 flex justify-center items-center gap-3">
-                                        <span 
-                                            className={`material-symbols-outlined text-sm ${p.isVisible !== false ? 'text-white/40' : 'text-red-500'}`} 
-                                            title={p.isVisible !== false ? "Visible" : "Hidden"}
+                                        <button 
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                const updatedProduct = { ...p, isVisible: p.isVisible === false ? true : false };
+                                                handleSaveProduct(updatedProduct);
+                                            }}
+                                            className={`material-symbols-outlined text-sm hover:scale-110 transition-all ${p.isVisible !== false ? 'text-white/40 hover:text-white' : 'text-red-500 hover:text-red-400'}`} 
+                                            title={p.isVisible !== false ? "Visible (Click to hide)" : "Hidden (Click to show)"}
                                         >
                                             {p.isVisible !== false ? 'visibility' : 'visibility_off'}
-                                        </span>
+                                        </button>
                                         <div className={`w-2 h-2 rounded-full ${hasDesc ? 'bg-green-500' : 'bg-red-500'}`} title={hasDesc ? "AI Description Ready" : "Missing Description"}></div>
                                         <div className={`w-2 h-2 rounded-full ${p.currentInventory > 5 ? 'bg-primary' : 'bg-orange-500'}`} title="Stock Status"></div>
                                     </div>
