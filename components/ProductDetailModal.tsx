@@ -20,6 +20,9 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, produc
 
     // Accordion states
     const [openSection, setOpenSection] = useState<string | null>('ingredients');
+    
+    // Variant state
+    const [selectedVariantId, setSelectedVariantId] = useState<string | null>(null);
 
     const contentRef = useRef<HTMLDivElement>(null);
     const touchStartRef = useRef<number | null>(null);
@@ -38,6 +41,13 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, produc
             setQuantity(1);
             setDragY(0);
             setActiveImage(0);
+            
+            if (product.variants && Object.keys(product.variants).length > 0) {
+                setSelectedVariantId(Object.keys(product.variants)[0]);
+            } else {
+                setSelectedVariantId(null);
+            }
+            
             document.body.style.overflow = 'hidden';
             if (contentRef.current) {
                 contentRef.current.scrollTop = 0;
@@ -229,6 +239,30 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, produc
                                 </div>
                             </div>
                         </div>
+
+                        {/* Variants Selection */}
+                        {product.variants && Object.keys(product.variants).length > 0 && (
+                            <div className="mb-8 animate-slide-up" style={{ animationDelay: '0.3s' }}>
+                                <h3 className="text-xs font-bold uppercase tracking-widest text-white mb-4">Seleccionar Tono</h3>
+                                <div className="flex flex-wrap gap-3">
+                                    {Object.entries(product.variants).map(([vId, v]) => (
+                                        <button
+                                            key={vId}
+                                            onClick={() => setSelectedVariantId(vId)}
+                                            className={`group flex items-center gap-3 p-2 pr-4 border rounded-full transition-all ${selectedVariantId === vId ? 'border-primary bg-primary/10' : 'border-white/10 hover:border-white/30 bg-white/5'}`}
+                                        >
+                                            <div 
+                                                className="w-6 h-6 rounded-full border border-white/20 shadow-inner"
+                                                style={{ backgroundColor: v.colorCode || '#ffffff' }}
+                                            />
+                                            <span className={`text-xs font-medium uppercase tracking-wider ${selectedVariantId === vId ? 'text-primary' : 'text-stone-300 group-hover:text-white'}`}>
+                                                {v.name}
+                                            </span>
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
 
                         {/* Sticky Bottom Actions */}
                         <div className="bg-background-dark/95 backdrop-blur-sm pt-4 pb-8 sticky bottom-0 border-t border-white/5 mt-auto">

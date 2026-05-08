@@ -150,17 +150,37 @@ const Admin: React.FC<AdminProps> = ({ products, onUpdateCatalog }) => {
     };
 
     const handleSaveToCloud = async () => {
-        if (!confirm("This will overwrite the global catalog manifest. Continue?")) return;
+        if (!confirm("This will push your edits and overrides to the cloud. Continue?")) return;
         setIsProcessing(true);
-        addLog("Saving to Firestore...");
+        addLog("Saving metadata to Firestore...");
         try {
-            const docRef = doc(db, "system", "catalog_manifest");
-            await setDoc(docRef, {
-                lastUpdated: Date.now(),
-                version: "1.0.0",
-                items: localProducts
+            const docRef = doc(db, "system", "catalog_metadata");
+            
+            // Extract all fields to maintain them as overrides or custom creations
+            const metadataObj: Record<string, any> = {};
+            localProducts.forEach(p => {
+                metadataObj[p.id] = {
+                    name: p.name,
+                    description: p.description,
+                    provider: p.provider,
+                    category: p.category,
+                    price: p.price,
+                    cost: p.cost,
+                    taxRate: p.taxRate,
+                    currentInventory: p.currentInventory,
+                    minStockLevel: p.minStockLevel,
+                    image: p.image,
+                    volume: p.volume,
+                    benefits: p.benefits,
+                    barcodes: p.barcodes,
+                    variants: p.variants || null,
+                    isVisible: p.isVisible !== false // Default true
+                };
             });
-            addLog("✅ Success! Catalog updated in Cloud.");
+            
+            await setDoc(docRef, metadataObj);
+            
+            addLog("✅ Success! Metadata overrides updated in Cloud.");
             setHasUnsavedChanges(false);
             onUpdateCatalog(localProducts);
         } catch (err: any) {
@@ -408,7 +428,13 @@ const Admin: React.FC<AdminProps> = ({ products, onUpdateCatalog }) => {
                                     </div>
 
                                     {/* Status / Actions */}
-                                    <div className="col-span-2 flex justify-center gap-2">
+                                    <div className="col-span-2 flex justify-center items-center gap-3">
+                                        <span 
+                                            className={`material-symbols-outlined text-sm ${p.isVisible !== false ? 'text-white/40' : 'text-red-500'}`} 
+                                            title={p.isVisible !== false ? "Visible" : "Hidden"}
+                                        >
+                                            {p.isVisible !== false ? 'visibility' : 'visibility_off'}
+                                        </span>
                                         <div className={`w-2 h-2 rounded-full ${hasDesc ? 'bg-green-500' : 'bg-red-500'}`} title={hasDesc ? "AI Description Ready" : "Missing Description"}></div>
                                         <div className={`w-2 h-2 rounded-full ${p.currentInventory > 5 ? 'bg-primary' : 'bg-orange-500'}`} title="Stock Status"></div>
                                     </div>

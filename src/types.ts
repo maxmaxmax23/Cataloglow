@@ -27,6 +27,7 @@ export interface FirestoreProduct {
       name: string;
       priceModifier: number;
       skuSuffix: string;
+      colorCode?: string; // Optional hex code for color swatches
     }
   } | null;
 
@@ -36,6 +37,7 @@ export interface FirestoreProduct {
   benefits?: string[];
   isNew?: boolean;
   isLimited?: boolean;
+  isVisible?: boolean;    // Hide/show on the store
   volume?: string;
 }
 
@@ -45,6 +47,7 @@ export interface Product extends FirestoreProduct {
   subtitle: string;       // Mapped from category or provider
   image: string;          // Strictly required for UI (mapped from photoURL)
   benefits: string[];     // Strictly required (defaulted if missing)
+  isVisible: boolean;     // Strictly required for UI filtering
 }
 
 // 3. Cart & Commerce Types

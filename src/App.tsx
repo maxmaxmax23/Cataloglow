@@ -161,6 +161,8 @@ function App() {
     window.history.back();
   };
 
+  const visibleProducts = products.filter(p => p.isVisible !== false);
+
   return (
     <div className="relative h-full w-full overflow-hidden">
       {/* Top Nav is shared and fixed (Admin Mode aware) */}
@@ -183,7 +185,7 @@ function App() {
             }`}
         >
           <HomeView
-            products={products}
+            products={visibleProducts}
             onProductClick={openProduct}
             onChangeView={setView}
           />
@@ -197,7 +199,7 @@ function App() {
             }`}
         >
           <ShopView
-            products={products}
+            products={visibleProducts}
             onProductClick={openProduct}
             onAddToCart={addToCart}
           />
@@ -251,7 +253,7 @@ function App() {
       {/* Modals & Drawers - Outside of main scroll area */}
       <ProductDetailModal
         product={selectedProduct}
-        products={products}
+        products={visibleProducts}
         onClose={closeModal}
         onAddToCart={addToCart}
         onProductClick={openProduct}

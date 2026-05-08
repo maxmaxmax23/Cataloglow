@@ -42,7 +42,7 @@ export const saveCmsToGithub = async (
         // 2. Prepare the payload
         // The JSON file content needs to be perfectly formatted as string, then Base64 encoded
         const contentStr = JSON.stringify(newContent, null, 2);
-        
+
         // Base64 encode in browser
         const base64Content = btoa(unescape(encodeURIComponent(contentStr)));
 
@@ -64,7 +64,7 @@ export const saveCmsToGithub = async (
             const errData = await putRes.json();
             throw new Error(`GitHub API Error: ${errData.message}`);
         }
-        
+
     } catch (e: any) {
         throw new Error(`CMS GitHub Save Failed: ${e.message}`);
     }
