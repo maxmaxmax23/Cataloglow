@@ -11,14 +11,13 @@ interface CheckoutFormProps {
 
 const CheckoutForm: React.FC<CheckoutFormProps> = ({ items, total, onClose }) => {
     const [name, setName] = useState('');
-    const [address, setAddress] = useState('');
     const [isGenerating, setIsGenerating] = useState(false);
     const [currentOrderNumber, setCurrentOrderNumber] = useState('');
 
 
     const handleWhatsAppRedirect = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!name || !address) return;
+        if (!name) return;
 
         setIsGenerating(true);
 
@@ -33,7 +32,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ items, total, onClose }) =>
                 items,
                 total,
                 customerName: name,
-                customerAddress: address,
+                customerAddress: '', // Requested later via WhatsApp
                 orderNumber: orderNum
             });
 
@@ -97,19 +96,6 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ items, total, onClose }) =>
                             </div>
                         </div>
 
-                        <div className="group">
-                            <label htmlFor="area" className="block text-primary text-[10px] uppercase tracking-[0.15em] mb-2 font-bold">{useCms('checkout.form.addressLabel', 'Zona de Entrega')}</label>
-                            <div className="border border-primary/30 rounded overflow-hidden focus-within:border-primary focus-within:shadow-[0_0_10px_rgba(242,185,13,0.2)] transition-all">
-                                <input
-                                    id="area"
-                                    type="text"
-                                    value={address}
-                                    onChange={(e) => setAddress(e.target.value)}
-                                    placeholder={useCms('checkout.form.addressPlaceholder', 'ej. Palermo, Buenos Aires')}
-                                    className="w-full bg-black/40 border-none text-white px-4 py-3 focus:ring-0 placeholder:text-white/20 font-light text-sm"
-                                    required
-                                />
-                            </div>
                         </div>
 
                         <div className="p-4 rounded bg-primary/5 border border-primary/10 mt-6">

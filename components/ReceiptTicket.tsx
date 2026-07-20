@@ -8,9 +8,10 @@ interface ReceiptTicketProps {
     customerName: string;
     customerAddress: string;
     orderNumber?: string;
+    shippingCost?: number;
 }
 
-const ReceiptTicket = forwardRef<HTMLDivElement, ReceiptTicketProps>(({ items, total, customerName, customerAddress, orderNumber }, ref) => {
+const ReceiptTicket = forwardRef<HTMLDivElement, ReceiptTicketProps>(({ items, total, customerName, customerAddress, orderNumber, shippingCost = 0 }, ref) => {
     const date = new Date().toLocaleDateString('es-AR', {
         day: '2-digit',
         month: '2-digit',
@@ -78,9 +79,17 @@ const ReceiptTicket = forwardRef<HTMLDivElement, ReceiptTicketProps>(({ items, t
                 <div className="w-full border-b border-primary/20 border-dashed mb-6"></div>
 
                 {/* Total */}
-                <div className="w-full flex justify-between items-center mb-8">
-                    <span className="text-sm uppercase tracking-[0.2em] text-white">{useCms('receipt.summary.total', 'Total Final')}</span>
-                    <span className="text-2xl font-bold text-primary font-mono">${total.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                <div className="w-full mb-8">
+                    {shippingCost > 0 && (
+                        <div className="flex justify-between items-center mb-3">
+                            <span className="text-xs uppercase tracking-[0.2em] text-white/60">Costo de Envío</span>
+                            <span className="text-sm font-bold text-white/80 font-mono">${shippingCost.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                        </div>
+                    )}
+                    <div className="flex justify-between items-center pt-3 border-t border-white/5">
+                        <span className="text-sm uppercase tracking-[0.2em] text-white">{useCms('receipt.summary.total', 'Total Final')}</span>
+                        <span className="text-2xl font-bold text-primary font-mono">${total.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                    </div>
                 </div>
 
                 {/* Footer */}
