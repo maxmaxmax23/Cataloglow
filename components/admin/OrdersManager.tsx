@@ -61,6 +61,9 @@ export const OrdersManager: React.FC<OrdersManagerProps> = ({ products = [] }) =
     const [searchTerm, setSearchTerm] = useState('');
     const [isSearching, setIsSearching] = useState(false);
 
+    // Full screen image modal for accessibility
+    const [expandedImage, setExpandedImage] = useState<string | null>(null);
+
     useEffect(() => {
         const q = query(collection(db, 'orders'), orderBy('createdAt', 'desc'));
         const unsubscribe = onSnapshot(q, (snapshot) => {
@@ -452,7 +455,7 @@ export const OrdersManager: React.FC<OrdersManagerProps> = ({ products = [] }) =
                                         {editingOrder.items.map((item, idx) => (
                                             <div key={idx} className="grid grid-cols-12 gap-4 p-3 border-b border-white/5 items-center hover:bg-white/5 transition-colors">
                                                 <div className="col-span-1 relative group">
-                                                    <div className="w-8 h-8 bg-white/10 relative z-10 cursor-pointer">
+                                                    <div className="w-8 h-8 bg-white/10 relative z-10 cursor-pointer" onClick={() => item.image && setExpandedImage(item.image)}>
                                                         {item.image ? (
                                                             <>
                                                                 <img src={item.image} alt="" className="w-full h-full object-cover" />
@@ -595,6 +598,26 @@ export const OrdersManager: React.FC<OrdersManagerProps> = ({ products = [] }) =
                         orderNumber={editingOrder.orderNumber}
                         shippingCost={editingOrder.shippingCost || 0}
                     />
+                </div>
+            )}
+
+            {/* Accessibility Image Modal */}
+            {expandedImage && (
+                <div 
+                    className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-md cursor-zoom-out p-8"
+                    onClick={() => setExpandedImage(null)}
+                >
+                    <img 
+                        src={expandedImage} 
+                        alt="Expanded Product" 
+                        className="max-w-full max-h-full object-contain shadow-2xl border border-white/20"
+                    />
+                    <button 
+                        className="absolute top-8 right-8 text-white/50 hover:text-white bg-black/50 p-2 rounded-full"
+                        onClick={(e) => { e.stopPropagation(); setExpandedImage(null); }}
+                    >
+                        <span className="material-symbols-outlined text-3xl">close</span>
+                    </button>
                 </div>
             )}
         </div>
