@@ -1,4 +1,4 @@
-import { doc, runTransaction } from "firebase/firestore";
+import { doc, runTransaction, collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "../firebase";
 
 /**
@@ -32,5 +32,19 @@ export const generateOrderNumber = async (): Promise<string> => {
         console.error("Error generating order number:", error);
         // Fallback to timestamp if offline/error to prevent blocking the sale
         return `OFFLINE-${Date.now().toString().slice(-6)}`;
+    }
+};
+
+export const saveOrderToCloud = async (orderData: any): Promise<void> => {
+    try {
+        const ordersRef = collection(db, "orders");
+        await addDoc(ordersRef, {
+            ...orderData,
+            createdAt: serverTimestamp(),
+            status: "pending"
+        });
+    } catch (error) {
+        console.error("Error saving order to cloud:", error);
+        throw error; // Let the checkout form handle the error
     }
 };

@@ -76,8 +76,7 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, items, onRemov
     if (!isVisible && !isOpen) return null;
 
     const subtotal = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    const tax = subtotal * 0.08;
-    const total = subtotal + tax;
+    const total = subtotal; // Tax removed per user request
 
     // Calculate position based on state and drag
     let translateX = '100%';
@@ -170,10 +169,6 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, items, onRemov
                             <div className="flex justify-between text-xs text-stone-400 uppercase tracking-wider">
                                 <span>{useCms('cart.summary.shipping', 'Envío')}</span>
                                 <span className="text-primary">{useCms('cart.summary.shippingFree', 'Cortesía')}</span>
-                            </div>
-                            <div className="flex justify-between text-xs text-stone-400 uppercase tracking-wider">
-                                <span>{useCms('cart.summary.tax', 'Impuestos (Est.)')}</span>
-                                <span>${tax.toFixed(2)}</span>
                             </div>
                             <div className="flex justify-between items-center pt-6 border-t border-white/5 mt-4">
                                 <span className="text-sm font-bold uppercase tracking-[0.2em] text-white">{useCms('cart.summary.total', 'Total')}</span>

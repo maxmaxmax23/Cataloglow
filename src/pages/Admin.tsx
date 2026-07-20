@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Product } from "../types";
-import { generateDescription, listModels } from "../services/ai";
+
 import { doc, setDoc } from "firebase/firestore";
 import { db, auth } from "../firebase";
 import { signInWithEmailAndPassword, signOut, onAuthStateChanged, User } from "firebase/auth";
 
 import { ProductEditor } from "../../components/admin/ProductEditor";
 import { CMSManager } from "../../components/admin/CMSManager";
+import { OrdersManager } from "../../components/admin/OrdersManager";
 
 interface AdminProps {
     products: Product[];
@@ -23,10 +24,8 @@ const Admin: React.FC<AdminProps> = ({ products, onUpdateCatalog }) => {
     const [error, setError] = useState("");
 
     // Admin State & Tabs
-    const [activeTab, setActiveTab] = useState<'catalog' | 'cms'>('catalog');
-    const [apiKey, setApiKey] = useState(
-        import.meta.env.VITE_GROQ_API_KEY || localStorage.getItem("groq_api_key") || ""
-    );
+    const [activeTab, setActiveTab] = useState<'catalog' | 'cms' | 'orders'>('catalog');
+
     const [localProducts, setLocalProducts] = useState<Product[]>([]);
     const [isProcessing, setIsProcessing] = useState(false);
     const [logs, setLogs] = useState<string[]>([]);
@@ -98,56 +97,7 @@ const Admin: React.FC<AdminProps> = ({ products, onUpdateCatalog }) => {
         setPassword("");
     };
 
-    const handleSaveKey = () => {
-        localStorage.setItem("groq_api_key", apiKey);
-        addLog("API Key saved to local storage.");
-    };
 
-    // AI Generation Logic (Kept mostly same, just restyled logs)
-    const handleGenerateDescriptions = async () => {
-        if (!apiKey) {
-            alert("Please enter a Groq API Key first.");
-            return;
-        }
-
-        setIsProcessing(true);
-        addLog("Starting Auto-Generation...");
-
-        const candidates = localProducts.filter(
-            (p) => !p.description || p.description === "No description available." || p.description.length < 20
-        );
-
-        if (candidates.length === 0) {
-            addLog("No products need new descriptions.");
-            setIsProcessing(false);
-            return;
-        }
-
-        addLog(`Found ${candidates.length} products to update.`);
-        const updatedList = [...localProducts];
-        let successCount = 0;
-
-        for (let i = 0; i < candidates.length; i++) {
-            const item = candidates[i];
-            try {
-                addLog(`Generating for: ${item.name}...`);
-                const newDesc = await generateDescription(item, apiKey);
-                const index = updatedList.findIndex((p) => p.id === item.id);
-                if (index !== -1) {
-                    updatedList[index] = { ...updatedList[index], description: newDesc };
-                }
-                successCount++;
-                await new Promise((r) => setTimeout(r, 2000)); // Rate limit buffer
-            } catch (err: any) {
-                addLog(`Error on ${item.name}: ${err.message}`);
-            }
-        }
-
-        setLocalProducts(updatedList);
-        setHasUnsavedChanges(true);
-        setIsProcessing(false);
-        addLog(`Batch complete. ${successCount} updated.`);
-    };
 
     const handleSaveToCloud = async () => {
         if (!confirm("This will push your edits and overrides to the cloud. Continue?")) return;
@@ -155,7 +105,7 @@ const Admin: React.FC<AdminProps> = ({ products, onUpdateCatalog }) => {
         addLog("Saving metadata to Firestore...");
         try {
             const docRef = doc(db, "system", "catalog_metadata");
-            
+
             // Extract all fields to maintain them as overrides or custom creations
             const metadataObj: Record<string, any> = {};
             localProducts.forEach(p => {
@@ -177,9 +127,9 @@ const Admin: React.FC<AdminProps> = ({ products, onUpdateCatalog }) => {
                     isVisible: p.isVisible !== false // Default true
                 };
             });
-            
+
             await setDoc(docRef, metadataObj);
-            
+
             addLog("✅ Success! Metadata overrides updated in Cloud.");
             setHasUnsavedChanges(false);
             onUpdateCatalog(localProducts);
@@ -279,17 +229,23 @@ const Admin: React.FC<AdminProps> = ({ products, onUpdateCatalog }) => {
                     </div>
                     {/* Tab Switcher */}
                     <div className="flex gap-4">
-                        <button 
-                            onClick={() => setActiveTab('catalog')} 
+                        <button
+                            onClick={() => setActiveTab('catalog')}
                             className={`px-8 py-3 text-xs uppercase tracking-widest font-bold transition-colors ${activeTab === 'catalog' ? 'bg-primary text-black' : 'border border-white/10 text-white/40 hover:text-white'}`}
                         >
                             Catalog
                         </button>
-                        <button 
-                            onClick={() => setActiveTab('cms')} 
+                        <button
+                            onClick={() => setActiveTab('cms')}
                             className={`px-8 py-3 text-xs uppercase tracking-widest font-bold transition-colors ${activeTab === 'cms' ? 'bg-primary text-black' : 'border border-white/10 text-white/40 hover:text-white'}`}
                         >
                             Content CMS
+                        </button>
+                        <button
+                            onClick={() => setActiveTab('orders')}
+                            className={`px-8 py-3 text-xs uppercase tracking-widest font-bold transition-colors ${activeTab === 'orders' ? 'bg-primary text-black' : 'border border-white/10 text-white/40 hover:text-white'}`}
+                        >
+                            Live Orders
                         </button>
                     </div>
                     <div className="flex gap-4">
@@ -305,150 +261,137 @@ const Admin: React.FC<AdminProps> = ({ products, onUpdateCatalog }) => {
 
                 {activeTab === 'cms' ? (
                     <CMSManager addLog={addLog} />
+                ) : activeTab === 'orders' ? (
+                    <OrdersManager />
                 ) : (
                     <>
                         {/* Toolbar */}
                         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-                    {/* Search */}
-                    <div className="bg-white/5 border border-white/10 p-1 flex items-center">
-                        <span className="material-symbols-outlined text-white/40 px-3">search</span>
-                        <input
-                            type="text"
-                            placeholder="SEARCH SKU OR NAME..."
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                            className="bg-transparent w-full p-3 text-sm outline-none text-white placeholder-white/20 uppercase tracking-wider"
-                        />
-                    </div>
+                            {/* Search */}
+                            <div className="bg-white/5 border border-white/10 p-1 flex items-center">
+                                <span className="material-symbols-outlined text-white/40 px-3">search</span>
+                                <input
+                                    type="text"
+                                    placeholder="SEARCH SKU OR NAME..."
+                                    value={searchTerm}
+                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                    className="bg-transparent w-full p-3 text-sm outline-none text-white placeholder-white/20 uppercase tracking-wider"
+                                />
+                            </div>
 
-                    {/* AI Actions */}
-                    <div className="flex gap-2">
-                        <button
-                            onClick={handleGenerateDescriptions}
-                            disabled={isProcessing}
-                            className="flex-1 bg-white/5 border border-white/10 hover:border-primary text-white/60 hover:text-white transition-all text-[10px] uppercase tracking-widest flex flex-col items-center justify-center gap-1 py-3"
-                        >
-                            <span className="material-symbols-outlined text-lg">auto_awesome</span>
-                            {isProcessing ? "Processing..." : "Generate AI"}
-                        </button>
-                        <button
-                            onClick={() => window.open("https://console.groq.com/keys", "_blank")}
-                            className="px-4 border border-white/10 text-white/40 hover:text-primary transition-colors"
-                            title="Get API Key"
-                        >
-                            <span className="material-symbols-outlined">key</span>
-                        </button>
-                    </div>
 
-                    {/* Cloud Actions */}
-                    <div className="flex gap-2">
-                        <button
-                            onClick={() => setIsEditorOpen(true)}
-                            className="flex-1 flex flex-col items-center justify-center gap-1 text-[10px] uppercase tracking-widest py-3 border border-white/10 hover:border-primary hover:text-primary transition-colors text-white/60"
-                        >
-                            <span className="material-symbols-outlined text-lg">add</span>
-                            New
-                        </button>
 
-                        <button
-                            onClick={handlePullFromCloud}
-                            className="flex-1 flex flex-col items-center justify-center gap-1 text-[10px] uppercase tracking-widest py-3 border border-white/10 hover:border-blue-400 hover:text-blue-400 transition-colors text-white/60"
-                        >
-                            <span className="material-symbols-outlined text-lg">cloud_download</span>
-                            Pull
-                        </button>
-
-                        <button
-                            onClick={handleSaveToCloud}
-                            disabled={!hasUnsavedChanges || isProcessing}
-                            className={`flex-1 flex flex-col items-center justify-center gap-1 text-[10px] uppercase tracking-widest py-3 border transition-colors ${hasUnsavedChanges ? 'bg-primary text-black border-primary hover:bg-white' : 'border-white/10 text-white/20 cursor-not-allowed'}`}
-                        >
-                            <span className="material-symbols-outlined text-lg">cloud_upload</span>
-                            Push
-                        </button>
-                    </div>
-                </div>
-
-                {/* Console / Status */}
-                {logs.length > 0 && (
-                    <div className="mb-8 bg-black border border-white/10 p-4 h-32 overflow-y-auto font-mono text-[10px] text-green-500/80">
-                        {logs.map((log, i) => <div key={i}>{">"} {log}</div>)}
-                    </div>
-                )}
-
-                {/* DATA GRID */}
-                <div className="border border-white/10 bg-white/5 backdrop-blur-sm">
-                    {/* Table Header */}
-                    <div className="grid grid-cols-12 gap-4 p-4 border-b border-white/10 text-[9px] uppercase tracking-[0.2em] text-white/40 font-bold">
-                        <div className="col-span-1">Img</div>
-                        <div className="col-span-4">Product Name</div>
-                        <div className="col-span-2">Category</div>
-                        <div className="col-span-2 text-right">Price</div>
-                        <div className="col-span-1 text-right">Stock</div>
-                        <div className="col-span-2 text-center">Status</div>
-                    </div>
-
-                    {/* Table Rows */}
-                    <div className="max-h-[600px] overflow-y-auto">
-                        {filteredProducts.map((p) => {
-                            const hasDesc = p.description && p.description !== "No description available." && p.description.length > 20;
-
-                            return (
-                                <div
-                                    key={p.id}
-                                    onClick={() => handleEditProduct(p)}
-                                    className="grid grid-cols-12 gap-4 p-4 border-b border-white/5 hover:bg-white/5 transition-colors items-center group cursor-pointer"
+                            {/* Cloud Actions */}
+                            <div className="flex gap-2">
+                                <button
+                                    onClick={() => setIsEditorOpen(true)}
+                                    className="flex-1 flex flex-col items-center justify-center gap-1 text-[10px] uppercase tracking-widest py-3 border border-white/10 hover:border-primary hover:text-primary transition-colors text-white/60"
                                 >
-                                    {/* Image */}
-                                    <div className="col-span-1">
-                                        <div className="w-8 h-8 bg-white/10 overflow-hidden relative">
-                                            {p.image && <img src={p.image} alt="" className="w-full h-full object-cover" />}
-                                        </div>
-                                    </div>
+                                    <span className="material-symbols-outlined text-lg">add</span>
+                                    New
+                                </button>
 
-                                    {/* Name & ID */}
-                                    <div className="col-span-4 pl-2 border-l border-white/5">
-                                        <div className="text-sm font-medium text-white group-hover:text-primary transition-colors truncate">{p.name}</div>
-                                        <div className="text-[9px] text-white/30 font-mono tracking-wider">{p.id.substring(0, 8).toUpperCase()}</div>
-                                    </div>
+                                <button
+                                    onClick={handlePullFromCloud}
+                                    className="flex-1 flex flex-col items-center justify-center gap-1 text-[10px] uppercase tracking-widest py-3 border border-white/10 hover:border-blue-400 hover:text-blue-400 transition-colors text-white/60"
+                                >
+                                    <span className="material-symbols-outlined text-lg">cloud_download</span>
+                                    Discard Drafts
+                                </button>
 
-                                    {/* Category */}
-                                    <div className="col-span-2 text-[10px] uppercase tracking-wider text-white/60">
-                                        {p.category}
-                                    </div>
+                                <button
+                                    onClick={handleSaveToCloud}
+                                    disabled={!hasUnsavedChanges || isProcessing}
+                                    className={`flex-1 flex flex-col items-center justify-center gap-1 text-[10px] uppercase tracking-widest py-3 border transition-colors ${hasUnsavedChanges ? 'bg-primary text-black border-primary hover:bg-white' : 'border-white/10 text-white/20 cursor-not-allowed'}`}
+                                >
+                                    <span className="material-symbols-outlined text-lg">cloud_upload</span>
+                                    Publish Live
+                                </button>
+                            </div>
+                        </div>
 
-                                    {/* Price */}
-                                    <div className="col-span-2 text-right font-mono text-primary text-xs">
-                                        ${p.price.toFixed(2)}
-                                    </div>
+                        {/* Console / Status */}
+                        {logs.length > 0 && (
+                            <div className="mb-8 bg-black border border-white/10 p-4 h-32 overflow-y-auto font-mono text-[10px] text-green-500/80">
+                                {logs.map((log, i) => <div key={i}>{">"} {log}</div>)}
+                            </div>
+                        )}
 
-                                    {/* Stock */}
-                                    <div className="col-span-1 text-right text-xs text-white/60">
-                                        {p.currentInventory}
-                                    </div>
+                        {/* DATA GRID */}
+                        <div className="border border-white/10 bg-white/5 backdrop-blur-sm">
+                            {/* Table Header */}
+                            <div className="grid grid-cols-12 gap-4 p-4 border-b border-white/10 text-[9px] uppercase tracking-[0.2em] text-white/40 font-bold">
+                                <div className="col-span-1">Img</div>
+                                <div className="col-span-4">Product Name</div>
+                                <div className="col-span-2">Category</div>
+                                <div className="col-span-2 text-right">Price</div>
+                                <div className="col-span-1 text-right">Stock</div>
+                                <div className="col-span-2 text-center">Status</div>
+                            </div>
 
-                                    {/* Status / Actions */}
-                                    <div className="col-span-2 flex justify-center items-center gap-3">
-                                        <button 
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                const updatedProduct = { ...p, isVisible: p.isVisible === false ? true : false };
-                                                handleSaveProduct(updatedProduct);
-                                            }}
-                                            className={`material-symbols-outlined text-sm hover:scale-110 transition-all ${p.isVisible !== false ? 'text-white/40 hover:text-white' : 'text-red-500 hover:text-red-400'}`} 
-                                            title={p.isVisible !== false ? "Visible (Click to hide)" : "Hidden (Click to show)"}
+                            {/* Table Rows */}
+                            <div className="max-h-[600px] overflow-y-auto">
+                                {filteredProducts.map((p) => {
+
+
+                                    return (
+                                        <div
+                                            key={p.id}
+                                            onClick={() => handleEditProduct(p)}
+                                            className="grid grid-cols-12 gap-4 p-4 border-b border-white/5 hover:bg-white/5 transition-colors items-center group cursor-pointer"
                                         >
-                                            {p.isVisible !== false ? 'visibility' : 'visibility_off'}
-                                        </button>
-                                        <div className={`w-2 h-2 rounded-full ${hasDesc ? 'bg-green-500' : 'bg-red-500'}`} title={hasDesc ? "AI Description Ready" : "Missing Description"}></div>
-                                        <div className={`w-2 h-2 rounded-full ${p.currentInventory > 5 ? 'bg-primary' : 'bg-orange-500'}`} title="Stock Status"></div>
-                                    </div>
-                                </div>
-                            );
-                        })}
-                    </div>
-                </div>
-                </>
+                                            {/* Image */}
+                                            <div className="col-span-1">
+                                                <div className="w-8 h-8 bg-white/10 overflow-hidden relative">
+                                                    {p.image && <img src={p.image} alt="" className="w-full h-full object-cover" />}
+                                                </div>
+                                            </div>
+
+                                            {/* Name & ID */}
+                                            <div className="col-span-4 pl-2 border-l border-white/5">
+                                                <div className="text-sm font-medium text-white group-hover:text-primary transition-colors truncate">{p.name}</div>
+                                                <div className="text-[9px] text-white/30 font-mono tracking-wider">{p.id.substring(0, 8).toUpperCase()}</div>
+                                            </div>
+
+                                            {/* Category */}
+                                            <div className="col-span-2 text-[10px] uppercase tracking-wider text-white/60">
+                                                {p.category}
+                                            </div>
+
+                                            {/* Price */}
+                                            <div className="col-span-2 text-right font-mono text-primary text-xs">
+                                                ${p.price.toFixed(2)}
+                                            </div>
+
+                                            {/* Stock */}
+                                            <div className="col-span-1 text-right text-xs text-white/60">
+                                                {p.currentInventory}
+                                            </div>
+
+                                            {/* Status / Actions */}
+                                            <div className="col-span-2 flex justify-center items-center gap-3">
+                                                <button
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        const updatedProduct = { ...p, isVisible: p.isVisible === false ? true : false };
+                                                        handleSaveProduct(updatedProduct);
+                                                    }}
+                                                    className={`material-symbols-outlined text-sm hover:scale-110 transition-all ${p.isVisible !== false ? 'text-white/40 hover:text-white' : 'text-red-500 hover:text-red-400'}`}
+                                                    title={p.isVisible !== false ? "Visible (Click to hide)" : "Hidden (Click to show)"}
+                                                >
+                                                    {p.isVisible !== false ? 'visibility' : 'visibility_off'}
+                                                </button>
+
+                                                <span className={`material-symbols-outlined text-[12px] ${p.currentInventory > 5 ? 'text-primary' : 'text-orange-500'}`} title="Stock Status">
+                                                    inventory_2
+                                                </span>
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    </>
                 )}
             </div>
             {/* PRODUCT EDITOR MODAL */}

@@ -1,0 +1,34 @@
+{
+  "name": "intent",
+  "metadata": {
+    "description": "Design with Intent. 17 specialized UX and design strategy skills — from early research through engineering handoff."
+  },
+  "owner": {
+    "name": "Ghaida Zahran"
+  },
+  "plugins": [
+    {
+      "name": "intent",
+      "description": "Design with Intent. A comprehensive UX and design strategy system — 17 specialized skills covering strategy, research, experience design, quality assurance, accessibility, measurement, and engineering handoff.",
+      "version": "1.6.0",
+      "author": {
+        "name": "Ghaida Zahran"
+      },
+      "source": "./",
+      "category": "design",
+      "homepage": "https://github.com/ghaida/intent",
+      "tags": [
+        "design",
+        "ux",
+        "strategy",
+        "research",
+        "accessibility",
+        "information-architecture",
+        "content-strategy",
+        "service-design",
+        "measurement",
+        "ethics"
+      ]
+    }
+  ]
+}

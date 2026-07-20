@@ -1,0 +1,156 @@
+---
+import Base from '../layouts/Base.astro';
+import SectionLabel from '../components/SectionLabel.astro';
+import JourneyFlow from '../components/visuals/JourneyFlow.astro';
+import BlueprintDiagram from '../components/visuals/BlueprintDiagram.astro';
+import SiteMap from '../components/visuals/SiteMap.astro';
+import WireframeBoard from '../components/visuals/WireframeBoard.astro';
+import { loadShowcase } from '../lib/showcase';
+
+const showcase = loadShowcase();
+const raw = import.meta.env.BASE_URL;
+const base = raw.endsWith('/') ? raw : raw + '/';
+
+// Walkthrough video — self-hosted on an external CDN (no third-party tracking).
+// Drop the CDN URL(s) here. Leave videoSrc empty to hide the block entirely.
+const videoSrc = 'https://pub-7b48954891414f0e9966e0416813b9f9.r2.dev/intent-how-to.mp4';
+const videoPoster = `${base}intent-poster.png`;
+---
+
+<Base title="How to Use — Intent" description={`Follow ${showcase.name} — ${showcase.tagline.toLowerCase()} — through every Intent skill, from first question to engineering handoff.`}>
+  <div class="page">
+    <!-- Hero -->
+    <section class="how-to-use-hero" aria-labelledby="how-to-use-heading">
+      <h1 id="how-to-use-heading">How to Use</h1>
+      <p class="subtext muted">
+        Follow one project through every Intent skill — from first question to engineering handoff.
+      </p>
+      <div class="showcase-premise">
+        <strong>The project: {showcase.name}</strong> — {showcase.tagline}
+      </div>
+    </section>
+
+    {videoSrc && (
+      <section class="walkthrough-video" aria-label="Walkthrough video">
+        <figure>
+          <video
+            controls
+            preload="none"
+            playsinline
+            poster={videoPoster}
+            src={videoSrc}
+          >
+            <p class="muted small">
+              Your browser can't play this video.
+              <a href={videoSrc} class="link">Download it instead</a>.
+            </p>
+          </video>
+        </figure>
+      </section>
+    )}
+
+    <!-- Skill chapters -->
+    {showcase.steps.map((step, i) => (
+      <>
+        <section class="section" aria-labelledby={`step-${step.skill}`}>
+          <SectionLabel
+            label={`/${step.skill}`.toUpperCase()}
+            annotation={step.agent}
+          />
+          <div class="section-content">
+            <h2 id={`step-${step.skill}`} class="visually-hidden">{step.skill}</h2>
+            <p class="step-summary">{step.summary}</p>
+            <p class="step-narrative">{step.narrative}</p>
+            {step.output && (
+              <button
+                class="step-output-trigger"
+                type="button"
+                data-skill={step.skill}
+                aria-expanded="false"
+                aria-controls="output-panel"
+              >
+                <span class="step-output-label">See what <code class="mono">/{step.skill}</code> produced</span>
+                <svg width="8" height="8" viewBox="0 0 8 8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+                  <path d="M3 1l3 3-3 3"/>
+                </svg>
+              </button>
+            )}
+          </div>
+        </section>
+
+        {step.philosopher && (
+          <div class="philosopher-callout">
+            <span class="philosopher-label mono">/philosopher</span>
+            <div set:html={step.philosopher} />
+          </div>
+        )}
+
+        {step.storytelling && (
+          <div class="storytelling-callout">
+            <span class="storytelling-label mono">/storytelling</span>
+            <div set:html={step.storytelling} />
+          </div>
+        )}
+      </>
+    ))}
+
+    <!-- Closing CTA -->
+    <section class="section" aria-labelledby="get-started-heading">
+      <SectionLabel label="GET STARTED" annotation="Install Intent" icon="terminal" />
+      <div class="section-content">
+        <h2 id="get-started-heading" class="visually-hidden">Get Started</h2>
+        <p class="step-narrative">
+          This is what Intent does for every project. Sixteen skills, six agents, one cohesive design practice.
+        </p>
+        <div class="code-block">
+          <span class="code-block-hint">All platforms</span>
+          <div class="code-block-row">
+            <code>npx skills add ghaida/intent --all</code>
+            <button class="code-copy" type="button" aria-label="Copy to clipboard" data-copy="npx skills add ghaida/intent --all">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+              </svg>
+            </button>
+          </div>
+          <span class="code-block-followup muted small mono">Works with Cursor, Claude Code, Codex CLI, and more</span>
+        </div>
+        <p class="section-footer muted small">
+          <a href={`${base}skills/`} class="link">Browse all skills →</a>
+        </p>
+      </div>
+    </section>
+  </div>
+
+  <!-- Output panel (slides in from right) -->
+  <div class="output-panel" id="output-panel" role="dialog" aria-modal="true" aria-labelledby="output-panel-title" aria-hidden="true">
+    <div class="output-panel-header">
+      <span class="output-panel-title mono" id="output-panel-title"></span>
+      <button class="output-panel-close" type="button" aria-label="Close panel">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    <div class="output-panel-body step-output" id="output-panel-body"></div>
+  </div>
+  <div class="output-panel-overlay" id="output-panel-overlay"></div>
+
+  <!-- Hidden output content (populated into panel via JS) -->
+  <div hidden>
+    {showcase.steps.map((step) => (
+      step.output && (
+        <div id={`output-${step.skill}`}>
+          {step.skill === 'journey' && <JourneyFlow />}
+          {step.skill === 'blueprint' && <BlueprintDiagram />}
+          {step.skill === 'organize' && <SiteMap />}
+          {step.skill === 'wireframe' && <WireframeBoard />}
+          <Fragment set:html={step.output} />
+        </div>
+      )
+    ))}
+  </div>
+</Base>
+
+<script is:inline src="/js/output-panel.js"></script>

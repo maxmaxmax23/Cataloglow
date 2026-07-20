@@ -1,0 +1,232 @@
+---
+import Base from '../layouts/Base.astro';
+import SectionLabel from '../components/SectionLabel.astro';
+import HeroBackdrop from '../components/visuals/HeroBackdrop.astro';
+import { loadSkills, groupByCategory } from '../lib/skills';
+import { loadPatterns, patternStats } from '../lib/patterns';
+
+const skills = loadSkills();
+const categories = groupByCategory(skills);
+const patternCategories = loadPatterns();
+const pStats = patternStats(patternCategories);
+
+const raw = import.meta.env.BASE_URL;
+const base = raw.endsWith('/') ? raw : raw + '/';
+
+// Sample patterns for preview (mix of severities)
+const samplePatterns = [
+  patternCategories.flatMap(c => c.patterns).find(p => p.name === 'Bait and Switch'),
+  patternCategories.flatMap(c => c.patterns).find(p => p.name === 'Fake Countdown Timers'),
+  patternCategories.flatMap(c => c.patterns).find(p => p.name === 'Infinite Scroll'),
+  patternCategories.flatMap(c => c.patterns).find(p => p.name === 'Anthropomorphic Manipulation'),
+  patternCategories.flatMap(c => c.patterns).find(p => p.name === 'Prechecked Consent'),
+  patternCategories.flatMap(c => c.patterns).find(p => p.name === 'Dead Ends'),
+].filter(Boolean);
+
+const principles = [
+  { title: 'Frame the problem', desc: 'Define the problem before diving into a solution. Understand the audience and shape products that solve their problems within defined constraints.' },
+  { title: 'Protect user autonomy', desc: 'Dark patterns exploit psychological vulnerabilities to make people act against their own interests, and erode your users\u2019 relationship with the product.' },
+  { title: 'Ground decisions in evidence', desc: 'An ongoing practice of curiosity guides product decisions toward better alignment between user needs and business goals.' },
+  { title: 'Systems over screens', desc: 'The purpose of a system is what it does. Start with intended outcomes and shape systems that enable those outcomes.' },
+  { title: 'Design for everyone', desc: 'A billion people worldwide have a disability. Accessible design makes products work better for everyone.' },
+  { title: 'Measure what matters', desc: 'Define what success looks like for your users and the business. Great success metrics align business and user goals and help shape future iterations.' },
+];
+---
+
+<Base title="Design with Intent" description={`A UX strategy system for AI tools. ${skills.length} skills covering research, strategy, flows, ethics, and measurement.`}>
+  <HeroBackdrop />
+  <div class="page">
+    <!-- Hero -->
+    <section class="hero" aria-labelledby="hero-heading">
+      <div class="hero-content">
+      <h1 id="hero-heading">
+        Design with <span class="hero-accent">Intent</span>
+      </h1>
+      <p class="hero-lede subtext">
+        A UX strategy system for AI tools. {skills.length} skills covering research,
+        strategy, flows, content, accessibility, ethics, and measurement.
+      </p>
+      <div class="hero-how-to-use">
+        <a href={`${base}how-to-use/`} class="hero-how-to-use-btn">See Intent in action</a>
+        <span class="hero-how-to-use-desc muted">Follow a project from first question to engineering handoff</span>
+      </div>
+      <div class="hero-install-group">
+        <div class="code-block">
+          <span class="code-block-hint">All platforms</span>
+          <div class="code-block-row">
+            <code>npx skills add ghaida/intent --all</code>
+            <button class="code-copy" type="button" aria-label="Copy to clipboard" data-copy="npx skills add ghaida/intent --all">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+              </svg>
+            </button>
+          </div>
+          <span class="code-block-followup muted small mono">Works with Cursor, Claude Code, Codex CLI, and more</span>
+        </div>
+        <div class="code-block">
+          <span class="code-block-hint">Claude Code</span>
+          <div class="code-block-row">
+            <code>/plugin marketplace add ghaida/intent</code>
+            <button class="code-copy" type="button" aria-label="Copy to clipboard" data-copy="/plugin marketplace add ghaida/intent">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+              </svg>
+            </button>
+          </div>
+          <span class="code-block-followup muted small mono">Then open <code class="mono">/plugin</code> in Claude Code</span>
+        </div>
+        <p class="hero-platforms muted small mono">
+          Or <a href="#install" class="link">download manually</a>
+        </p>
+      </div>
+      </div>
+    </section>
+
+    <!-- Philosophy -->
+    <section class="section" aria-labelledby="philosophy-heading">
+      <SectionLabel label="PHILOSOPHY" annotation="Core thesis" icon="brain" />
+      <div class="section-content">
+        <h2 id="philosophy-heading" class="visually-hidden">Philosophy</h2>
+        <p class="lead">
+          Every design decision should have a reason.
+        </p>
+        <p class="philosophy-body">
+          Design intent comes from curiosity about the people who will use your products and clarity about what the business needs. The best design decisions live where those two things align.
+        </p>
+      </div>
+    </section>
+
+    <!-- Principles -->
+    <section class="section" aria-labelledby="principles-heading">
+      <SectionLabel label="PRINCIPLES" annotation="6 core positions" icon="shield" />
+      <div class="section-content">
+        <h2 id="principles-heading" class="visually-hidden">Principles</h2>
+        <div class="principles-grid">
+          {principles.map((p) => (
+            <div class="principle">
+              <h3 class="principle-title">{p.title}</h3>
+              <p class="principle-desc muted">{p.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Skills -->
+    <section class="section" aria-labelledby="skills-heading">
+      <SectionLabel label={`${skills.length} SKILLS`} annotation="7 categories" icon="grid" />
+      <div class="section-content">
+        <h2 id="skills-heading" class="visually-hidden">Skills</h2>
+        <div class="skill-categories">
+          {categories.map((cat) => (
+            <div class="skill-category">
+              <span class="skill-category-label mono">{cat.label}</span>
+              <div class="skill-category-tags">
+                {cat.skills.map((s) => (
+                  <a href={`${base}skills/#${s.slug}`} class="skill-tag">/{s.slug}</a>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+        <p class="section-footer muted small">
+          <a href={`${base}skills/`} class="link">View all skills with details →</a>
+        </p>
+      </div>
+    </section>
+
+    <!-- Anti-Patterns -->
+    <section class="section" aria-labelledby="patterns-heading">
+      <SectionLabel
+        label="ANTI-PATTERNS"
+        annotation={`${pStats.categories} categories · ${pStats.total}+ patterns`}
+        icon="warning"
+      />
+      <div class="section-content">
+        <h2 id="patterns-heading" class="visually-hidden">Anti-Patterns</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Pattern</th>
+                <th>Severity</th>
+                <th class="hide-mobile">Category</th>
+              </tr>
+            </thead>
+            <tbody>
+              {samplePatterns.map((p) => (
+                <tr>
+                  <td>{p!.name}</td>
+                  <td>
+                    <span class={`severity severity--${p!.severity.toLowerCase()}`}>
+                      {p!.severity}
+                    </span>
+                  </td>
+                  <td class="hide-mobile muted small">{p!.category}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p class="section-footer muted small">
+          <a href={`${base}patterns/`} class="link">Browse all anti-patterns →</a>
+        </p>
+      </div>
+    </section>
+
+    <!-- Install -->
+    <section class="section" id="install" aria-labelledby="install-heading">
+      <SectionLabel label="INSTALL" annotation="3 methods" icon="terminal" />
+      <div class="section-content">
+        <h2 id="install-heading" class="visually-hidden">Install</h2>
+        <div class="install-methods">
+          <div class="install-method">
+            <h3 class="install-method-name mono">All platforms</h3>
+            <div class="code-block">
+              <div class="code-block-row">
+                <code>npx skills add ghaida/intent --all</code>
+                <button class="code-copy" type="button" aria-label="Copy to clipboard" data-copy="npx skills add ghaida/intent --all">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                  </svg>
+                </button>
+              </div>
+              <span class="code-block-followup muted small mono">Works with Cursor, Claude Code, Codex CLI, and more</span>
+            </div>
+          </div>
+          <div class="install-method">
+            <h3 class="install-method-name mono">Claude Code plugin</h3>
+            <div class="code-block">
+              <div class="code-block-row">
+                <code>/plugin marketplace add ghaida/intent</code>
+                <button class="code-copy" type="button" aria-label="Copy to clipboard" data-copy="/plugin marketplace add ghaida/intent">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                  </svg>
+                </button>
+              </div>
+              <span class="code-block-followup muted small mono">Then open <code class="mono">/plugin</code> in Claude Code</span>
+            </div>
+          </div>
+          <div class="install-method">
+            <h3 class="install-method-name mono">Manual download</h3>
+            <div class="install-downloads">
+              <a href="https://github.com/ghaida/intent/releases/latest" class="install-download-link link mono" target="_blank" rel="noopener noreferrer">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="7 10 12 15 17 10"/>
+                  <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+                All releases
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</Base>

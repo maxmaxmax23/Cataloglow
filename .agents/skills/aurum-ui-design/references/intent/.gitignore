@@ -1,0 +1,37 @@
+# General
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Project planning (private)
+project-plan.md
+
+# Project config (local only)
+CLAUDE.md
+.impeccable.md
+
+# Impeccable working files / critique snapshots (local only, never committed)
+.impeccable/
+
+# Internal design docs and visual companion sessions
+design-docs/
+.superpowers/
+
+# Local worktrees
+.worktrees/
+
+# Playwright MCP snapshots
+.playwright-mcp/
+
+# Claude memory (local only)
+.claude/projects/
+
+# Debug screenshots
+*.png
+
+# Environment and temporary files
+.env
+.env.local
+.env.*.local
+*.log
+*.tmp

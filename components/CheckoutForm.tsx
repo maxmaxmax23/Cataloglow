@@ -1,9 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { CartItem } from '../src/types';
-import html2canvas from 'html2canvas';
-import ReceiptTicket from './ReceiptTicket';
-
-import { generateOrderNumber } from '../src/services/orders';
+import { generateOrderNumber, saveOrderToCloud } from '../src/services/orders';
 import { useCms } from '../src/hooks/useCMS';
 
 interface CheckoutFormProps {
@@ -17,7 +14,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ items, total, onClose }) =>
     const [address, setAddress] = useState('');
     const [isGenerating, setIsGenerating] = useState(false);
     const [currentOrderNumber, setCurrentOrderNumber] = useState('');
-    const receiptRef = useRef<HTMLDivElement>(null);
+
 
     const handleWhatsAppRedirect = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -31,51 +28,28 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ items, total, onClose }) =>
             setCurrentOrderNumber(orderNum);
 
             // Wait for state update and render
-            await new Promise(resolve => setTimeout(resolve, 500));
+            // 2. Save Order to Cloud
+            await saveOrderToCloud({
+                items,
+                total,
+                customerName: name,
+                customerAddress: address,
+                orderNumber: orderNum
+            });
 
-            // 2. Generate Image from Receipt Component
-            if (receiptRef.current) {
-                const canvas = await html2canvas(receiptRef.current, {
-                    backgroundColor: '#020202', // Force black background
-                    scale: 2, // High resolution
-                    useCORS: true // Allow loading images if needed
-                });
+            // 3. Redirect to specific WhatsApp number with just the text
+            const message = `Hi im ${name}, My order number is ${orderNum}`;
+            const whatsappUrl = `https://wa.me/542915100418?text=${encodeURIComponent(message)}`;
+            
+            // Open in current window on mobile or new window on desktop
+            window.open(whatsappUrl, '_self');
+            
+            // Optionally close the modal
+            setTimeout(onClose, 500);
 
-                const imageBlob = await new Promise<Blob | null>(resolve => canvas.toBlob(resolve, 'image/png'));
-
-                if (imageBlob) {
-                    const file = new File([imageBlob], "aurum_receipt.png", { type: "image/png" });
-
-                    // 2. Try Native Share (Mobile)
-                    if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                        await navigator.share({
-                            files: [file],
-                            title: 'Su Recibo AURUM',
-                            text: `Hola ${name}, aquí tiene el detalle de su pedido.`
-                        });
-                    } else {
-                        // 3. Fallback: Download Image & Open WhatsApp Web
-                        const link = document.createElement('a');
-                        link.href = URL.createObjectURL(imageBlob);
-                        link.download = 'aurum_receipt.png';
-                        link.click();
-
-                        // Wait a moment for download to start before redirecting
-                        setTimeout(() => {
-                            const itemList = items.map(i => `• ${i.name} (x${i.quantity})`).join('\n');
-                            const message = `Hola, envío adjunto el comprobante de mi pedido:\n\n${itemList}\n\nTotal: $${total.toFixed(2)}\n\nMis Datos:\nNombre: ${name}\nZona: ${address}\nPedido: ${orderNum}`;
-                            const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
-                            window.open(whatsappUrl, '_blank');
-                        }, 1000);
-                    }
-                }
-            }
         } catch (error) {
-            console.error("Error generating receipt:", error);
-            // Fallback to text only if image fails
-            const itemList = items.map(i => `• ${i.name} (x${i.quantity})`).join('\n');
-            const message = `Hola, me gustaría realizar un pedido:\n\n${itemList}\n\nTotal: $${total.toFixed(2)}\n\nDatos:\n${name}\n${address}`;
-            window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
+            console.error("Error generating checkout:", error);
+            alert("Hubo un error procesando su pedido. Por favor intente nuevamente.");
         } finally {
             setIsGenerating(false);
         }
@@ -174,17 +148,6 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ items, total, onClose }) =>
                 </div>
             </div>
 
-            {/* Hidden Receipt Component for Generation */}
-            <div className="fixed left-[-9999px] top-0">
-                <ReceiptTicket
-                    ref={receiptRef}
-                    items={items}
-                    total={total}
-                    customerName={name || 'Cliente'}
-                    customerAddress={address || 'Sin dirección'}
-                    orderNumber={currentOrderNumber}
-                />
-            </div>
         </div>
     );
 };

@@ -14,6 +14,7 @@ const ShopView: React.FC<ShopViewProps> = ({ products, onProductClick, onAddToCa
   const [visibleCount, setVisibleCount] = useState(8);
   const [isLoading, setIsLoading] = useState(false);
   const loadMoreRef = useRef<HTMLDivElement>(null);
+  const [addedItems, setAddedItems] = useState<Record<string, boolean>>({});
 
   const filters = ['All', 'Cuidado de la Piel', 'Labios', 'Ojos', 'Fragancias', 'Rostro'];
 
@@ -74,6 +75,11 @@ const ShopView: React.FC<ShopViewProps> = ({ products, onProductClick, onAddToCa
   const handleQuickAdd = (e: React.MouseEvent, product: Product) => {
     e.stopPropagation();
     onAddToCart(product, 1);
+    
+    setAddedItems(prev => ({ ...prev, [product.id]: true }));
+    setTimeout(() => {
+      setAddedItems(prev => ({ ...prev, [product.id]: false }));
+    }, 1500);
   };
 
   return (
@@ -134,18 +140,30 @@ const ShopView: React.FC<ShopViewProps> = ({ products, onProductClick, onAddToCa
                 <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 z-20">
                   <button
                     onClick={(e) => handleQuickAdd(e, product)}
-                    className="hidden md:block w-full bg-primary/90 text-black font-bold py-3 rounded uppercase tracking-[0.2em] text-[10px] hover:bg-white transition-all duration-300 transform translate-y-4 group-hover:translate-y-0 shadow-lg backdrop-blur-sm btn-shimmer"
+                    className={`hidden md:block w-full text-black font-bold py-3 rounded uppercase tracking-[0.2em] text-[10px] transition-all duration-300 transform translate-y-4 group-hover:translate-y-0 shadow-lg backdrop-blur-sm btn-shimmer ${
+                      addedItems[product.id] ? 'bg-green-500 hover:bg-green-400' : 'bg-primary/90 hover:bg-white'
+                    }`}
                   >
-                    {useCms('shop.productCard.add', 'Agregar')}
+                    {addedItems[product.id] ? (
+                      <span className="flex items-center justify-center gap-1">
+                        <span className="material-icons text-[12px]">check</span> Agregado
+                      </span>
+                    ) : (
+                      useCms('shop.productCard.add', 'Agregar')
+                    )}
                   </button>
                 </div>
 
                 {/* Mobile Only: Floating Action Button Style for Quick Add */}
                 <button
                   onClick={(e) => handleQuickAdd(e, product)}
-                  className="md:hidden absolute bottom-3 right-3 bg-primary text-black h-8 w-8 rounded-full flex items-center justify-center shadow-lg active:scale-90 transition-transform z-30"
+                  className={`md:hidden absolute bottom-3 right-3 text-black h-8 w-8 rounded-full flex items-center justify-center shadow-lg active:scale-90 transition-all duration-300 z-30 ${
+                    addedItems[product.id] ? 'bg-green-500 scale-110' : 'bg-primary'
+                  }`}
                 >
-                  <span className="material-icons text-lg">add</span>
+                  <span className="material-icons text-lg">
+                    {addedItems[product.id] ? 'check' : 'add'}
+                  </span>
                 </button>
 
                 {product.isNew && (
@@ -214,9 +232,17 @@ const ShopView: React.FC<ShopViewProps> = ({ products, onProductClick, onAddToCa
                     <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-3 z-20">
                       <button
                         onClick={(e) => handleQuickAdd(e, product)}
-                        className="w-full bg-primary/90 text-black font-bold py-2 rounded uppercase tracking-[0.2em] text-[8px] hover:bg-white transition-all duration-300 transform translate-y-4 group-hover:translate-y-0 shadow-lg backdrop-blur-sm btn-shimmer"
+                        className={`w-full text-black font-bold py-2 rounded uppercase tracking-[0.2em] text-[8px] transition-all duration-300 transform translate-y-4 group-hover:translate-y-0 shadow-lg backdrop-blur-sm btn-shimmer ${
+                          addedItems[product.id] ? 'bg-green-500 hover:bg-green-400' : 'bg-primary/90 hover:bg-white'
+                        }`}
                       >
-                        {useCms('shop.productCard.add', 'Agregar')}
+                        {addedItems[product.id] ? (
+                          <span className="flex items-center justify-center gap-1">
+                            <span className="material-icons text-[10px]">check</span> Agregado
+                          </span>
+                        ) : (
+                          useCms('shop.productCard.add', 'Agregar')
+                        )}
                       </button>
                     </div>
                   </div>

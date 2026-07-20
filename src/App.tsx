@@ -110,10 +110,12 @@ function App() {
         setIsCheckoutOpen(false);
         setSelectedProduct(null);
       } else if (state.modal === 'product') {
-        // We generally keep the product in state if it was already there, 
-        // essentially just ensuring other overlays are closed.
         setIsCartOpen(false);
         setIsCheckoutOpen(false);
+      } else if (state.modal === 'checkout') {
+        setIsCheckoutOpen(true);
+        setIsCartOpen(false);
+        setSelectedProduct(null);
       }
     };
 

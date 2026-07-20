@@ -1,0 +1,157 @@
+#!/bin/bash
+# Design with Intent — Release Script
+#
+# Usage: ./release.sh <version>
+# Example: ./release.sh 1.1.0
+#
+# This script:
+#   1. Updates version in all source skill files and plugin manifests
+#   2. Rebuilds platform distributions (Claude Code, Cursor, Copilot)
+#   3. Commits the version bump
+#   4. Creates a git tag (v<version>)
+#   5. Pushes commit + tag (triggers GitHub Actions release workflow)
+
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+
+# Colors
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+BLUE='\033[0;34m'
+YELLOW='\033[1;33m'
+NC='\033[0m'
+
+# =============================================================================
+# Validate input
+# =============================================================================
+
+if [ $# -ne 1 ]; then
+    echo -e "${RED}Usage:${NC} ./release.sh <version>"
+    echo "  Example: ./release.sh 1.1.0"
+    exit 1
+fi
+
+VERSION="$1"
+
+# Validate semver format
+if ! echo "$VERSION" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+$'; then
+    echo -e "${RED}Error:${NC} Version must be semver (e.g., 1.1.0)"
+    exit 1
+fi
+
+TAG="v$VERSION"
+
+# Check for uncommitted changes
+if ! git diff --quiet || ! git diff --cached --quiet; then
+    echo -e "${RED}Error:${NC} You have uncommitted changes. Commit or stash them first."
+    exit 1
+fi
+
+# Check tag doesn't already exist
+if git rev-parse "$TAG" >/dev/null 2>&1; then
+    echo -e "${RED}Error:${NC} Tag $TAG already exists."
+    exit 1
+fi
+
+# Get current version from plugin.json
+CURRENT=$(grep '"version"' "$SCRIPT_DIR/.claude-plugin/plugin.json" | head -1 | sed 's/.*"version": *"\([^"]*\)".*/\1/')
+
+echo -e "${BLUE}Design with Intent — Release${NC}"
+echo ""
+echo "  Current version: $CURRENT"
+echo "  New version:     $VERSION"
+echo "  Tag:             $TAG"
+echo ""
+
+# =============================================================================
+# Bump versions
+# =============================================================================
+
+echo -e "${GREEN}[1/5] Bumping versions${NC}"
+
+# Source skill files (frontmatter: version: X.Y.Z)
+for skill_file in "$SCRIPT_DIR"/skills/*/SKILL.md; do
+    sed -i '' "s/^version: $CURRENT$/version: $VERSION/" "$skill_file"
+done
+skill_count=$(ls "$SCRIPT_DIR"/skills/*/SKILL.md 2>/dev/null | wc -l | tr -d ' ')
+echo "  Updated $skill_count source skill files"
+
+# Plugin manifests (JSON: "version": "X.Y.Z")
+sed -i '' "s/\"version\": \"$CURRENT\"/\"version\": \"$VERSION\"/" "$SCRIPT_DIR/.claude-plugin/plugin.json"
+sed -i '' "s/\"version\": \"$CURRENT\"/\"version\": \"$VERSION\"/" "$SCRIPT_DIR/.claude-plugin/marketplace.json"
+echo "  Updated plugin.json + marketplace.json"
+
+# =============================================================================
+# Rebuild distributions
+# =============================================================================
+
+echo -e "${GREEN}[2/5] Rebuilding distributions${NC}"
+"$SCRIPT_DIR/build.sh"
+
+# =============================================================================
+# Validate plugin + marketplace manifests
+# Catches issues that would block install (invalid schema, bad frontmatter,
+# broken component paths) before the release gets tagged and pushed.
+# =============================================================================
+
+echo -e "${GREEN}[3/5] Validating plugin${NC}"
+if ! command -v claude >/dev/null 2>&1; then
+    echo -e "${RED}Error:${NC} 'claude' CLI not found — cannot validate plugin before release."
+    echo "Install Claude Code or re-run after ensuring 'claude' is on PATH."
+    exit 1
+fi
+claude plugin validate "$SCRIPT_DIR/.claude-plugin/plugin.json"
+claude plugin validate "$SCRIPT_DIR/.claude-plugin/marketplace.json"
+
+# =============================================================================
+# Commit
+# =============================================================================
+
+echo -e "${GREEN}[4/5] Committing${NC}"
+# Stage explicit paths only. Avoids `git add -A` accidentally bundling stray
+# untracked files (editor crashfiles, screenshots, local notes) into a tagged
+# release commit.
+git add skills/ agents/ .claude-plugin/ .cursor/ .github/ hooks/ 2>/dev/null || true
+# Re-add the script files themselves if version bumping touched them (it doesn't
+# today, but be defensive in case release.sh ever bumps its own constants).
+git add build.sh release.sh README.md 2>/dev/null || true
+
+# Verify only expected paths are staged. Bail if anything unexpected shows up.
+unexpected=$(git diff --cached --name-only | grep -vE '^(skills/|agents/|\.claude-plugin/|\.cursor/|\.github/|hooks/|build\.sh|release\.sh|README\.md)' || true)
+if [ -n "$unexpected" ]; then
+    echo -e "${RED}Error:${NC} unexpected files staged for the release commit:"
+    echo "$unexpected" | sed 's/^/  /'
+    echo "Resolve manually (unstage, .gitignore, or remove) and re-run."
+    exit 1
+fi
+
+git commit -m "Release $TAG"
+
+# =============================================================================
+# Tag — push gated behind confirmation
+# =============================================================================
+
+echo -e "${GREEN}[5/5] Tagging${NC}"
+git tag "$TAG"
+
+echo ""
+echo -e "${YELLOW}Commit + tag created locally.${NC}"
+echo "  Commit: $(git log -1 --pretty=format:'%h %s')"
+echo "  Tag:    $TAG"
+echo ""
+read -r -p "Push commit + tag to origin? [y/N] " confirm
+if [[ ! "$confirm" =~ ^[Yy]$ ]]; then
+    echo ""
+    echo "Push cancelled. To push when ready:"
+    echo "  git push && git push origin $TAG"
+    exit 0
+fi
+
+git push
+git push origin "$TAG"
+
+echo ""
+echo -e "${BLUE}Release $TAG pushed.${NC}"
+echo "GitHub Actions will create the release at:"
+echo "  https://github.com/ghaida/intent/releases/tag/$TAG"

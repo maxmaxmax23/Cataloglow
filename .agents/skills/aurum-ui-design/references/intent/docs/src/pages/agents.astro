@@ -1,0 +1,118 @@
+---
+import Base from '../layouts/Base.astro';
+import AgentSymbol from '../components/visuals/AgentSymbol.astro';
+import { loadAgents } from '../lib/agents';
+
+const agents = loadAgents();
+const raw = import.meta.env.BASE_URL;
+const base = raw.endsWith('/') ? raw : raw + '/';
+---
+
+<Base title="Agents — Intent" description="6 agents that combine Intent's skills into specialist personas. Each agent owns a domain of the design practice.">
+  <div class="page">
+    <section class="agents-hero" aria-labelledby="agents-heading">
+      <h1 id="agents-heading">Agents</h1>
+      <p class="subtext muted">
+        6 agents that combine skills into specialist roles. Each one owns
+        a domain and knows when to hand off.
+      </p>
+    </section>
+
+    <!-- Agent Table -->
+    <section class="agents-table-section" aria-labelledby="agents-table-heading">
+      <h2 id="agents-table-heading" class="visually-hidden">Agent roster</h2>
+      <div class="table-wrap">
+        <table class="agents-table">
+          <thead>
+            <tr>
+              <th>Domain</th>
+              <th>Agent</th>
+              <th>Skills</th>
+              <th class="hide-mobile">Role</th>
+            </tr>
+          </thead>
+          <tbody>
+            {agents.map((agent) => (
+              <tr data-cluster={agent.cluster}>
+                <td class="agent-domain mono small muted">{agent.domain}</td>
+                <td class="agent-col-name">
+                  <span class="agent-name-cell">
+                    <span class="agent-thumb" aria-hidden="true">
+                      <AgentSymbol slug={agent.slug} />
+                    </span>
+                    <span class="agent-name">{agent.name}</span>
+                  </span>
+                </td>
+                <td class="agent-col-skills">
+                  <div class="agent-skills">
+                    {agent.skills.map((s) => (
+                      <a href={`${base}skills/#${s}`} class="skill-tag">/{s}</a>
+                    ))}
+                  </div>
+                </td>
+                <td class="hide-mobile">
+                  <span class="agent-tagline muted small">{agent.tagline}</span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Lifecycle Flow -->
+    <section class="lifecycle-section" aria-labelledby="lifecycle-heading">
+      <h2 id="lifecycle-heading" class="lifecycle-title">Project Lifecycle</h2>
+      <p class="lifecycle-desc muted">
+        Agents follow a natural progression through the design process.
+        Sage enters at any point — the cross-cutting advisor.
+      </p>
+
+      <div class="lifecycle" role="img" aria-label="Agent lifecycle: Noor sets context, Ember researches, Wren designs, Vigil evaluates, Rune adapts. Sage advises at any stage.">
+        <div class="lifecycle-flow">
+          <div class="lifecycle-node">
+            <span class="lifecycle-agent">Noor</span>
+            <span class="lifecycle-role mono small muted">Context</span>
+          </div>
+          <span class="lifecycle-arrow" aria-hidden="true">→</span>
+          <div class="lifecycle-node">
+            <span class="lifecycle-agent">Ember</span>
+            <span class="lifecycle-role mono small muted">Research</span>
+          </div>
+          <span class="lifecycle-arrow" aria-hidden="true">→</span>
+          <div class="lifecycle-node">
+            <span class="lifecycle-agent">Wren</span>
+            <span class="lifecycle-role mono small muted">Design</span>
+          </div>
+          <span class="lifecycle-arrow" aria-hidden="true">→</span>
+          <div class="lifecycle-node">
+            <span class="lifecycle-agent">Vigil</span>
+            <span class="lifecycle-role mono small muted">Quality</span>
+          </div>
+          <span class="lifecycle-arrow" aria-hidden="true">→</span>
+          <div class="lifecycle-node">
+            <span class="lifecycle-agent">Rune</span>
+            <span class="lifecycle-role mono small muted">Adapt</span>
+          </div>
+        </div>
+
+        <div class="lifecycle-sage">
+          <div class="lifecycle-sage-line" aria-hidden="true"></div>
+          <div class="lifecycle-sage-node">
+            <span class="lifecycle-agent">Sage</span>
+            <span class="lifecycle-role mono small muted">Advisor — enters anywhere</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Note -->
+    <section class="agents-note">
+      <p class="muted small">
+        Agents are included when you install Intent via Claude Code.
+        They live in <code class="mono">agents/</code> and can be loaded
+        into Claude Projects or used as standalone prompts.
+      </p>
+    </section>
+  </div>
+</Base>

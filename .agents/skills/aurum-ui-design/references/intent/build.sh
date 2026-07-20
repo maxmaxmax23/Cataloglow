@@ -1,0 +1,292 @@
+#!/bin/bash
+# Design with Intent
+# Build script: generates platform-specific distributions from source skills.
+#
+# Claude Code reads source skills/ and agents/ directly — no generation step.
+# This script only produces the distributions other platforms need.
+#
+# Platforms:
+#   .cursor/rules/    — Cursor (.mdc files, simplified frontmatter)
+#   .github/          — VS Code Copilot (copilot-instructions.md + skill files)
+
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+SKILLS_DIR="$SCRIPT_DIR/skills"
+
+# Colors for output
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
+echo -e "${BLUE}Design with Intent${NC}"
+echo "Building platform distributions..."
+echo ""
+
+skill_count=$(ls -d "$SKILLS_DIR"/*/ 2>/dev/null | wc -l | tr -d ' ')
+agent_count=$(ls "$SCRIPT_DIR"/agents/*.md 2>/dev/null | wc -l | tr -d ' ')
+
+# =============================================================================
+# CURSOR — .cursor/rules/
+# .mdc files with simplified frontmatter (description, alwaysApply)
+# Each skill becomes a flat .mdc file. Reference docs are appended to their
+# parent skill's .mdc file.
+# =============================================================================
+
+echo -e "${GREEN}[1/2] Cursor (.cursor/rules/)${NC}"
+
+CURSOR_DIR="$SCRIPT_DIR/.cursor/rules"
+rm -rf "$CURSOR_DIR"
+mkdir -p "$CURSOR_DIR"
+
+for skill_dir in "$SKILLS_DIR"/*/; do
+    skill_name=$(basename "$skill_dir")
+    skill_file="$skill_dir/SKILL.md"
+
+    if [ ! -f "$skill_file" ]; then
+        continue
+    fi
+
+    # Extract description from YAML frontmatter
+    # Read everything between first --- and second ---, grab description field
+    description=$(awk '
+        /^---$/ { count++; next }
+        count == 1 && /^description:/ {
+            # Get the description value (may be multi-line with >)
+            sub(/^description: *>? */, "")
+            desc = $0
+            # Read continuation lines (indented)
+            while ((getline line) > 0) {
+                if (line ~ /^  /) {
+                    sub(/^  +/, "", line)
+                    desc = desc " " line
+                } else {
+                    break
+                }
+            }
+            print desc
+            exit
+        }
+    ' "$skill_file")
+
+    # Get content after frontmatter (skip YAML block)
+    content=$(awk '
+        BEGIN { count = 0; printing = 0 }
+        /^---$/ { count++; if (count == 2) { printing = 1; next } }
+        printing { print }
+    ' "$skill_file")
+
+    # If this skill has reference docs, emit each as its own .mdc file
+    # instead of inlining them (prevents context bloat in Cursor).
+    # Embeddable reference assets (css/js) are instead inlined into the
+    # parent skill's .mdc as fenced code blocks — Cursor rules can't ship
+    # sidecar files, and skills that carry assets instruct read-and-embed.
+    # Other asset types (e.g. a styleguide .html demo) are human-viewable
+    # extras, not embed material — they stay source-only for Cursor.
+    asset_appendix=""
+    if [ -d "$skill_dir/references" ]; then
+        for asset_file in "$skill_dir/references"/*; do
+            case "$asset_file" in *.css|*.js) ;; *) continue ;; esac
+            if [ -f "$asset_file" ]; then
+                asset_name=$(basename "$asset_file")
+                asset_lang="${asset_name##*.}"
+                asset_appendix="$asset_appendix
+
+## Reference asset: references/$asset_name
+
+\`\`\`$asset_lang
+$(cat "$asset_file")
+\`\`\`"
+            fi
+        done
+        for ref_file in "$skill_dir/references"/*.md; do
+            if [ -f "$ref_file" ]; then
+                ref_name=$(basename "$ref_file" .md)
+                ref_content=$(cat "$ref_file")
+
+                # Generate a trigger description from the reference name
+                case "$ref_name" in
+                    accessibility-foundations)
+                        ref_desc="Intent reference: WCAG 2.2 for designers, screen reader design, keyboard navigation, cognitive and motor accessibility, inclusive design principles and testing methodology. Load when working on accessibility, a11y audits, inclusive design, or assistive technology." ;;
+                    content-strategy)
+                        ref_desc="Intent reference: voice framework methodology, tone matrices, content modeling, microcopy patterns, terminology governance, readability scoring. Load when working on UX writing, voice and tone, content models, or copy strategy." ;;
+                    ethical-design)
+                        ref_desc="Intent reference: anti-pattern remediation, dark pattern alternatives, consent design, design ethics frameworks, regulatory compliance patterns. Load when fixing dark patterns, designing consent flows, or reviewing ethical concerns." ;;
+                    information-architecture)
+                        ref_desc="Intent reference: navigation patterns and trade-offs, taxonomy design, mental model theory, wayfinding principles, search behavior models. Load when designing navigation, site structure, taxonomy, or information hierarchy." ;;
+                    interaction-patterns)
+                        ref_desc="Intent reference: form design, state management, validation patterns, feedback loops, progressive disclosure, error recovery, undo/redo. Load when designing forms, interactions, input validation, or state transitions." ;;
+                    measurement-frameworks)
+                        ref_desc="Intent reference: HEART framework, Goal-Signal-Metric mapping, A/B test design, statistical literacy for designers, ethical measurement. Load when defining metrics, designing experiments, or building measurement plans." ;;
+                    research-methods)
+                        ref_desc="Intent reference: method selection matrix, sample size guidance, interview techniques, usability testing, survey design, synthesis frameworks. Load when planning or conducting user research." ;;
+                    service-design)
+                        ref_desc="Intent reference: service blueprinting methodology, frontstage/backstage mapping, touchpoint analysis, moment-of-truth design, channel orchestration. Load when mapping services, systems, or cross-channel experiences." ;;
+                    *)
+                        ref_desc="Intent reference document: $ref_name" ;;
+                esac
+
+                cat > "$CURSOR_DIR/intent-ref-$ref_name.mdc" << ENDOFREF
+---
+description: $ref_desc
+alwaysApply: false
+---
+
+$ref_content
+ENDOFREF
+            fi
+        done
+    fi
+
+    # Determine if this should always apply
+    # Only the intent (master) skill should always apply
+    always_apply="false"
+    if [ "$skill_name" = "intent" ]; then
+        always_apply="true"
+    fi
+
+    # Write .mdc file
+    cat > "$CURSOR_DIR/$skill_name.mdc" << ENDOFMDC
+---
+description: $description
+alwaysApply: $always_apply
+---
+
+$content$asset_appendix
+ENDOFMDC
+
+done
+
+mdc_count=$(ls "$CURSOR_DIR"/*.mdc 2>/dev/null | wc -l | tr -d ' ')
+echo "  Generated $mdc_count .mdc rule files"
+
+# =============================================================================
+# VS CODE COPILOT — .github/
+# copilot-instructions.md with core Intent principles
+# Individual skills as .instructions.md files in .github/copilot/skills/
+# =============================================================================
+
+echo -e "${GREEN}[2/2] VS Code Copilot (.github/)${NC}"
+
+GITHUB_DIR="$SCRIPT_DIR/.github"
+COPILOT_SKILLS_DIR="$GITHUB_DIR/copilot/skills"
+# Preserve workflows directory during rebuild
+WORKFLOWS_BACKUP=""
+if [ -d "$GITHUB_DIR/workflows" ]; then
+    WORKFLOWS_BACKUP=$(mktemp -d)
+    cp -r "$GITHUB_DIR/workflows" "$WORKFLOWS_BACKUP/workflows"
+    # Safety net: if the script dies between the rm and the restore mv below
+    # (signal, disk error, set -e tripping on a downstream command), this
+    # trap recreates .github/workflows from the backup so the source repo
+    # is never left in a corrupt state.
+    trap '[ -n "${WORKFLOWS_BACKUP:-}" ] && [ -d "$WORKFLOWS_BACKUP/workflows" ] && [ ! -d "$GITHUB_DIR/workflows" ] && { mkdir -p "$GITHUB_DIR" 2>/dev/null; mv "$WORKFLOWS_BACKUP/workflows" "$GITHUB_DIR/workflows" 2>/dev/null; } || true' EXIT
+fi
+rm -rf "$GITHUB_DIR"
+mkdir -p "$COPILOT_SKILLS_DIR"
+if [ -n "$WORKFLOWS_BACKUP" ] && [ -d "$WORKFLOWS_BACKUP/workflows" ]; then
+    mv "$WORKFLOWS_BACKUP/workflows" "$GITHUB_DIR/workflows"
+    rmdir "$WORKFLOWS_BACKUP"
+fi
+
+# Generate the main copilot-instructions.md from the intent skill
+# This is the always-loaded file — contains core principles and routing
+intent_content=$(awk '
+    BEGIN { count = 0; printing = 0 }
+    /^---$/ { count++; if (count == 2) { printing = 1; next } }
+    printing { print }
+' "$SKILLS_DIR/intent/SKILL.md")
+
+cat > "$GITHUB_DIR/copilot-instructions.md" << ENDOFCOPILOT
+# Design with Intent
+
+This project uses the Intent UX design strategy system. When working on design decisions, UX strategy, user research, information architecture, content strategy, accessibility, or engineering handoff, follow these principles and use the specialized skill files in .github/copilot/skills/.
+
+$intent_content
+ENDOFCOPILOT
+
+# Copy each skill (except intent, which is in the main file) as a separate file
+for skill_dir in "$SKILLS_DIR"/*/; do
+    skill_name=$(basename "$skill_dir")
+    skill_file="$skill_dir/SKILL.md"
+
+    if [ ! -f "$skill_file" ] || [ "$skill_name" = "intent" ]; then
+        continue
+    fi
+
+    # Copy skill file
+    cp "$skill_file" "$COPILOT_SKILLS_DIR/$skill_name.md"
+
+    # Copy reference files if they exist (.md docs and any css/js/html
+    # assets the skill instructs read-and-embed for)
+    if [ -d "$skill_dir/references" ]; then
+        mkdir -p "$COPILOT_SKILLS_DIR/$skill_name"
+        cp "$skill_dir/references"/* "$COPILOT_SKILLS_DIR/$skill_name/"
+    fi
+done
+
+# Also generate AGENTS.md for Copilot agent mode
+cat > "$GITHUB_DIR/AGENTS.md" << ENDOFAGENTS
+# Design with Intent
+
+This project uses the Intent UX design strategy system.
+
+## Skills
+
+Specialized design skills are available in .github/copilot/skills/:
+
+$(for skill_dir in "$SKILLS_DIR"/*/; do
+    skill_name=$(basename "$skill_dir")
+    # Extract full description (handles multi-line YAML > format)
+    desc=$(awk '
+        /^---$/ { count++; next }
+        count == 1 && /^description:/ {
+            sub(/^description: *>? */, "")
+            desc = $0
+            while ((getline line) > 0) {
+                if (line ~ /^  /) {
+                    sub(/^  +/, "", line)
+                    desc = desc " " line
+                } else {
+                    break
+                }
+            }
+            # Truncate to first sentence for AGENTS.md brevity
+            match(desc, /\. /)
+            if (RSTART > 0) desc = substr(desc, 1, RSTART)
+            print desc
+            exit
+        }
+    ' "$skill_dir/SKILL.md" 2>/dev/null)
+    echo "- **$skill_name** — $desc"
+done)
+
+## Core Principles
+
+- Respect user autonomy — no manipulation, clear choices, easy reversal
+- Design for real conditions — slow networks, distraction, disability, stress
+- Make intent visible — every screen should answer: what can I do, why should I, what happens next
+- Evidence over intuition — research, test, measure
+- Systems over screens — a flow is part of a system is part of a user's life
+- Ethical defaults — opt-in over opt-out, privacy by default, honest over persuasive
+
+See .github/copilot-instructions.md for the full Intent system and anti-pattern catalog.
+ENDOFAGENTS
+
+copilot_count=$(ls "$COPILOT_SKILLS_DIR"/*.md 2>/dev/null | wc -l | tr -d ' ')
+echo "  Generated copilot-instructions.md + AGENTS.md + $copilot_count skill files"
+
+# =============================================================================
+# Summary
+# =============================================================================
+
+echo ""
+echo -e "${BLUE}Build complete.${NC}"
+echo ""
+echo "  skills/             — $skill_count skills (source, read by Claude Code directly)"
+echo "  agents/             — $agent_count agents (source, read by Claude Code directly)"
+echo "  .cursor/rules/      — $mdc_count rules (.mdc format)"
+echo "  .github/            — copilot-instructions.md + AGENTS.md + $copilot_count skills"
+echo ""
+echo -e "${YELLOW}Note:${NC} Commit the generated .cursor/ and .github/ directories to make"
+echo "Intent available in Cursor and Copilot. Claude Code uses the source files directly."
