@@ -70,7 +70,7 @@ const ReceiptTicket = forwardRef<HTMLDivElement, ReceiptTicketProps>(({ items, t
                                     <span className="text-[9px] text-white/30 tracking-wider font-mono">{useCms('receipt.details.idLabel', 'ID:')} {item.id.substring(0, 8).toUpperCase()}</span>
                                 </div>
                             </div>
-                            <span className="text-white font-mono pt-0.5">${(item.price * item.quantity).toFixed(2)}</span>
+                            <span className="text-white font-mono pt-0.5">${(item.price * item.quantity).toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                         </div>
                     ))}
                 </div>
@@ -80,7 +80,7 @@ const ReceiptTicket = forwardRef<HTMLDivElement, ReceiptTicketProps>(({ items, t
                 {/* Total */}
                 <div className="w-full flex justify-between items-center mb-8">
                     <span className="text-sm uppercase tracking-[0.2em] text-white">{useCms('receipt.summary.total', 'Total Final')}</span>
-                    <span className="text-2xl font-bold text-primary font-mono">${total.toFixed(2)}</span>
+                    <span className="text-2xl font-bold text-primary font-mono">${total.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                 </div>
 
                 {/* Footer */}

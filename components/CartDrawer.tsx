@@ -151,7 +151,7 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, items, onRemov
                                                 <span className="material-symbols-outlined text-[10px]">add</span>
                                             </button>
                                         </div>
-                                        <span className="text-white font-light text-sm">${(item.price * item.quantity).toFixed(2)}</span>
+                                        <span className="text-white font-light text-sm">${(item.price * item.quantity).toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                                     </div>
                                 </div>
                             </div>
@@ -164,15 +164,15 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, items, onRemov
                         <div className="space-y-3 mb-8">
                             <div className="flex justify-between text-xs text-stone-400 uppercase tracking-wider">
                                 <span>{useCms('cart.summary.subtotal', 'Subtotal')}</span>
-                                <span>${subtotal.toFixed(2)}</span>
+                                <span>${subtotal.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                             </div>
                             <div className="flex justify-between text-xs text-stone-400 uppercase tracking-wider">
                                 <span>{useCms('cart.summary.shipping', 'Envío')}</span>
-                                <span className="text-primary">{useCms('cart.summary.shippingFree', 'Cortesía')}</span>
+                                <span className="text-primary">{useCms('cart.summary.shippingFree', 'A coordinar')}</span>
                             </div>
                             <div className="flex justify-between items-center pt-6 border-t border-white/5 mt-4">
                                 <span className="text-sm font-bold uppercase tracking-[0.2em] text-white">{useCms('cart.summary.total', 'Total')}</span>
-                                <span className="text-xl font-light text-primary">${total.toFixed(2)}</span>
+                                <span className="text-xl font-light text-primary">${total.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                             </div>
                         </div>
                         <button

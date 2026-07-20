@@ -121,7 +121,7 @@ export const OrdersManager: React.FC<OrdersManagerProps> = ({ products = [] }) =
     const handleGenerateReceipt = async () => {
         if (!editingOrder) return;
 
-        const isConfirmed = window.confirm(`Generate receipt for order ${editingOrder.orderNumber}, for a total of $${editingOrder.total.toFixed(2)}?`);
+                            const isConfirmed = window.confirm(`Generate receipt for order ${editingOrder.orderNumber}, for a total of $${editingOrder.total.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}?`);
         if (!isConfirmed) return;
 
         setIsGenerating(true);
@@ -218,7 +218,7 @@ export const OrdersManager: React.FC<OrdersManagerProps> = ({ products = [] }) =
                                 <div className="text-xs text-white/40 mb-2 truncate">{order.customerAddress}</div>
                                 <div className="flex justify-between items-end">
                                     <span className="text-[10px] text-white/30">{order.items?.length || 0} items</span>
-                                    <span className="text-sm font-bold text-white">${order.total?.toFixed(2)}</span>
+                                    <span className="text-sm font-bold text-white">${order.total?.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                                 </div>
                             </div>
                         ))
@@ -243,7 +243,7 @@ export const OrdersManager: React.FC<OrdersManagerProps> = ({ products = [] }) =
                             </div>
                             <div className="text-right">
                                 <p className="text-[10px] uppercase tracking-widest text-white/40 mb-1">Final Total</p>
-                                <p className="text-2xl font-bold text-white">${editingOrder.total.toFixed(2)}</p>
+                                <p className="text-2xl font-bold text-white">${editingOrder.total.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p
                             </div>
                         </div>
 
@@ -294,9 +294,20 @@ export const OrdersManager: React.FC<OrdersManagerProps> = ({ products = [] }) =
                                         
                                         {editingOrder.items.map((item, idx) => (
                                             <div key={idx} className="grid grid-cols-12 gap-4 p-3 border-b border-white/5 items-center hover:bg-white/5 transition-colors">
-                                                <div className="col-span-1">
-                                                    <div className="w-8 h-8 bg-white/10">
-                                                        {item.image && <img src={item.image} alt="" className="w-full h-full object-cover" />}
+                                                <div className="col-span-1 relative group">
+                                                    <div className="w-8 h-8 bg-white/10 relative z-10 cursor-pointer">
+                                                        {item.image ? (
+                                                            <>
+                                                                <img src={item.image} alt="" className="w-full h-full object-cover" />
+                                                                <div className="absolute top-0 left-full ml-2 w-48 h-48 bg-black border border-white/20 shadow-2xl hidden group-hover:block z-50">
+                                                                    <img src={item.image} alt="" className="w-full h-full object-cover" />
+                                                                </div>
+                                                            </>
+                                                        ) : (
+                                                            <div className="w-full h-full flex items-center justify-center text-white/20 text-xs">
+                                                                <span className="material-symbols-outlined text-sm">receipt_long</span>
+                                                            </div>
+                                                        )}
                                                     </div>
                                                 </div>
                                                 <div className="col-span-5">
@@ -304,7 +315,7 @@ export const OrdersManager: React.FC<OrdersManagerProps> = ({ products = [] }) =
                                                     <div className="text-[9px] font-mono text-white/30">{item.id?.substring(0,8).toUpperCase()}</div>
                                                 </div>
                                                 <div className="col-span-2 text-right text-xs font-mono text-white/60">
-                                                    ${item.price.toFixed(2)}
+                                                    ${item.price.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                                                 </div>
                                                 <div className="col-span-2 flex justify-center items-center gap-2">
                                                     <button onClick={() => handleUpdateQuantity(idx, Math.max(1, item.quantity - 1))} className="text-white/40 hover:text-white">-</button>
@@ -312,7 +323,7 @@ export const OrdersManager: React.FC<OrdersManagerProps> = ({ products = [] }) =
                                                     <button onClick={() => handleUpdateQuantity(idx, item.quantity + 1)} className="text-white/40 hover:text-white">+</button>
                                                 </div>
                                                 <div className="col-span-2 flex justify-end items-center gap-3">
-                                                    <span className="text-sm font-bold text-primary">${(item.price * item.quantity).toFixed(2)}</span>
+                                                    <span className="text-sm font-bold text-primary">${(item.price * item.quantity).toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                                                     <button onClick={() => handleRemoveItem(idx)} className="text-red-500/50 hover:text-red-400 material-symbols-outlined text-sm">delete</button>
                                                 </div>
                                             </div>
@@ -320,14 +331,15 @@ export const OrdersManager: React.FC<OrdersManagerProps> = ({ products = [] }) =
                                     </div>
 
                                     {/* Add Item / Discount Tool */}
-                                    <div className="relative">
-                                        <button 
-                                            onClick={() => setIsSearching(!isSearching)}
-                                            className="text-[10px] uppercase tracking-widest text-primary hover:text-white flex items-center gap-1 transition-colors"
-                                        >
-                                            <span className="material-symbols-outlined text-sm">add_circle</span>
-                                            Add Item / Swap
-                                        </button>
+                                    <div className="flex gap-4">
+                                        <div className="relative">
+                                            <button 
+                                                onClick={() => setIsSearching(!isSearching)}
+                                                className="text-[10px] uppercase tracking-widest text-primary hover:text-white flex items-center gap-1 transition-colors"
+                                            >
+                                                <span className="material-symbols-outlined text-sm">add_circle</span>
+                                                Add Item / Swap
+                                            </button>
 
                                         {isSearching && (
                                             <div className="absolute top-full left-0 mt-2 w-full max-w-md bg-black border border-white/20 shadow-2xl z-20">
@@ -351,13 +363,33 @@ export const OrdersManager: React.FC<OrdersManagerProps> = ({ products = [] }) =
                                                                 <div className="text-sm text-white">{p.name}</div>
                                                                 <div className="text-xs text-white/40">{p.id.substring(0,8)}</div>
                                                             </div>
-                                                            <div className="text-primary font-bold">${p.price.toFixed(2)}</div>
+                                                            <div className="text-primary font-bold">${p.price.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
                                                         </div>
                                                     ))}
                                                     {filteredCatalog.length === 0 && <div className="p-4 text-xs text-white/40 text-center">No products found</div>}
                                                 </div>
                                             </div>
                                         )}
+                                        </div>
+
+                                        <button 
+                                            onClick={() => {
+                                                const desc = window.prompt("Description (e.g. 'Discount 10%' or 'Markup')");
+                                                if (!desc) return;
+                                                const amountStr = window.prompt("Amount in numbers (use negative for discount, e.g. -500)");
+                                                if (!amountStr) return;
+                                                const amount = parseFloat(amountStr);
+                                                if (isNaN(amount)) {
+                                                    alert("Invalid amount");
+                                                    return;
+                                                }
+                                                handleAddItem({ id: 'adj_' + Date.now(), name: desc, price: amount, image: '', category: 'adjustment', provider: '', cost: 0, taxRate: 0, currentInventory: 1, minStockLevel: 0, volume: 0, isVisible: true, barcodes: [] });
+                                            }}
+                                            className="text-[10px] uppercase tracking-widest text-orange-400 hover:text-white flex items-center gap-1 transition-colors"
+                                        >
+                                            <span className="material-symbols-outlined text-sm">sell</span>
+                                            Add Custom Adj.
+                                        </button>
                                     </div>
 
                                 </div>
