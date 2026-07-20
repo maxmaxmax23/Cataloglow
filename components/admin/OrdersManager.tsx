@@ -383,7 +383,7 @@ export const OrdersManager: React.FC<OrdersManagerProps> = ({ products = [] }) =
                                                     alert("Invalid amount");
                                                     return;
                                                 }
-                                                handleAddItem({ id: 'adj_' + Date.now(), name: desc, price: amount, image: '', category: 'adjustment', provider: '', cost: 0, taxRate: 0, currentInventory: 1, minStockLevel: 0, volume: 0, isVisible: true, barcodes: [] });
+                                                handleAddItem({ id: 'adj_' + Date.now(), productId: 'ADJ', name: desc, description: '', subtitle: 'Adjustment', price: amount, image: '', category: 'adjustment', provider: '', cost: 0, taxRate: 0, currentInventory: 1, minStockLevel: 0, volume: '', variants: null, isVisible: true, barcodes: [], benefits: [] } as Product);
                                             }}
                                             className="text-[10px] uppercase tracking-widest text-orange-400 hover:text-white flex items-center gap-1 transition-colors"
                                         >
