@@ -262,7 +262,7 @@ const Admin: React.FC<AdminProps> = ({ products, onUpdateCatalog }) => {
                 {activeTab === 'cms' ? (
                     <CMSManager addLog={addLog} />
                 ) : activeTab === 'orders' ? (
-                    <OrdersManager />
+                    <OrdersManager products={localProducts} />
                 ) : (
                     <>
                         {/* Toolbar */}

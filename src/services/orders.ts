@@ -25,13 +25,13 @@ export const generateOrderNumber = async (): Promise<string> => {
             return nextCount;
         });
 
-        // Format: AURUM-{0000}
-        return `AURUM-${newOrderNumber.toString().padStart(4, '0')}`;
+        // Format: GLOW-{0000}
+        return `GLOW-${newOrderNumber.toString().padStart(4, '0')}`;
 
     } catch (error) {
         console.error("Error generating order number:", error);
         // Fallback to timestamp if offline/error to prevent blocking the sale
-        return `OFFLINE-${Date.now().toString().slice(-6)}`;
+        return `GLOW-R-${Date.now().toString().slice(-6)}`;
     }
 };
 
