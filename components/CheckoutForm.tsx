@@ -95,9 +95,6 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ items, total, onClose }) =>
                                 />
                             </div>
                         </div>
-
-                        </div>
-
                         <div className="p-4 rounded bg-primary/5 border border-primary/10 mt-6">
                             <div className="flex justify-between items-center mb-2">
                                 <span className="text-white/40 text-[10px] uppercase tracking-wider">{useCms('checkout.form.itemsInfo', 'Items Seleccionados')}</span>
