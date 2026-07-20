@@ -243,7 +243,7 @@ export const OrdersManager: React.FC<OrdersManagerProps> = ({ products = [] }) =
                             </div>
                             <div className="text-right">
                                 <p className="text-[10px] uppercase tracking-widest text-white/40 mb-1">Final Total</p>
-                                <p className="text-2xl font-bold text-white">${editingOrder.total.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p
+                                <p className="text-2xl font-bold text-white">${editingOrder.total.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                             </div>
                         </div>
 
